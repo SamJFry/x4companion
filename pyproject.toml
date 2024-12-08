@@ -36,6 +36,9 @@ Source = "https://github.com/sam/x4companion"
 [tool.hatch.version]
 path = "src/x4companion/__about__.py"
 
+[tool.hatch.envs.default.scripts]
+devserver = "python src/x4companion/manage.py runserver"
+
 [tool.hatch.envs.types]
 extra-dependencies = [
   "mypy>=1.0.0",

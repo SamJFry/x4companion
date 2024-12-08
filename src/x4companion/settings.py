@@ -66,7 +66,7 @@ TEMPLATES = [
     },
 ]
 
-WSGI_APPLICATION = 'x4_companion.wsgi.application'
+WSGI_APPLICATION = 'x4companion.wsgi.application'
 
 
 # Database
