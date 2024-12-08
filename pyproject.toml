@@ -92,7 +92,7 @@ exclude = ["settings.py", "manage.py", "*/migrations/*"]
 [tool.ruff.lint.per-file-ignores]
 "__about__.py" = ["ALL"]
 "__init__.py" = ["D", "F401", "TID252"]
-"*/tests/*" = ["D", "ANN"]
+"*/tests/*" = ["D", "ANN", "ARG001"]
 
 [tool.pytest.ini_options]
 python_files = "test_*.py"
