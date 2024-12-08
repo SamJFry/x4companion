@@ -1,3 +1,21 @@
-from .index import index
+from django.http import HttpRequest, JsonResponse
 
-__all__ = ["index"]
+import x4companion
+
+
+def index(request: HttpRequest) -> JsonResponse:  # noqa: ARG001
+    """Return some basic information when a user calls the root of the API.
+
+    Args:
+        request: The incoming http request.
+
+    Returns:
+        JSON response with some information about the app.
+
+    """
+    return JsonResponse(
+        data={
+            "name": "X4 Companion App",
+            "version": x4companion.__version__,
+        }
+    )
