@@ -17,7 +17,7 @@ Including another URLconf
 from django.contrib import admin
 from django.urls import path
 
-import x4
+from x4companion import x4
 
 
 urlpatterns = [
