@@ -19,5 +19,10 @@ from django.contrib import admin
 from django.urls import path
 
 from x4companion import x4
+from x4companion.x4 import sectors
 
-urlpatterns = [path("admin/", admin.site.urls), path("", x4.index)]
+urlpatterns = [
+    path("admin/", admin.site.urls),
+    path("", x4.index),
+    path("sectors/", sectors.Sectors.as_view(), name="sectors"),
+]

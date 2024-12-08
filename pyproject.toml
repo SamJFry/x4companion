@@ -52,6 +52,7 @@ extra-dependencies = [
 [tool.hatch.envs.default.scripts]
 devserver = "python src/x4companion/manage.py runserver"
 makemigrations = "python src/x4companion/manage.py makemigrations"
+migrate = "python src/x4companion/manage.py migrate"
 
 [tool.hatch.envs.types]
 extra-dependencies = [
@@ -86,7 +87,7 @@ line-length = 79
 [tool.ruff.lint]
 pydocstyle.convention = "google"
 extend-select = ["ALL"]
-extend-ignore = ["COM812", "ISC001", "S101", "ANN101", "D105", "D106"]
+extend-ignore = ["COM812", "ISC001", "S101", "ANN101", "D105", "D106", "ARG002"]
 exclude = ["settings.py", "manage.py", "*/migrations/*"]
 
 [tool.ruff.lint.per-file-ignores]
