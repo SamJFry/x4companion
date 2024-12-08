@@ -36,6 +36,19 @@ Source = "https://github.com/sam/x4companion"
 [tool.hatch.version]
 path = "src/x4companion/__about__.py"
 
+[tool.hatch.envs.default]
+extra-dependencies = [
+  "pytest",
+  "pytest-django",
+]
+
+[tool.hatch.envs.hatch-test]
+default-args = ["--config-file=pyproject.toml"]
+extra-dependencies = [
+  "pytest",
+  "pytest-django",
+]
+
 [tool.hatch.envs.default.scripts]
 devserver = "python src/x4companion/manage.py runserver"
 
@@ -76,3 +89,9 @@ extend-ignore = ["COM812", "ISC001"]
 [tool.ruff.lint.per-file-ignores]
 "__about__.py" = ["ALL"]
 "tests/*" = ["D"]
+
+[tool.pytest.ini_options]
+python_files = "test_*.py"
+pythonpath = ["src"]
+testpaths = ["src"]
+DJANGO_SETTINGS_MODULE = "x4companion.settings"

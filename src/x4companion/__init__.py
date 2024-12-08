@@ -1,2 +1,2 @@
 """The route module of the companion app."""
-from __about__ import __version__
+from .__about__ import __version__
