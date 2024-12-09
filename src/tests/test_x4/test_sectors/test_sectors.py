@@ -49,5 +49,10 @@ class TestSector:
     @pytest.mark.django_db
     @pytest.mark.usefixtures("_create_multiple_sectors")
     def test_delete(self, logged_in_client):
-        response = logged_in_client.delete("/sectors/2")
+        response = logged_in_client.delete("/sectors/2/")
         assert response.status_code == status.HTTP_204_NO_CONTENT
+        assert list(Sector.objects.all().values()) == [
+            {"id": 1, "name": "sector0"},
+            {"id": 3, "name": "sector2"},
+            {"id": 4, "name": "sector3"},
+        ]

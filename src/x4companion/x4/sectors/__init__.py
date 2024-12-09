@@ -1,3 +1,3 @@
-from .sectors import Sectors
+from .sectors import Sectors, SectorView
 
-__all__ = ["Sectors"]
+__all__ = ["Sectors", "SectorView"]

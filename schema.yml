@@ -6,7 +6,7 @@ info:
 paths:
   /sectors/:
     get:
-      operationId: sectors_retrieve
+      operationId: sectors_list
       description: |-
         Get all sectors currently configured.
 
@@ -26,7 +26,9 @@ paths:
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/Sector'
+                type: array
+                items:
+                  $ref: '#/components/schemas/Sector'
           description: ''
     post:
       operationId: sectors_create
@@ -37,20 +39,26 @@ paths:
             request: POST request with the json to create a new sector.
 
         Returns:
-            JSON Response detailing the objectst that have been created.
+            JSON Response detailing the objects that have been created.
       tags:
       - sectors
       requestBody:
         content:
           application/json:
             schema:
-              $ref: '#/components/schemas/Sector'
+              type: array
+              items:
+                $ref: '#/components/schemas/Sector'
           application/x-www-form-urlencoded:
             schema:
-              $ref: '#/components/schemas/Sector'
+              type: array
+              items:
+                $ref: '#/components/schemas/Sector'
           multipart/form-data:
             schema:
-              $ref: '#/components/schemas/Sector'
+              type: array
+              items:
+                $ref: '#/components/schemas/Sector'
         required: true
       security:
       - cookieAuth: []
@@ -61,8 +69,29 @@ paths:
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/Sector'
+                type: array
+                items:
+                  $ref: '#/components/schemas/Sector'
           description: ''
+  /sectors/{id_}/:
+    delete:
+      operationId: sectors_destroy
+      description: Manage an individual Sector.
+      parameters:
+      - in: path
+        name: id_
+        schema:
+          type: integer
+        required: true
+      tags:
+      - sectors
+      security:
+      - cookieAuth: []
+      - basicAuth: []
+      - {}
+      responses:
+        '204':
+          description: No response body
 components:
   schemas:
     Sector:

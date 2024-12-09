@@ -12,4 +12,4 @@ def create_basic_sector():
 
 @pytest.fixture
 def _create_multiple_sectors():
-    Sector.objects.bulk_create([Sector(name=f"sector{x}") for x in range(10)])
+    Sector.objects.bulk_create([Sector(name=f"sector{x}") for x in range(4)])

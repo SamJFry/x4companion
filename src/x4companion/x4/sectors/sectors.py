@@ -4,6 +4,7 @@ from rest_framework import status
 from rest_framework.generics import GenericAPIView
 from rest_framework.request import Request
 from rest_framework.response import Response
+from rest_framework.views import APIView
 
 from x4companion.x4.models import Sector
 from x4companion.x4.serializers import SectorSerializer, SectorsSerializer
@@ -47,3 +48,23 @@ class Sectors(GenericAPIView):
             )
         serializer.create(serializer.data)
         return Response(status=status.HTTP_201_CREATED, data=serializer.data)
+
+
+class SectorView(APIView):
+    """Manage an individual Sector."""
+
+    serializer_class = SectorsSerializer
+
+    def delete(self, request: Request, id_: int) -> Response:
+        """Delete a sector from the Database.
+
+        Args:
+            request: DELETE Request.
+            id_: The id of the sector to delete.
+
+        Returns:
+            An empty response if the sector has been deleted.
+
+        """
+        Sector.objects.filter(id=id_).delete()
+        return Response(status=status.HTTP_204_NO_CONTENT)
