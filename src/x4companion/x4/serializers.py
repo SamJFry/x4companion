@@ -14,3 +14,23 @@ class SectorSerializer(serializers.ModelSerializer):
     class Meta:
         model: models.Model = Sector
         fields: ClassVar[list[str]] = ["name"]
+
+
+class SectorsSerializer(serializers.ListSerializer):
+    """Validate the values of a list of sectors."""
+
+    child = SectorSerializer()
+
+    def create(self, validated_data: list[dict]) -> models.Model:
+        """Bulk create Sectors.
+
+        Args:
+            validated_data: The validated data to create sectors for.
+
+        Returns:
+            The created model.
+
+        """
+        return Sector.objects.bulk_create(
+            [Sector(**item) for item in validated_data]
+        )
