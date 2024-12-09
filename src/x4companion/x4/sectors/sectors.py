@@ -6,13 +6,13 @@ from rest_framework.request import Request
 from rest_framework.response import Response
 
 from x4companion.x4.models import Sector
-from x4companion.x4.serializers import SectorSerializer
+from x4companion.x4.serializers import SectorSerializer, SectorsSerializer
 
 
 class Sectors(GenericAPIView):
     """Manage multiple sectors."""
 
-    serializer_class = SectorSerializer
+    serializer_class = SectorsSerializer
 
     def get(self, request: Request) -> Response:
         """Get all sectors currently configured.
@@ -24,7 +24,7 @@ class Sectors(GenericAPIView):
             A JSON response containing a list of sectors and their attributes.
 
         """
-        serializer = self.serializer_class(Sector.objects.all(), many=True)
+        serializer = SectorSerializer(Sector.objects.all(), many=True)
         return Response(
             {"sectors": serializer.data},
             status=status.HTTP_200_OK,
@@ -40,12 +40,10 @@ class Sectors(GenericAPIView):
             JSON Response detailing the objects that have been created.
 
         """
-        serializer = self.serializer_class(
-            data=request.data.get("data"), many=True
-        )
+        serializer = self.serializer_class(data=request.data.get("data"))
         if not serializer.is_valid():
             return Response(
                 status=status.HTTP_400_BAD_REQUEST, data=serializer.errors
             )
-        serializer.save()
+        serializer.create(serializer.data)
         return Response(status=status.HTTP_201_CREATED, data=serializer.data)
