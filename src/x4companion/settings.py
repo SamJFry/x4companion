@@ -11,6 +11,8 @@ https://docs.djangoproject.com/en/5.1/ref/settings/
 
 from pathlib import Path
 
+import x4companion
+
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
 BASE_DIR = Path(__file__).resolve().parent
 
@@ -38,6 +40,7 @@ INSTALLED_APPS = [
     "django.contrib.sessions",
     "django.contrib.messages",
     "django.contrib.staticfiles",
+    "drf_spectacular",
 ]
 
 MIDDLEWARE = [
@@ -68,6 +71,15 @@ TEMPLATES = [
     },
 ]
 
+REST_FRAMEWORK = {
+    "DEFAULT_SCHEMA_CLASS": "drf_spectacular.openapi.AutoSchema",
+}
+SPECTACULAR_SETTINGS = {
+    "TITLE": "x4 Companion",
+    "DESCRIPTION": "A Companion web app for the game X4 foundations.",
+    "VERSION": x4companion.__version__,
+    "SERVE_INCLUDE_SCHEMA": False,
+}
 WSGI_APPLICATION = "x4companion.wsgi.application"
 
 

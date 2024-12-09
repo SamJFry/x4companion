@@ -5,7 +5,7 @@ build-backend = "hatchling.build"
 [project]
 name = "x4companion"
 dynamic = ["version"]
-description = 'A Companion web app for the game X4 foundations.'
+description = "A Companion web app for the game X4 foundations."
 readme = "README.md"
 requires-python = ">=3.13"
 license = "MIT"
@@ -26,6 +26,7 @@ classifiers = [
 ]
 dependencies = [
   "djangorestframework==3.15.2",
+  "drf-spectacular==0.28.0",
 ]
 
 [project.urls]
@@ -53,6 +54,7 @@ extra-dependencies = [
 devserver = "python src/x4companion/manage.py runserver"
 makemigrations = "python src/x4companion/manage.py makemigrations"
 migrate = "python src/x4companion/manage.py migrate"
+spectacular = "python src/x4companion/manage.py spectacular --color --file schema.yml"
 
 [tool.hatch.envs.types]
 extra-dependencies = [

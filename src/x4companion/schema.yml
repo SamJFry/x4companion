@@ -1,0 +1,84 @@
+openapi: 3.0.3
+info:
+  title: x4 Companion
+  version: 0.0.1
+  description: A Companion web app for the game X4 foundations.
+paths:
+  /sectors/:
+    get:
+      operationId: sectors_retrieve
+      description: |-
+        Get all sectors currently configured.
+
+        Args:
+            request: GET request made to this endpoint.
+
+        Returns:
+            A JSON response containing a list of sectors and their attributes.
+      tags:
+      - sectors
+      security:
+      - cookieAuth: []
+      - basicAuth: []
+      - {}
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Sector'
+          description: ''
+    post:
+      operationId: sectors_create
+      description: |-
+        Creates a new sector in the database.
+
+        Args:
+            request: POST request with the json to create a new sector.
+
+        Returns:
+            JSON Response detailing the objectst that have been created.
+      tags:
+      - sectors
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/Sector'
+          application/x-www-form-urlencoded:
+            schema:
+              $ref: '#/components/schemas/Sector'
+          multipart/form-data:
+            schema:
+              $ref: '#/components/schemas/Sector'
+        required: true
+      security:
+      - cookieAuth: []
+      - basicAuth: []
+      - {}
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Sector'
+          description: ''
+components:
+  schemas:
+    Sector:
+      type: object
+      description: Validates Sectors values.
+      properties:
+        name:
+          type: string
+          maxLength: 50
+      required:
+      - name
+  securitySchemes:
+    basicAuth:
+      type: http
+      scheme: basic
+    cookieAuth:
+      type: apiKey
+      in: cookie
+      name: sessionid

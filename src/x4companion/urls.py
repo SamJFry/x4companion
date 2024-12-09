@@ -17,6 +17,7 @@ Including another URLconf
 
 from django.contrib import admin
 from django.urls import path
+from drf_spectacular.views import SpectacularAPIView, SpectacularSwaggerView
 
 from x4companion import x4
 from x4companion.x4 import sectors
@@ -24,5 +25,7 @@ from x4companion.x4 import sectors
 urlpatterns = [
     path("admin/", admin.site.urls),
     path("", x4.index),
+    path("schema/", SpectacularAPIView.as_view(), name="schema"),
+    path("docs/", SpectacularSwaggerView.as_view(), name="swagger"),
     path("sectors/", sectors.Sectors.as_view(), name="sectors"),
 ]
