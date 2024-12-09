@@ -39,6 +39,9 @@ class Sectors(APIView):
 
         """
         serializer = SectorSerializer(data=request.data)
-        serializer.is_valid()
+        if not serializer.is_valid():
+            return Response(
+                status=status.HTTP_400_BAD_REQUEST, data=serializer.errors
+            )
         serializer.save()
         return Response(status=status.HTTP_201_CREATED)

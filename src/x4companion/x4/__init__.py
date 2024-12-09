@@ -3,7 +3,7 @@ from django.http import HttpRequest, JsonResponse
 import x4companion
 
 
-def index(request: HttpRequest) -> JsonResponse:  # noqa: ARG001
+def index(request: HttpRequest) -> JsonResponse:
     """Return some basic information when a user calls the root of the API.
 
     Args:

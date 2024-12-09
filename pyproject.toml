@@ -87,13 +87,13 @@ line-length = 79
 [tool.ruff.lint]
 pydocstyle.convention = "google"
 extend-select = ["ALL"]
-extend-ignore = ["COM812", "ISC001", "S101", "ANN101", "D105", "D106", "ARG002"]
+extend-ignore = ["COM812", "ISC001", "S101", "ANN101", "D105", "D106", "ARG"]
 exclude = ["settings.py", "manage.py", "*/migrations/*"]
 
 [tool.ruff.lint.per-file-ignores]
 "__about__.py" = ["ALL"]
 "__init__.py" = ["D", "F401", "TID252"]
-"*/tests/*" = ["D", "S", "ANN", "ARG001"]
+"*/tests/*" = ["D", "S", "ANN"]
 
 [tool.pytest.ini_options]
 python_files = "test_*.py"
