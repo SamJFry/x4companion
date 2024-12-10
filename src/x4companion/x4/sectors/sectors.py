@@ -66,23 +66,10 @@ class SectorView(APIView):
             A JSON response for a single sector.
 
         """
-        serializer = self.serializer_class(Sector.objects.get(id=id_))
-        return Response(serializer.data, status=status.HTTP_200_OK)
-
-    def post(self, request: Request, name: str) -> Response:
-        """Create a sector
-
-        Args:
-            request: POST request.
-            name: The name of the sector to create
-
-        Returns:
-            A JSON response of the created object.
-        """
-        serializer = self.serializer_class(data=request.data)
-        serializer.is_valid()
-        serializer.save()
-        return Response(serializer.data, status=status.HTTP_201_CREATED)
+        serializer = self.serializer_class(Sector.objects.filter(id=id_))
+        if not serializer.data:
+            return Response(status=status.HTTP_404_NOT_FOUND)
+        return Response(serializer.data[0], status=status.HTTP_200_OK)
 
     def delete(self, request: Request, id_: int) -> Response:
         """Delete a sector from the Database.

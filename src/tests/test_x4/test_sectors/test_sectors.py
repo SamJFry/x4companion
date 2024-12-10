@@ -53,11 +53,10 @@ class TestSectorView:
         assert response.json() == {"name": "sector 001"}
 
     @pytest.mark.django_db
-
-    def test_post(self, logged_in_client):
-        response = logged_in_client.post("/sectors/new_sector/")
-        assert response.status_code == status.HTTP_201_CREATED
-        assert response.json() == {"id": 1, "name": "new_sector"}
+    def test_get_does_not_exist(self, logged_in_client):
+        response = logged_in_client.get("/sectors/1/")
+        print(response.status_code)
+        assert response.status_code == status.HTTP_404_NOT_FOUND
 
     @pytest.mark.django_db
     @pytest.mark.usefixtures("_create_multiple_sectors")

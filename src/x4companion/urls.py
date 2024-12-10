@@ -29,5 +29,4 @@ urlpatterns = [
     path("docs/", SpectacularSwaggerView.as_view(), name="swagger"),
     path("sectors/", sectors.Sectors.as_view(), name="sectors"),
     path("sectors/<int:id_>/", sectors.SectorView.as_view(), name="sector"),
-    path("sectors/<str:name>/", sectors.SectorView.as_view(), name="create_sector")
 ]
