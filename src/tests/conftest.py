@@ -12,8 +12,10 @@ def create_basic_sector(create_save_game):
 
 
 @pytest.fixture
-def _create_multiple_sectors():
-    Sector.objects.bulk_create([Sector(name=f"sector{x}") for x in range(4)])
+def _create_multiple_sectors(create_save_game):
+    Sector.objects.bulk_create(
+        [Sector(name=f"sector{x}", game=create_save_game) for x in range(4)]
+    )
 
 
 @pytest.fixture

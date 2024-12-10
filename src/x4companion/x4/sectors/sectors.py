@@ -44,12 +44,8 @@ class Sectors(GenericAPIView):
             JSON Response detailing the objects that have been created.
 
         """
-        data = [
-            {**sector, "game_id": save_id}
-            for sector in request.data.get("data")
-        ]
         serializer = self.serializer_class(
-            data=data, context={"game": save_id}
+            data=request.data.get("data"), context={"game": save_id}
         )
         if not serializer.is_valid():
             return Response(
@@ -64,11 +60,12 @@ class SectorView(APIView):
 
     serializer_class = SectorsSerializer
 
-    def get(self, request: Request, id_: int) -> Response:
+    def get(self, request: Request, save_id: int, id_: int) -> Response:
         """Get a single sector.
 
         Args:
             request: GET request.
+            save_id: The ID of the save game the sector belong to.
             id_: The ID of the sector to get.
 
         Returns:
@@ -80,11 +77,12 @@ class SectorView(APIView):
             return Response(status=status.HTTP_404_NOT_FOUND)
         return Response(serializer.data[0], status=status.HTTP_200_OK)
 
-    def delete(self, request: Request, id_: int) -> Response:
+    def delete(self, request: Request, save_id: int, id_: int) -> Response:
         """Delete a sector from the Database.
 
         Args:
             request: DELETE Request.
+            save_id: The ID of the save game the sector belong to.
             id_: The id of the sector to delete.
 
         Returns:

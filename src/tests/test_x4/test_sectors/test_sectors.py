@@ -52,7 +52,7 @@ class TestSectorView:
     def test_get(self, create_basic_sector, logged_in_client):
         response = logged_in_client.get("/game/1/sectors/1/")
         assert response.status_code == status.HTTP_200_OK
-        assert response.json() == {"name": "sector 001"}
+        assert response.json() == {"game_id": 1, "name": "sector 001"}
 
     @pytest.mark.django_db
     def test_get_does_not_exist(self, logged_in_client):
@@ -65,7 +65,7 @@ class TestSectorView:
         response = logged_in_client.delete("/game/1/sectors/2/")
         assert response.status_code == status.HTTP_204_NO_CONTENT
         assert list(Sector.objects.all().values()) == [
-            {"id": 1, "name": "sector0"},
-            {"id": 3, "name": "sector2"},
-            {"id": 4, "name": "sector3"},
+            {"game_id": 1, "id": 1, "name": "sector0"},
+            {"game_id": 1, "id": 3, "name": "sector2"},
+            {"game_id": 1, "id": 4, "name": "sector3"},
         ]
