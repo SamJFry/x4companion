@@ -27,6 +27,14 @@ urlpatterns = [
     path("", x4.index),
     path("schema/", SpectacularAPIView.as_view(), name="schema"),
     path("docs/", SpectacularSwaggerView.as_view(), name="swagger"),
-    path("game/<int:save_id>/sectors/", sectors.Sectors.as_view(), name="sectors"),
-    path("game/<int:save_id>/sectors/<int:id_>/", sectors.SectorView.as_view(), name="sector"),
+    path(
+        "game/<int:save_id>/sectors/",
+        sectors.Sectors.as_view(),
+        name="sectors",
+    ),
+    path(
+        "game/<int:save_id>/sectors/<int:id_>/",
+        sectors.SectorView.as_view(),
+        name="sector",
+    ),
 ]

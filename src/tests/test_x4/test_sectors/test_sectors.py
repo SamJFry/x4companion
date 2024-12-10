@@ -18,7 +18,9 @@ class TestSectors:
     def test_get(self, create_basic_sector, logged_in_client):
         response = logged_in_client.get("/game/1/sectors/")
         assert response.status_code == status.HTTP_200_OK
-        assert response.json() == {"sectors": [{"name": "sector 001"}]}
+        assert response.json() == {
+            "sectors": [{"game_id": 1, "name": "sector 001"}]
+        }
 
     @pytest.mark.django_db
     def test_post(self, logged_in_client, create_save_game):

@@ -6,7 +6,7 @@ from rest_framework.request import Request
 from rest_framework.response import Response
 from rest_framework.views import APIView
 
-from x4companion.x4.models import Sector, SaveGame
+from x4companion.x4.models import SaveGame, Sector
 from x4companion.x4.serializers import SectorSerializer, SectorsSerializer
 
 
@@ -27,7 +27,6 @@ class Sectors(GenericAPIView):
 
         """
         game = SaveGame.objects.get(id=save_id)
-        print(game)
         serializer = SectorSerializer(game.sector_set.all(), many=True)
         return Response(
             {"sectors": serializer.data},
@@ -45,8 +44,13 @@ class Sectors(GenericAPIView):
             JSON Response detailing the objects that have been created.
 
         """
-        data = [{**sector, "game": save_id} for sector in request.data.get("data")]
-        serializer = self.serializer_class(data=data)
+        data = [
+            {**sector, "game_id": save_id}
+            for sector in request.data.get("data")
+        ]
+        serializer = self.serializer_class(
+            data=data, context={"game": save_id}
+        )
         if not serializer.is_valid():
             return Response(
                 status=status.HTTP_400_BAD_REQUEST, data=serializer.errors

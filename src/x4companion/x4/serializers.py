@@ -5,10 +5,12 @@ from typing import ClassVar
 from django.db import models
 from rest_framework import serializers
 
-from x4companion.x4.models import Sector, SaveGame
+from x4companion.x4.models import SaveGame, Sector
 
 
 class SaveGameSerializer(serializers.ModelSerializer):
+    """Serialize SaveGames."""
+
     user = serializers.PrimaryKeyRelatedField(read_only=True)
 
     class Meta:
@@ -18,11 +20,12 @@ class SaveGameSerializer(serializers.ModelSerializer):
 
 class SectorSerializer(serializers.ModelSerializer):
     """Validates Sectors values."""
-    game = SaveGameSerializer
+
+    game_id = SaveGameSerializer
 
     class Meta:
         model: models.Model = Sector
-        fields: ClassVar[list[str]] = ["name", "game"]
+        fields: ClassVar[list[str]] = ["name", "game_id"]
 
 
 class SectorsSerializer(serializers.ListSerializer):
@@ -40,7 +43,7 @@ class SectorsSerializer(serializers.ListSerializer):
             The created model.
 
         """
-        save = SaveGame.objects.get(id=validated_data[0]["game"])
+        save = SaveGame.objects.get(id=self.context["game"])
         return Sector.objects.bulk_create(
             [Sector(game=save, name=item["name"]) for item in validated_data]
         )
