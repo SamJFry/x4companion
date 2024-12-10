@@ -55,7 +55,6 @@ class TestSectorView:
     @pytest.mark.django_db
     def test_get_does_not_exist(self, logged_in_client):
         response = logged_in_client.get("/sectors/1/")
-        print(response.status_code)
         assert response.status_code == status.HTTP_404_NOT_FOUND
 
     @pytest.mark.django_db
