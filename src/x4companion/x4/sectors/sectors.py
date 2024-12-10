@@ -6,7 +6,7 @@ from rest_framework.request import Request
 from rest_framework.response import Response
 from rest_framework.views import APIView
 
-from x4companion.x4.models import Sector
+from x4companion.x4.models import Sector, SaveGame
 from x4companion.x4.serializers import SectorSerializer, SectorsSerializer
 
 
@@ -15,33 +15,38 @@ class Sectors(GenericAPIView):
 
     serializer_class = SectorsSerializer
 
-    def get(self, request: Request) -> Response:
+    def get(self, request: Request, save_id: int) -> Response:
         """Get all sectors currently configured.
 
         Args:
             request: GET request made to this endpoint.
+            save_id: The ID of the save game the sectors belong to.
 
         Returns:
             A JSON response containing a list of sectors and their attributes.
 
         """
-        serializer = SectorSerializer(Sector.objects.all(), many=True)
+        game = SaveGame.objects.get(id=save_id)
+        print(game)
+        serializer = SectorSerializer(game.sector_set.all(), many=True)
         return Response(
             {"sectors": serializer.data},
             status=status.HTTP_200_OK,
         )
 
-    def post(self, request: Request) -> Response:
+    def post(self, request: Request, save_id: int) -> Response:
         """Creates a new sector in the database.
 
         Args:
             request: POST request with the json to create a new sector.
+            save_id: The ID of the save game the sectors belong to.
 
         Returns:
             JSON Response detailing the objects that have been created.
 
         """
-        serializer = self.serializer_class(data=request.data.get("data"))
+        data = [{**sector, "game": save_id} for sector in request.data.get("data")]
+        serializer = self.serializer_class(data=data)
         if not serializer.is_valid():
             return Response(
                 status=status.HTTP_400_BAD_REQUEST, data=serializer.errors
