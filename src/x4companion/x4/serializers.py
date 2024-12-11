@@ -2,8 +2,8 @@
 
 from typing import ClassVar
 
-from django.db import models
 from django.contrib.auth.models import User
+from django.db import models
 from rest_framework import serializers
 
 from x4companion.x4.models import SaveGame, Sector

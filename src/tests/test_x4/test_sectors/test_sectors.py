@@ -1,4 +1,5 @@
 import pytest
+from django.contrib.auth.models import User
 from rest_framework import status
 
 from x4companion.x4.models import Sector
@@ -46,6 +47,16 @@ class TestSectorView:
         assert response.json() == {"game_id": 1, "name": "sector 001"}
 
     @pytest.mark.django_db
+    @pytest.mark.usefixtures("create_basic_sector")
+    def test_get_does_not_give_others_sectors(
+        self, create_basic_sector, create_user_2_save_game, client
+    ):
+        user = User.objects.get(id=2)
+        client.force_login(user)
+        response = client.get("/game/2/sectors/1/")
+        assert response.status_code == status.HTTP_404_NOT_FOUND
+
+    @pytest.mark.django_db
     def test_get_does_not_exist(self, logged_in_client):
         response = logged_in_client.get("/game/1/sectors/1/")
         assert response.status_code == status.HTTP_404_NOT_FOUND
@@ -60,3 +71,15 @@ class TestSectorView:
             {"game_id": 1, "id": 3, "name": "sector2"},
             {"game_id": 1, "id": 4, "name": "sector3"},
         ]
+
+    @pytest.mark.django_db
+    def test_cant_delete_others_sectors(
+        self, create_basic_sector, create_user_2_save_game, client
+    ):
+        user = User.objects.get(id=2)
+        client.force_login(user)
+        response = client.delete("/game/2/sectors/1/")
+        assert list(Sector.objects.filter(id=1).values()) == [
+            {"id": 1, "name": "sector 001", "game_id": 1}
+        ]
+        assert response.status_code == status.HTTP_404_NOT_FOUND

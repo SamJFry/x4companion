@@ -16,13 +16,11 @@ Including another URLconf
 """
 
 from django.contrib import admin
-from django.db.backends.utils import names_digest
 from django.urls import path
 from drf_spectacular.views import SpectacularAPIView, SpectacularSwaggerView
 
 from x4companion import x4
-from x4companion.x4 import sectors, saves
-
+from x4companion.x4 import saves, sectors
 
 urlpatterns = [
     path("admin/", admin.site.urls),

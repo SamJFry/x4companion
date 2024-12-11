@@ -65,14 +65,16 @@ class SectorView(APIView):
 
         Args:
             request: GET request.
-            save_id: The ID of the save game the sector belong to.
+            save_id: The ID of the save game the sector belongs to.
             id_: The ID of the sector to get.
 
         Returns:
             A JSON response for a single sector.
 
         """
-        serializer = self.serializer_class(Sector.objects.filter(id=id_))
+        serializer = self.serializer_class(
+            Sector.objects.filter(id=id_, game=save_id)
+        )
         if not serializer.data:
             return Response(status=status.HTTP_404_NOT_FOUND)
         return Response(serializer.data[0], status=status.HTTP_200_OK)
@@ -89,5 +91,7 @@ class SectorView(APIView):
             An empty response if the sector has been deleted.
 
         """
-        Sector.objects.filter(id=id_).delete()
+        deleted = Sector.objects.filter(id=id_, game=save_id).delete()[0]
+        if not deleted:
+            return Response(status=status.HTTP_404_NOT_FOUND)
         return Response(status=status.HTTP_204_NO_CONTENT)

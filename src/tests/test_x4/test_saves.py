@@ -1,8 +1,6 @@
 import pytest
 from rest_framework import status
 
-from tests.conftest import logged_in_client
-
 
 class TestSaveGameView:
     @pytest.mark.django_db
@@ -16,7 +14,8 @@ class TestSaveGameView:
         assert response.json() == {"id": 1, "name": "Spock's Game", "user": 1}
 
     @pytest.mark.django_db
-    def test_get(self, _create_multiple_saves, logged_in_client):
+    @pytest.mark.usefixtures("_create_multiple_sectors")
+    def test_get(self, logged_in_client):
         response = logged_in_client.get("/game/")
         assert response.status_code == status.HTTP_200_OK
         assert response.json() == {
