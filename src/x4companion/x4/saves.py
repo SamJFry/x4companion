@@ -9,7 +9,7 @@ from x4companion.x4.models import SaveGame
 from x4companion.x4.serializers import SaveGameSerializer
 
 
-class SaveGameView(GenericAPIView):
+class SaveGames(GenericAPIView):
     """Manage save games."""
 
     serializer_class = SaveGameSerializer
@@ -49,3 +49,11 @@ class SaveGameView(GenericAPIView):
             {"saves": serializer.data},
             status=status.HTTP_200_OK,
         )
+
+
+class SaveGameView(GenericAPIView):
+    def delete(self, request: Request, id_: int) -> Response:
+        deleted = SaveGame.objects.filter(id=id_).delete()[0]
+        if not deleted:
+            return Response(status=status.HTTP_404_NOT_FOUND)
+        return Response(status=status.HTTP_204_NO_CONTENT)
