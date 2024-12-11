@@ -14,7 +14,7 @@ class TestSaveGameView:
         assert response.json() == {"id": 1, "name": "Spock's Game", "user": 1}
 
     @pytest.mark.django_db
-    @pytest.mark.usefixtures("_create_multiple_sectors")
+    @pytest.mark.usefixtures("_create_multiple_saves")
     def test_get(self, logged_in_client):
         response = logged_in_client.get("/game/")
         assert response.status_code == status.HTTP_200_OK

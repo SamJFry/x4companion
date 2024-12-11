@@ -49,11 +49,11 @@ def _create_multiple_saves(create_user):
 def create_save_game(create_user):
     game = SaveGame.objects.create(name="Kirk's x4 game", user=create_user)
     game.save()
-    return game
+    yield game
 
 
 @pytest.fixture
 def create_user_2_save_game(create_user_2):
     game = SaveGame.objects.create(name="Spock's x4 game", user=create_user_2)
     game.save()
-    return game
+    yield game
