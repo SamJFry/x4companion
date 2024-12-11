@@ -4,6 +4,7 @@ from rest_framework.request import Request
 from rest_framework.response import Response
 
 from x4companion.x4.serializers import SaveGameSerializer
+from x4companion.x4.models import SaveGame
 
 
 class SaveGameView(GenericAPIView):
@@ -19,3 +20,10 @@ class SaveGameView(GenericAPIView):
             )
         serializer.save()
         return Response(status=status.HTTP_201_CREATED, data=serializer.data)
+
+    def get(self, request: Request) -> Response:
+        serializer = self.serializer_class(SaveGame.objects.all(), many=True)
+        return Response(
+            {"saves": serializer.data},
+            status=status.HTTP_200_OK,
+        )

@@ -16,6 +16,7 @@ def logged_in_client(client, create_user):
     client.force_login(create_user)
     return client
 
+
 @pytest.fixture
 def create_basic_sector(create_save_game):
     sector = Sector.objects.create(name="sector 001", game=create_save_game)
@@ -27,6 +28,12 @@ def create_basic_sector(create_save_game):
 def _create_multiple_sectors(create_save_game):
     Sector.objects.bulk_create(
         [Sector(name=f"sector{x}", game=create_save_game) for x in range(4)]
+    )
+
+@pytest.fixture
+def _create_multiple_saves(create_user):
+    SaveGame.objects.bulk_create(
+        [SaveGame(name=f"game_{x}", user=create_user) for x in range(3)]
     )
 
 

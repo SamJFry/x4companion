@@ -16,7 +16,7 @@ class SaveGameSerializer(serializers.ModelSerializer):
 
     class Meta:
         model: models.Model = SaveGame
-        fields: ClassVar[list[str]] = ["name", "user"]
+        fields: ClassVar[list[str]] = ["id", "name", "user"]
 
 
 class SectorSerializer(serializers.ModelSerializer):

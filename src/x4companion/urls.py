@@ -16,6 +16,7 @@ Including another URLconf
 """
 
 from django.contrib import admin
+from django.db.backends.utils import names_digest
 from django.urls import path
 from drf_spectacular.views import SpectacularAPIView, SpectacularSwaggerView
 
@@ -38,5 +39,5 @@ urlpatterns = [
         sectors.SectorView.as_view(),
         name="sector",
     ),
-    path("game/", saves.SaveGameView.as_view(), name="game")
+    path("game/", saves.SaveGameView.as_view(), name="create_game"),
 ]
