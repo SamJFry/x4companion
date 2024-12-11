@@ -3,6 +3,7 @@
 from typing import ClassVar
 
 from django.db import models
+from django.contrib.auth.models import User
 from rest_framework import serializers
 
 from x4companion.x4.models import SaveGame, Sector
@@ -11,7 +12,7 @@ from x4companion.x4.models import SaveGame, Sector
 class SaveGameSerializer(serializers.ModelSerializer):
     """Serialize SaveGames."""
 
-    user = serializers.PrimaryKeyRelatedField(read_only=True)
+    user = serializers.PrimaryKeyRelatedField(queryset=User.objects.all())
 
     class Meta:
         model: models.Model = SaveGame

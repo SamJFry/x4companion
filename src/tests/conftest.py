@@ -5,6 +5,18 @@ from x4companion.x4.models import SaveGame, Sector
 
 
 @pytest.fixture
+def create_user():
+    user = User(username="CaptainKirk")
+    user.save()
+    return user
+
+
+@pytest.fixture
+def logged_in_client(client, create_user):
+    client.force_login(create_user)
+    return client
+
+@pytest.fixture
 def create_basic_sector(create_save_game):
     sector = Sector.objects.create(name="sector 001", game=create_save_game)
     sector.save()
@@ -19,9 +31,7 @@ def _create_multiple_sectors(create_save_game):
 
 
 @pytest.fixture
-def create_save_game():
-    user = User(username="CaptainKirk")
-    user.save()
-    game = SaveGame.objects.create(name="Kirk's x4 game", user=user)
+def create_save_game(create_user):
+    game = SaveGame.objects.create(name="Kirk's x4 game", user=create_user)
     game.save()
     return game

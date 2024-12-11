@@ -20,7 +20,8 @@ from django.urls import path
 from drf_spectacular.views import SpectacularAPIView, SpectacularSwaggerView
 
 from x4companion import x4
-from x4companion.x4 import sectors
+from x4companion.x4 import sectors, saves
+
 
 urlpatterns = [
     path("admin/", admin.site.urls),
@@ -37,4 +38,5 @@ urlpatterns = [
         sectors.SectorView.as_view(),
         name="sector",
     ),
+    path("game/", saves.SaveGameView.as_view(), name="game")
 ]

@@ -4,15 +4,6 @@ from rest_framework import status
 from x4companion.x4.models import Sector
 
 
-@pytest.fixture
-def logged_in_client(client, django_user_model):
-    user = django_user_model.objects.create_user(
-        username="test", password="test"
-    )
-    client.force_login(user)
-    return client
-
-
 class TestSectors:
     @pytest.mark.django_db
     def test_get(self, create_basic_sector, logged_in_client):
