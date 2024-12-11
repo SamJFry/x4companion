@@ -73,7 +73,12 @@ TEMPLATES = [
 
 REST_FRAMEWORK = {
     "DEFAULT_SCHEMA_CLASS": "drf_spectacular.openapi.AutoSchema",
+    "DEFAULT_AUTHENTICATION_CLASSES": [
+        "rest_framework.authentication.BasicAuthentication",
+        "rest_framework.authentication.SessionAuthentication",
+    ]
 }
+
 SPECTACULAR_SETTINGS = {
     "TITLE": "x4 Companion",
     "DESCRIPTION": "A Companion web app for the game X4 foundations.",
