@@ -40,7 +40,7 @@ urlpatterns = [
     path("game/", saves.SaveGames.as_view(), name="create_game"),
     path("game/<int:id_>/", saves.SaveGameView.as_view(), name="game"),
     path(
-        "game/<int:id_>/stations/",
+        "game/<int:save_id>/stations/",
         stations.Stations.as_view(),
         name="stations"
     )

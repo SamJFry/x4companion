@@ -6,7 +6,7 @@ from django.contrib.auth.models import User
 from django.db import models
 from rest_framework import serializers
 
-from x4companion.x4.models import SaveGame, Sector
+from x4companion.x4.models import SaveGame, Sector, Station
 
 
 class SaveGameSerializer(serializers.ModelSerializer):
@@ -51,4 +51,11 @@ class SectorsSerializer(serializers.ListSerializer):
 
 
 class StationSerializer(serializers.ModelSerializer):
-    pass
+    game_id = SaveGameSerializer
+    sector_id = SectorsSerializer
+
+    class Meta:
+        model: models.Model = Station
+        fields: ClassVar[list[str]] = [
+            "name", "game_id", "sector_id"
+        ]
