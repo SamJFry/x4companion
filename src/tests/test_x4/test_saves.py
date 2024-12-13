@@ -31,8 +31,13 @@ class TestSaveGames:
 
 class TestSaveGameView:
     @pytest.mark.django_db
-    def test_get(self):
-        pass
+    @pytest.mark.usefixtures("_create_multiple_saves")
+    @pytest.mark.parametrize(("id_", "expected"), [(1, 200), (123, 404)])
+    def test_get(self, authed_client, id_, expected):
+        response = authed_client.get(f"/game/{id_}/")
+        assert response.status_code == expected
+        if response == status.HTTP_200_OK:
+            assert response.json() == {"id": 1, "name": "game_0", "user": 1}
 
     @pytest.mark.django_db
     @pytest.mark.usefixtures("_create_multiple_saves")

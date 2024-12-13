@@ -38,7 +38,7 @@ class SaveGames(GenericAPIView):
         """Get all the save games.
 
         Args:
-            request: Get request.
+            request: GET request.
 
         Returns:
             Response containing all a users save game.
@@ -52,8 +52,42 @@ class SaveGames(GenericAPIView):
 
 
 class SaveGameView(GenericAPIView):
+    """Manage a single save Game."""
+
+    serializer_class = SaveGameSerializer
+
+    def get(self, request: Request, id_: int) -> Response:
+        """Get a save game.
+
+        Args:
+            request: GET request.
+            id_: Unique ID of the save game.
+
+        Returns:
+            Response containing a single save game.
+
+        """
+        serializer = self.serializer_class(
+            SaveGame.objects.filter(id=id_, user=request.user).first()
+        )
+        if not serializer.data["user"]:
+            return Response(status=status.HTTP_404_NOT_FOUND)
+        return Response(serializer.data, status=status.HTTP_200_OK)
+
     def delete(self, request: Request, id_: int) -> Response:
-        deleted = SaveGame.objects.filter(id=id_, user=request.user).delete()[0]
+        """Delete a save game.
+
+        Args:
+            request: DELETE Request.
+            id_: Unique ID of the save game to delete.
+
+        Returns:
+            Empty response confirming save game has been deleted.
+
+        """
+        deleted = SaveGame.objects.filter(id=id_, user=request.user).delete()[
+            0
+        ]
         if not deleted:
             return Response(status=status.HTTP_404_NOT_FOUND)
         return Response(status=status.HTTP_204_NO_CONTENT)
