@@ -4,8 +4,8 @@ from rest_framework import status
 from x4companion.x4.models import SaveGame
 
 
+@pytest.mark.django_db
 class TestSaveGames:
-    @pytest.mark.django_db
     def test_post(self, authed_client):
         response = authed_client.post(
             "/game/",
@@ -15,7 +15,6 @@ class TestSaveGames:
         assert response.status_code == status.HTTP_201_CREATED
         assert response.json() == {"id": 1, "name": "Spock's Game", "user": 1}
 
-    @pytest.mark.django_db
     @pytest.mark.usefixtures("_create_multiple_saves")
     def test_get(self, authed_client):
         response = authed_client.get("/game/")
@@ -28,9 +27,8 @@ class TestSaveGames:
             ]
         }
 
-
+@pytest.mark.django_db
 class TestSaveGameView:
-    @pytest.mark.django_db
     @pytest.mark.usefixtures("_create_multiple_saves")
     @pytest.mark.parametrize(("id_", "expected"), [(1, 200), (123, 404)])
     def test_get(self, authed_client, id_, expected):
@@ -39,7 +37,6 @@ class TestSaveGameView:
         if response == status.HTTP_200_OK:
             assert response.json() == {"id": 1, "name": "game_0", "user": 1}
 
-    @pytest.mark.django_db
     @pytest.mark.usefixtures("_create_multiple_saves")
     def test_delete(self, authed_client):
         response = authed_client.delete("/game/2/")
@@ -49,7 +46,6 @@ class TestSaveGameView:
             {"id": 3, "name": "game_2", "user_id": 1},
         ]
 
-    @pytest.mark.django_db
     @pytest.mark.usefixtures("_create_multiple_saves")
     @pytest.mark.parametrize("id_", [1, 123])
     def test_delete_not_exist(self, authed_client_2, id_):

@@ -48,3 +48,7 @@ class SectorsSerializer(serializers.ListSerializer):
         return Sector.objects.bulk_create(
             [Sector(game=save, name=item["name"]) for item in validated_data]
         )
+
+
+class StationSerializer(serializers.ModelSerializer):
+    pass

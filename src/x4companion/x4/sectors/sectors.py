@@ -4,7 +4,6 @@ from rest_framework import status
 from rest_framework.generics import GenericAPIView
 from rest_framework.request import Request
 from rest_framework.response import Response
-from rest_framework.views import APIView
 
 from x4companion.x4.models import SaveGame, Sector
 from x4companion.x4.serializers import SectorSerializer, SectorsSerializer
@@ -55,7 +54,7 @@ class Sectors(GenericAPIView):
         return Response(status=status.HTTP_201_CREATED, data=serializer.data)
 
 
-class SectorView(APIView):
+class SectorView(GenericAPIView):
     """Manage an individual Sector."""
 
     serializer_class = SectorsSerializer
