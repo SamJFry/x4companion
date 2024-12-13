@@ -53,7 +53,7 @@ class SaveGames(GenericAPIView):
 
 class SaveGameView(GenericAPIView):
     def delete(self, request: Request, id_: int) -> Response:
-        deleted = SaveGame.objects.filter(id=id_).delete()[0]
+        deleted = SaveGame.objects.filter(id=id_, user=request.user).delete()[0]
         if not deleted:
             return Response(status=status.HTTP_404_NOT_FOUND)
         return Response(status=status.HTTP_204_NO_CONTENT)

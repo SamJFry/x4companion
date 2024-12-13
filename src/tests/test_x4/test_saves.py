@@ -6,8 +6,8 @@ from x4companion.x4.models import SaveGame
 
 class TestSaveGames:
     @pytest.mark.django_db
-    def test_post(self, logged_in_client):
-        response = logged_in_client.post(
+    def test_post(self, authed_client):
+        response = authed_client.post(
             "/game/",
             {"name": "Spock's Game"},
             content_type="application/json",
@@ -17,8 +17,8 @@ class TestSaveGames:
 
     @pytest.mark.django_db
     @pytest.mark.usefixtures("_create_multiple_saves")
-    def test_get(self, logged_in_client):
-        response = logged_in_client.get("/game/")
+    def test_get(self, authed_client):
+        response = authed_client.get("/game/")
         assert response.status_code == status.HTTP_200_OK
         assert response.json() == {
             "saves": [
@@ -36,10 +36,17 @@ class TestSaveGameView:
 
     @pytest.mark.django_db
     @pytest.mark.usefixtures("_create_multiple_saves")
-    def test_delete(self, logged_in_client):
-        response = logged_in_client.delete("/game/2/")
+    def test_delete(self, authed_client):
+        response = authed_client.delete("/game/2/")
         assert response.status_code == status.HTTP_204_NO_CONTENT
         assert list(SaveGame.objects.all().values()) == [
             {"id": 1, "name": "game_0", "user_id": 1},
             {"id": 3, "name": "game_2", "user_id": 1},
         ]
+
+    @pytest.mark.django_db
+    @pytest.mark.usefixtures("_create_multiple_saves")
+    @pytest.mark.parametrize("id_", [1, 123])
+    def test_delete_not_exist(self, authed_client_2, id_):
+        response = authed_client_2.delete(f"/game/{id_}/")
+        assert response.status_code == status.HTTP_404_NOT_FOUND

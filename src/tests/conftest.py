@@ -19,8 +19,14 @@ def create_user_2():
 
 
 @pytest.fixture
-def logged_in_client(client, create_user):
+def authed_client(client, create_user):
     client.force_login(create_user)
+    return client
+
+
+@pytest.fixture
+def authed_client_2(client, create_user_2):
+    client.force_login(create_user_2)
     return client
 
 
@@ -49,11 +55,11 @@ def _create_multiple_saves(create_user):
 def create_save_game(create_user):
     game = SaveGame.objects.create(name="Kirk's x4 game", user=create_user)
     game.save()
-    yield game
+    return game
 
 
 @pytest.fixture
 def create_user_2_save_game(create_user_2):
     game = SaveGame.objects.create(name="Spock's x4 game", user=create_user_2)
     game.save()
-    yield game
+    return game

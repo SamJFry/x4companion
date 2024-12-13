@@ -7,16 +7,16 @@ from x4companion.x4.models import Sector
 
 class TestSectors:
     @pytest.mark.django_db
-    def test_get(self, create_basic_sector, logged_in_client):
-        response = logged_in_client.get("/game/1/sectors/")
+    def test_get(self, create_basic_sector, authed_client):
+        response = authed_client.get("/game/1/sectors/")
         assert response.status_code == status.HTTP_200_OK
         assert response.json() == {
             "sectors": [{"game_id": 1, "name": "sector 001"}]
         }
 
     @pytest.mark.django_db
-    def test_post(self, logged_in_client, create_save_game):
-        response = logged_in_client.post(
+    def test_post(self, authed_client, create_save_game):
+        response = authed_client.post(
             "/game/1/sectors/",
             {
                 "data": [
@@ -33,16 +33,16 @@ class TestSectors:
         ]
 
     @pytest.mark.django_db
-    def test_post_rejects_bad_request(self, logged_in_client):
-        response = logged_in_client.post("/game/1/sectors/", {"bad": "data"})
+    def test_post_rejects_bad_request(self, authed_client):
+        response = authed_client.post("/game/1/sectors/", {"bad": "data"})
         assert response.status_code == status.HTTP_400_BAD_REQUEST
         assert response.json() == {"non_field_errors": ["No data provided"]}
 
 
 class TestSectorView:
     @pytest.mark.django_db
-    def test_get(self, create_basic_sector, logged_in_client):
-        response = logged_in_client.get("/game/1/sectors/1/")
+    def test_get(self, create_basic_sector, authed_client):
+        response = authed_client.get("/game/1/sectors/1/")
         assert response.status_code == status.HTTP_200_OK
         assert response.json() == {"game_id": 1, "name": "sector 001"}
 
@@ -57,14 +57,14 @@ class TestSectorView:
         assert response.status_code == status.HTTP_404_NOT_FOUND
 
     @pytest.mark.django_db
-    def test_get_does_not_exist(self, logged_in_client):
-        response = logged_in_client.get("/game/1/sectors/1/")
+    def test_get_does_not_exist(self, authed_client):
+        response = authed_client.get("/game/1/sectors/1/")
         assert response.status_code == status.HTTP_404_NOT_FOUND
 
     @pytest.mark.django_db
     @pytest.mark.usefixtures("_create_multiple_sectors")
-    def test_delete(self, logged_in_client):
-        response = logged_in_client.delete("/game/1/sectors/2/")
+    def test_delete(self, authed_client):
+        response = authed_client.delete("/game/1/sectors/2/")
         assert response.status_code == status.HTTP_204_NO_CONTENT
         assert list(Sector.objects.all().values()) == [
             {"game_id": 1, "id": 1, "name": "sector0"},
