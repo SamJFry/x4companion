@@ -98,3 +98,15 @@ class TestStationView:
                 "population": 0,
             },
         ]
+
+    @pytest.mark.usefixtures("_create_multiple_stations")
+    def test_get(self, authed_client):
+        response = authed_client.get("/game/1/stations/3/")
+        assert response.status_code == status.HTTP_200_OK
+        assert response.json() == {
+            "id": 3,
+            "name": "station2",
+            "game_id": 1,
+            "sector_id": 1,
+            "population": 0,
+        }

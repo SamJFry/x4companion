@@ -6,7 +6,7 @@ from rest_framework.request import Request
 from rest_framework.response import Response
 
 from x4companion.x4.models import SaveGame, Station
-from x4companion.x4.responses import delete_response
+from x4companion.x4.responses import delete_response, get_response
 from x4companion.x4.serializers import (
     StationSerializerRead,
     StationSerializerWrite,
@@ -74,3 +74,17 @@ class StationView(GenericAPIView):
 
         """
         return delete_response(Station, id_, game=save_id)
+
+    def get(self, request: Request, save_id: int, id_: int) -> Response:
+        """Get a single sector.
+
+        Args:
+            request: GET request.
+            save_id: The ID of the save game the station belongs to.
+            id_: The ID of the station to get.
+
+        Returns:
+            A JSON response for a single station.
+
+        """
+        return get_response(Station, StationSerializerRead, id_, game=save_id)

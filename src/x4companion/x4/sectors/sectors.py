@@ -6,7 +6,7 @@ from rest_framework.request import Request
 from rest_framework.response import Response
 
 from x4companion.x4.models import SaveGame, Sector
-from x4companion.x4.responses import delete_response
+from x4companion.x4.responses import delete_response, get_response
 from x4companion.x4.serializers import SectorSerializer, SectorsSerializer
 
 
@@ -58,7 +58,7 @@ class Sectors(GenericAPIView):
 class SectorView(GenericAPIView):
     """Manage an individual Sector."""
 
-    serializer_class = SectorsSerializer
+    serializer_class = SectorSerializer
 
     def get(self, request: Request, save_id: int, id_: int) -> Response:
         """Get a single sector.
@@ -72,12 +72,7 @@ class SectorView(GenericAPIView):
             A JSON response for a single sector.
 
         """
-        serializer = self.serializer_class(
-            Sector.objects.filter(id=id_, game=save_id)
-        )
-        if not serializer.data:
-            return Response(status=status.HTTP_404_NOT_FOUND)
-        return Response(serializer.data[0], status=status.HTTP_200_OK)
+        return get_response(Sector, self.serializer_class, id_, game=save_id)
 
     def delete(self, request: Request, save_id: int, id_: int) -> Response:
         """Delete a sector from the Database.
