@@ -1,7 +1,13 @@
 import pytest
 from django.db import IntegrityError
 
-from x4companion.x4.models import SaveGame, Sector, Station
+from x4companion.x4.models import (
+    Habitat,
+    HabitatTemplate,
+    SaveGame,
+    Sector,
+    Station,
+)
 
 
 @pytest.mark.django_db
@@ -52,3 +58,21 @@ class TestStation:
 
     def test_station_str(self, create_station):
         assert str(create_station) == "Station Hammersmith"
+
+
+@pytest.mark.django_db
+class TestHabitatTemplate:
+    def test_create_habitat_template(self, create_habitat_template):
+        assert len(HabitatTemplate.objects.all()) == 1
+
+    def test_str(self, create_habitat_template):
+        assert str(create_habitat_template) == "Habitat Borg Large"
+
+
+@pytest.mark.django_db
+class TestHabitats:
+    def test_create_habitat(self, create_habitat):
+        assert len(Habitat.objects.all()) == 1
+
+    def test_str(self, create_habitat):
+        assert str(create_habitat) == "Habitats Hammersmith Station Borg Large"

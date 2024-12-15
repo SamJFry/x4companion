@@ -1,7 +1,13 @@
 import pytest
 from django.contrib.auth.models import User
 
-from x4companion.x4.models import SaveGame, Sector, Station
+from x4companion.x4.models import (
+    Habitat,
+    HabitatTemplate,
+    SaveGame,
+    Sector,
+    Station,
+)
 
 
 @pytest.fixture
@@ -86,3 +92,21 @@ def create_user_2_save_game(create_user_2):
     game = SaveGame.objects.create(name="Spock's x4 game", user=create_user_2)
     game.save()
     return game
+
+
+@pytest.fixture
+def create_habitat_template():
+    template = HabitatTemplate.objects.create(
+        name="Borg Large", capacity=1000, species="borg"
+    )
+    template.save()
+    return template
+
+
+@pytest.fixture
+def create_habitat(create_station, create_habitat_template):
+    habitat = Habitat.objects.create(
+        count=1, template=create_habitat_template, station=create_station
+    )
+    habitat.save()
+    return habitat

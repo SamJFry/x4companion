@@ -70,3 +70,53 @@ class Station(models.Model):
 
     def __str__(self) -> str:
         return f"Station {self.name}"
+
+
+class HabitatTemplate(models.Model):
+    """Represents a habitat module that can be attached to stations.
+
+    Attributes:
+        name: The name of the template.
+        capacity: The capacity of the habitat module.
+        species: The species that can use the habitat.
+
+    """
+
+    name = models.CharField(max_length=50, blank=False, null=False)
+    capacity = models.IntegerField(null=False)
+    species = models.CharField(max_length=50, blank=False, null=False)
+
+    class Meta:
+        constraints = [
+            models.UniqueConstraint(
+                fields=["name", "capacity", "species"], name="Global unique"
+            )
+        ]
+
+    def __str__(self) -> str:
+        return f"Habitat {self.name}"
+
+
+class Habitat(models.Model):
+    """Represents an instance of habitat modules connected to a station.
+
+    Attributes:
+        count: The number of modules connected to the station.
+        template: The template that holds the attributes of habitats.
+        station: The station these modules are attached to.
+
+    """
+
+    count = models.IntegerField(null=False)
+    template = models.ForeignKey(HabitatTemplate, on_delete=models.CASCADE)
+    station = models.ForeignKey(Station, on_delete=models.CASCADE)
+
+    class Meta:
+        constraints = [
+            models.UniqueConstraint(
+                fields=["template", "station"], name="Unique Habitats"
+            )
+        ]
+
+    def __str__(self) -> str:
+        return f"Habitats {self.station.name} Station {self.template.name}"

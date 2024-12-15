@@ -6,7 +6,6 @@ from django.db import migrations, models
 
 
 class Migration(migrations.Migration):
-
     initial = True
 
     dependencies = [
@@ -15,37 +14,89 @@ class Migration(migrations.Migration):
 
     operations = [
         migrations.CreateModel(
-            name='SaveGame',
+            name="SaveGame",
             fields=[
-                ('id', models.BigAutoField(auto_created=True, primary_key=True, serialize=False, verbose_name='ID')),
-                ('name', models.CharField(max_length=50)),
-                ('user', models.ForeignKey(on_delete=django.db.models.deletion.CASCADE, to=settings.AUTH_USER_MODEL)),
+                (
+                    "id",
+                    models.BigAutoField(
+                        auto_created=True,
+                        primary_key=True,
+                        serialize=False,
+                        verbose_name="ID",
+                    ),
+                ),
+                ("name", models.CharField(max_length=50)),
+                (
+                    "user",
+                    models.ForeignKey(
+                        on_delete=django.db.models.deletion.CASCADE,
+                        to=settings.AUTH_USER_MODEL,
+                    ),
+                ),
             ],
         ),
         migrations.CreateModel(
-            name='Sector',
+            name="Sector",
             fields=[
-                ('id', models.BigAutoField(auto_created=True, primary_key=True, serialize=False, verbose_name='ID')),
-                ('name', models.CharField(max_length=50, unique=True)),
-                ('game', models.ForeignKey(on_delete=django.db.models.deletion.CASCADE, to='x4.savegame')),
+                (
+                    "id",
+                    models.BigAutoField(
+                        auto_created=True,
+                        primary_key=True,
+                        serialize=False,
+                        verbose_name="ID",
+                    ),
+                ),
+                ("name", models.CharField(max_length=50, unique=True)),
+                (
+                    "game",
+                    models.ForeignKey(
+                        on_delete=django.db.models.deletion.CASCADE,
+                        to="x4.savegame",
+                    ),
+                ),
             ],
         ),
         migrations.CreateModel(
-            name='Station',
+            name="Station",
             fields=[
-                ('id', models.BigAutoField(auto_created=True, primary_key=True, serialize=False, verbose_name='ID')),
-                ('name', models.CharField(max_length=50)),
-                ('population', models.IntegerField(default=0)),
-                ('game', models.ForeignKey(on_delete=django.db.models.deletion.CASCADE, to='x4.savegame')),
-                ('sector', models.ForeignKey(on_delete=django.db.models.deletion.CASCADE, to='x4.sector')),
+                (
+                    "id",
+                    models.BigAutoField(
+                        auto_created=True,
+                        primary_key=True,
+                        serialize=False,
+                        verbose_name="ID",
+                    ),
+                ),
+                ("name", models.CharField(max_length=50)),
+                ("population", models.IntegerField(default=0)),
+                (
+                    "game",
+                    models.ForeignKey(
+                        on_delete=django.db.models.deletion.CASCADE,
+                        to="x4.savegame",
+                    ),
+                ),
+                (
+                    "sector",
+                    models.ForeignKey(
+                        on_delete=django.db.models.deletion.CASCADE,
+                        to="x4.sector",
+                    ),
+                ),
             ],
         ),
         migrations.AddConstraint(
-            model_name='sector',
-            constraint=models.UniqueConstraint(fields=('name', 'game'), name='No duplicate sectors'),
+            model_name="sector",
+            constraint=models.UniqueConstraint(
+                fields=("name", "game"), name="No duplicate sectors"
+            ),
         ),
         migrations.AddConstraint(
-            model_name='station',
-            constraint=models.UniqueConstraint(fields=('name', 'game'), name='No duplicate stations'),
+            model_name="station",
+            constraint=models.UniqueConstraint(
+                fields=("name", "game"), name="No duplicate stations"
+            ),
         ),
     ]
