@@ -7,13 +7,11 @@ from rest_framework.response import Response
 
 from x4companion.x4.models import SaveGame, Sector
 from x4companion.x4.responses import delete_response, get_response, post_response
-from x4companion.x4.serializers import SectorSerializer, SectorsSerializer
+from x4companion.x4.serializers import SectorSerializerWrite, SectorSerializerRead
 
 
 class Sectors(GenericAPIView):
     """Manage multiple sectors."""
-
-    serializer_class = SectorsSerializer
 
     def get(self, request: Request, save_id: int) -> Response:
         """Get all sectors currently configured.
@@ -27,7 +25,7 @@ class Sectors(GenericAPIView):
 
         """
         game = SaveGame.objects.get(id=save_id)
-        serializer = SectorSerializer(game.sector_set.all(), many=True)
+        serializer = SectorSerializerRead(game.sector_set.all(), many=True)
         return Response(
             {"sectors": serializer.data},
             status=status.HTTP_200_OK,
@@ -44,21 +42,17 @@ class Sectors(GenericAPIView):
             JSON Response detailing the objects that have been created.
 
         """
-        serializer = self.serializer_class(
-            data=request.data.get("data"), context={"game": save_id}
+        return post_response(
+            serializer_class=SectorSerializerWrite,
+            data=request.data.get("data"),
+            context={"game_id": save_id}
         )
-        if not serializer.is_valid():
-            return Response(
-                status=status.HTTP_400_BAD_REQUEST, data=serializer.errors
-            )
-        serializer.create(serializer.data)
-        return Response(status=status.HTTP_201_CREATED, data=serializer.data)
 
 
 class SectorView(GenericAPIView):
     """Manage an individual Sector."""
 
-    serializer_class = SectorSerializer
+    serializer_class = SectorSerializerRead
 
     def get(self, request: Request, save_id: int, id_: int) -> Response:
         """Get a single sector.

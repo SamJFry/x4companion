@@ -17,36 +17,35 @@ class SaveGameSerializer(serializers.ModelSerializer):
         fields = ["id", "name", "user"]
 
 
-class SectorSerializer(serializers.ModelSerializer):
+class SectorSerializerRead(serializers.ModelSerializer):
     """Validates Sectors values."""
 
-    game_id = SaveGameSerializer
+    game_id = serializers.PrimaryKeyRelatedField(
+        queryset=SaveGame.objects.all()
+    )
 
     class Meta:
         model = Sector
         fields = ["name", "game_id"]
 
 
-class SectorsSerializer(serializers.ListSerializer):
-    """Validate the values of a list of sectors."""
+class SectorSerializerWrite(serializers.Serializer):
+    name = serializers.CharField(max_length=50)
 
-    child = SectorSerializer()
+    def create(self, validated_data: dict) -> models.Model:
+        """Create a sector from the validated serializer data.
 
-    def create(self, validated_data: list[dict]) -> models.Model:
-        """Bulk create Sectors.
+        Since we don't allow creating sectors on different save games, all
+        sectors are created under a save game gleaned from the serializers
+        context.
 
         Args:
-            validated_data: The validated data to create sectors for.
-
-        Returns:
-            The created model.
-
+            validated_data: The data to create a sector with.
         """
-        save = SaveGame.objects.get(id=self.context["game"])
-        return Sector.objects.bulk_create(
-            [Sector(game=save, name=item["name"]) for item in validated_data]
+        return Sector.objects.create(
+            name=validated_data["name"],
+            game=SaveGame.objects.get(id=self.context.get("game_id")),
         )
-
 
 class StationSerializerWrite(serializers.Serializer):
     """The serializer used for stations when createing new ones."""
@@ -103,7 +102,7 @@ class StationSerializerRead(serializers.ModelSerializer):
     """The serializer used for reading stations from the DB."""
 
     game_id = SaveGameSerializer
-    sector_id = SectorSerializer
+    sector_id = SectorSerializerRead
 
     class Meta:
         model = Station
