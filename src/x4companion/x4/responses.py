@@ -38,7 +38,7 @@ def get_response(
         **kwargs: Any additional filters to apply to the delete command.
 
     Returns:
-        The DRF response that contains the status.
+        The DRF response that contains the status and result.
 
     """
     try:
@@ -53,10 +53,26 @@ def post_response(
     data: dict,
     context: dict | None = None,
 ) -> Response:
+    """Create DB items from a POST request.
+
+    Args:
+        serializer_class: The serializer class to validate the data with.
+        data: The data to use to create the DB entries.
+        context: Additional context to create the DB entries with.
+
+    Returns:
+        The DRF response that contains the status and result.
+
+    """
     serializer = serializer_class(data=data, many=True, context=context)
     if not serializer.is_valid():
         return Response(
             status=status.HTTP_400_BAD_REQUEST, data=serializer.errors
         )
-    serializer.save()
+    try:
+        serializer.save()
+    except models.ObjectDoesNotExist as e:
+        return Response(
+            status=status.HTTP_404_NOT_FOUND, data={"error": str(e)}
+        )
     return Response(status=status.HTTP_201_CREATED, data=serializer.data)

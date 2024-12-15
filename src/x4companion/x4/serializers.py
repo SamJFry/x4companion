@@ -30,6 +30,8 @@ class SectorSerializerRead(serializers.ModelSerializer):
 
 
 class SectorSerializerWrite(serializers.Serializer):
+    """Serializer class used to create sectors."""
+
     name = serializers.CharField(max_length=50)
 
     def create(self, validated_data: dict) -> models.Model:
@@ -46,6 +48,7 @@ class SectorSerializerWrite(serializers.Serializer):
             name=validated_data["name"],
             game=SaveGame.objects.get(id=self.context.get("game_id")),
         )
+
 
 class StationSerializerWrite(serializers.Serializer):
     """The serializer used for stations when createing new ones."""

@@ -1,12 +1,11 @@
 """Contains API views relating to Habitat Modules."""
 
-from rest_framework import status
 from rest_framework.generics import GenericAPIView
 from rest_framework.request import Request
 from rest_framework.response import Response
 
-from x4companion.x4.serializers import HabitatModuleSerializer
 from x4companion.x4.responses import post_response
+from x4companion.x4.serializers import HabitatModuleSerializer
 
 
 class HabitatModules(GenericAPIView):

@@ -6,8 +6,15 @@ from rest_framework.request import Request
 from rest_framework.response import Response
 
 from x4companion.x4.models import SaveGame, Sector
-from x4companion.x4.responses import delete_response, get_response, post_response
-from x4companion.x4.serializers import SectorSerializerWrite, SectorSerializerRead
+from x4companion.x4.responses import (
+    delete_response,
+    get_response,
+    post_response,
+)
+from x4companion.x4.serializers import (
+    SectorSerializerRead,
+    SectorSerializerWrite,
+)
 
 
 class Sectors(GenericAPIView):
@@ -45,7 +52,7 @@ class Sectors(GenericAPIView):
         return post_response(
             serializer_class=SectorSerializerWrite,
             data=request.data.get("data"),
-            context={"game_id": save_id}
+            context={"game_id": save_id},
         )
 
 

@@ -6,7 +6,11 @@ from rest_framework.request import Request
 from rest_framework.response import Response
 
 from x4companion.x4.models import SaveGame, Station
-from x4companion.x4.responses import delete_response, get_response, post_response
+from x4companion.x4.responses import (
+    delete_response,
+    get_response,
+    post_response,
+)
 from x4companion.x4.serializers import (
     StationSerializerRead,
     StationSerializerWrite,
@@ -30,7 +34,7 @@ class Stations(GenericAPIView):
         return post_response(
             serializer_class=StationSerializerWrite,
             data=request.data.get("data"),
-            context={"save_id": save_id}
+            context={"save_id": save_id},
         )
 
     def get(self, request: Request, save_id: int) -> Response:
