@@ -9,6 +9,14 @@ class TestSector:
     def test_create_sector(self, create_basic_sector):
         assert len(Sector.objects.all()) == 1
 
+    @pytest.mark.usefixtures("_create_multiple_sectors")
+    def test_cant_create_duplicates(self, create_save_game):
+        with pytest.raises(IntegrityError):
+            Sector.objects.create(
+                name="sector0",
+                game=create_save_game,
+            )
+
     def test_sector_str(self, create_basic_sector):
         assert str(create_basic_sector) == "Sector sector 001"
 
@@ -35,13 +43,12 @@ class TestStation:
     def test_cant_create_duplicates(
         self, create_save_game, create_basic_sector
     ):
-        station = Station.objects.create(
-            name="station0",
-            game=create_save_game,
-            sector=create_basic_sector,
-        )
         with pytest.raises(IntegrityError):
-            station.save()
+            Station.objects.create(
+                name="station0",
+                game=create_save_game,
+                sector=create_basic_sector,
+            )
 
     def test_station_str(self, create_station):
         assert str(create_station) == "Station Hammersmith"

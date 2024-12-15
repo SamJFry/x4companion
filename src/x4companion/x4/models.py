@@ -31,8 +31,15 @@ class Sector(models.Model):
 
     name = models.CharField(
         max_length=50, unique=True, blank=False, null=False
-    )  # TODO Unique together
+    )
     game = models.ForeignKey(SaveGame, on_delete=models.CASCADE)
+
+    class Meta:
+        constraints = [
+            models.UniqueConstraint(
+                fields=["name", "game"], name="No duplicate sectors"
+            )
+        ]
 
     def __str__(self) -> str:
         return f"Sector {self.name}"
