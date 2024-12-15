@@ -5,8 +5,8 @@ from x4companion.x4.models import Station
 
 
 @pytest.mark.django_db
-@pytest.mark.usefixtures("_create_multiple_sectors")
 class TestStations:
+    @pytest.mark.usefixtures("_create_multiple_sectors")
     def test_post(self, authed_client):
         response = authed_client.post(
             "/game/1/stations/",
@@ -29,3 +29,11 @@ class TestStations:
             {"game_id": 1, "id": 1, "name": "Baron's Court", "sector_id": 1, "population": 0},
             {"game_id": 1, "id": 2, "name": "Earl's Court", "sector_id": 2, "population": 0}
         ]
+
+    @pytest.mark.usefixtures("create_station")
+    def test_get(self, authed_client):
+        response = authed_client.get("/game/1/stations/")
+        assert response.status_code == status.HTTP_200_OK
+        assert response.json() == {"stations": [
+            {"game_id": 1, "id": 1, "name": "Hammersmith", "sector_id": 1, "population": 0},
+        ]}

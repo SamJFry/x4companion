@@ -48,7 +48,7 @@ class SectorsSerializer(serializers.ListSerializer):
         )
 
 
-class StationSerializer(serializers.Serializer):
+class StationSerializerWrite(serializers.Serializer):
     name = serializers.CharField(max_length=50)
     sector_id = serializers.PrimaryKeyRelatedField(queryset=Sector.objects.all())
 
@@ -58,3 +58,12 @@ class StationSerializer(serializers.Serializer):
             sector=validated_data["sector_id"],
             game=SaveGame.objects.get(id=self.context.get("save_id")),
         )
+
+
+class StationSerializerRead(serializers.ModelSerializer):
+    game_id = SaveGameSerializer
+    sector_id = SectorSerializer
+
+    class Meta:
+        model = Station
+        fields = ["id", "name", "sector_id", "game_id", "population"]
