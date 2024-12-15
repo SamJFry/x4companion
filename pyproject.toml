@@ -54,6 +54,7 @@ extra-dependencies = [
 devserver = "python src/x4companion/manage.py runserver"
 makemigrations = "python src/x4companion/manage.py makemigrations"
 migrate = "python src/x4companion/manage.py migrate"
+create-su = "python src/x4companion/manage.py createsuperuser --username admin --email admin@example.com"
 spectacular = "python src/x4companion/manage.py spectacular --color --file schema.yml"
 
 [tool.hatch.envs.types]
