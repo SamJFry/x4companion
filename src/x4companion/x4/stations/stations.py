@@ -14,9 +14,9 @@ class Stations(GenericAPIView):
     serializer_class = StationSerializer
 
     def post(self, request: Request, save_id: int):
-        data = request.data
-        data.update({"user": request.user.id})
-        serializer = self.serializer_class(data=request.data)
+        serializer = self.serializer_class(
+            data=request.data.get("data"), many=True, context={"save_id": save_id}
+        )
         if not serializer.is_valid():
             return Response(
                 status=status.HTTP_400_BAD_REQUEST, data=serializer.errors

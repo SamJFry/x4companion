@@ -1,7 +1,5 @@
 """Module containing all the DRF serializers."""
 
-from typing import ClassVar
-
 from django.contrib.auth.models import User
 from django.db import models
 from rest_framework import serializers
@@ -15,8 +13,8 @@ class SaveGameSerializer(serializers.ModelSerializer):
     user = serializers.PrimaryKeyRelatedField(queryset=User.objects.all())
 
     class Meta:
-        model: models.Model = SaveGame
-        fields: ClassVar[list[str]] = ["id", "name", "user"]
+        model = SaveGame
+        fields = ["id", "name", "user"]
 
 
 class SectorSerializer(serializers.ModelSerializer):
@@ -25,8 +23,8 @@ class SectorSerializer(serializers.ModelSerializer):
     game_id = SaveGameSerializer
 
     class Meta:
-        model: models.Model = Sector
-        fields: ClassVar[list[str]] = ["name", "game_id"]
+        model = Sector
+        fields = ["name", "game_id"]
 
 
 class SectorsSerializer(serializers.ListSerializer):
@@ -50,12 +48,13 @@ class SectorsSerializer(serializers.ListSerializer):
         )
 
 
-class StationSerializer(serializers.ModelSerializer):
-    game_id = SaveGameSerializer
-    sector_id = SectorsSerializer
+class StationSerializer(serializers.Serializer):
+    name = serializers.CharField(max_length=50)
+    sector_id = serializers.PrimaryKeyRelatedField(queryset=Sector.objects.all())
 
-    class Meta:
-        model: models.Model = Station
-        fields: ClassVar[list[str]] = [
-            "name", "game_id", "sector_id"
-        ]
+    def create(self, validated_data: dict):
+        return Station.objects.create(
+            name=validated_data["name"],
+            sector=validated_data["sector_id"],
+            game=SaveGame.objects.get(id=self.context.get("save_id")),
+        )

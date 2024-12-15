@@ -26,6 +26,6 @@ class TestStations:
         )
         assert response.status_code == status.HTTP_201_CREATED
         assert list(Station.objects.all().values()) == [
-            {"game_id": 1, "name": "Baron's Court", "sector_id": 1, "population": 0},
-            {"game_id": 1, "name": "Earl's Court", "sector_id": 2, "population": 0}
+            {"game_id": 1, "id": 1, "name": "Baron's Court", "sector_id": 1, "population": 0},
+            {"game_id": 1, "id": 2, "name": "Earl's Court", "sector_id": 2, "population": 0}
         ]
