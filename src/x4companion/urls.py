@@ -42,6 +42,6 @@ urlpatterns = [
     path(
         "game/<int:save_id>/stations/",
         stations.Stations.as_view(),
-        name="stations"
-    )
+        name="stations",
+    ),
 ]

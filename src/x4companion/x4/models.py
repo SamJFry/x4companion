@@ -29,7 +29,9 @@ class Sector(models.Model):
 
     """
 
-    name = models.CharField(max_length=50, unique=True, blank=False, null=False)  #TODO Unique together
+    name = models.CharField(
+        max_length=50, unique=True, blank=False, null=False
+    )  # TODO Unique together
     game = models.ForeignKey(SaveGame, on_delete=models.CASCADE)
 
     def __str__(self) -> str:
@@ -52,5 +54,5 @@ class Station(models.Model):
     sector = models.ForeignKey(Sector, on_delete=models.CASCADE)
     population = models.IntegerField(default=0, null=False)
 
-    def __str__(self):
+    def __str__(self) -> str:
         return f"Station {self.name}"

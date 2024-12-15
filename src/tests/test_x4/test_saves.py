@@ -27,6 +27,7 @@ class TestSaveGames:
             ]
         }
 
+
 @pytest.mark.django_db
 class TestSaveGameView:
     @pytest.mark.usefixtures("_create_multiple_saves")

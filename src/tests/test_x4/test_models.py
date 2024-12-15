@@ -3,6 +3,7 @@ from django.db import IntegrityError
 
 from x4companion.x4.models import SaveGame, Sector, Station
 
+
 @pytest.mark.django_db
 class TestSector:
     def test_create_sector(self, create_basic_sector):
@@ -15,6 +16,7 @@ class TestSector:
         with pytest.raises(IntegrityError):
             Sector.objects.create(name="sector 001")
 
+
 @pytest.mark.django_db
 class TestSaveGame:
     def test_create_save_game(self, create_save_game):
@@ -22,6 +24,7 @@ class TestSaveGame:
 
     def test_save_game_str(self, create_save_game):
         assert str(create_save_game) == "SaveGame Kirk's x4 game"
+
 
 @pytest.mark.django_db
 class TestStation:

@@ -55,22 +55,20 @@ def _create_multiple_saves(create_user):
 def create_save_game(create_user):
     game = SaveGame.objects.create(name="Kirk's x4 game", user=create_user)
     game.save()
-    yield game
+    return game
 
 
 @pytest.fixture
 def create_station(create_basic_sector, create_save_game):
     station = Station.objects.create(
-        name="Hammersmith",
-        game=create_save_game,
-        sector=create_basic_sector
+        name="Hammersmith", game=create_save_game, sector=create_basic_sector
     )
     station.save()
-    yield station
+    return station
 
 
 @pytest.fixture
 def create_user_2_save_game(create_user_2):
     game = SaveGame.objects.create(name="Spock's x4 game", user=create_user_2)
     game.save()
-    yield game
+    return game

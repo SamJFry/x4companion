@@ -5,16 +5,31 @@ from rest_framework.generics import GenericAPIView
 from rest_framework.request import Request
 from rest_framework.response import Response
 
-from x4companion.x4.models import SaveGame, Station
-from x4companion.x4.serializers import StationSerializerWrite, StationSerializerRead
+from x4companion.x4.models import SaveGame
+from x4companion.x4.serializers import (
+    StationSerializerRead,
+    StationSerializerWrite,
+)
 
 
 class Stations(GenericAPIView):
     """Manage multiple stations."""
 
     def post(self, request: Request, save_id: int) -> Response:
+        """Create new stations.
+
+        Args:
+            request: POST request with the json to create new stations.
+            save_id: The ID of the save game the stations belong to.
+
+        Returns:
+            JSON Response detailing the objects that have been created.
+
+        """
         serializer = StationSerializerWrite(
-            data=request.data.get("data"), many=True, context={"save_id": save_id}
+            data=request.data.get("data"),
+            many=True,
+            context={"save_id": save_id},
         )
         if not serializer.is_valid():
             return Response(
@@ -24,6 +39,16 @@ class Stations(GenericAPIView):
         return Response(status=status.HTTP_201_CREATED, data=serializer.data)
 
     def get(self, request: Request, save_id: int) -> Response:
+        """Get all stations currently configured.
+
+        Args:
+            request: GET request made to this endpoint.
+            save_id: The ID of the save game the stations belong to.
+
+        Returns:
+            A JSON response containing a list of stations and their attributes.
+
+        """
         game = SaveGame.objects.get(id=save_id)
         serializer = StationSerializerRead(game.station_set.all(), many=True)
         return Response(
