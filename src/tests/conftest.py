@@ -96,9 +96,9 @@ def create_user_2_save_game(create_user_2):
 
 @pytest.fixture
 def create_habitat_module():
-    template = (HabitatModule.objects.create(
+    template = HabitatModule.objects.create(
         name="Borg Large", capacity=1000, species="borg"
-    ))
+    )
     template.save()
     return template
 

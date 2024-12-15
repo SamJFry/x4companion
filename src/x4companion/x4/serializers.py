@@ -4,7 +4,7 @@ from django.contrib.auth.models import User
 from django.db import models
 from rest_framework import serializers
 
-from x4companion.x4.models import SaveGame, Sector, Station
+from x4companion.x4.models import HabitatModule, SaveGame, Sector, Station
 
 
 class SaveGameSerializer(serializers.ModelSerializer):
@@ -114,3 +114,11 @@ class StationSerializerRead(serializers.ModelSerializer):
             "game_id",
             "population",
         ]
+
+
+class HabitatModuleSerializer(serializers.ModelSerializer):
+    """The serializer used for Habitat Modules."""
+
+    class Meta:
+        model = HabitatModule
+        fields = ["name", "capacity", "species"]

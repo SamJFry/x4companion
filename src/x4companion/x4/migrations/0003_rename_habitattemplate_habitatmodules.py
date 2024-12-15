@@ -4,14 +4,13 @@ from django.db import migrations
 
 
 class Migration(migrations.Migration):
-
     dependencies = [
-        ('x4', '0002_habitattemplate_habitat'),
+        ("x4", "0002_habitattemplate_habitat"),
     ]
 
     operations = [
         migrations.RenameModel(
-            old_name='HabitatTemplate',
-            new_name='HabitatModules',
+            old_name="HabitatTemplate",
+            new_name="HabitatModules",
         ),
     ]
