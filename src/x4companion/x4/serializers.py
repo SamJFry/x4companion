@@ -1,7 +1,5 @@
 """Module containing all the DRF serializers."""
 
-from typing import ClassVar
-
 from django.contrib.auth.models import User
 from django.db import models
 from rest_framework import serializers
@@ -16,7 +14,7 @@ class SaveGameSerializer(serializers.ModelSerializer):
 
     class Meta:
         model = SaveGame
-        fields: ClassVar[list[str]] = ["id", "name", "user"]
+        fields = ["id", "name", "user"]
 
 
 class SectorSerializer(serializers.ModelSerializer):
@@ -26,7 +24,7 @@ class SectorSerializer(serializers.ModelSerializer):
 
     class Meta:
         model = Sector
-        fields: ClassVar[list[str]] = ["name", "game_id"]
+        fields = ["name", "game_id"]
 
 
 class SectorsSerializer(serializers.ListSerializer):
@@ -109,7 +107,7 @@ class StationSerializerRead(serializers.ModelSerializer):
 
     class Meta:
         model = Station
-        fields: ClassVar[list[str]] = [
+        fields = [
             "id",
             "name",
             "sector_id",

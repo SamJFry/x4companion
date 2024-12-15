@@ -54,5 +54,12 @@ class Station(models.Model):
     sector = models.ForeignKey(Sector, on_delete=models.CASCADE)
     population = models.IntegerField(default=0, null=False)
 
+    class Meta:
+        constraints = [
+            models.UniqueConstraint(
+                fields=["name", "game"], name="No duplicate stations"
+            )
+        ]
+
     def __str__(self) -> str:
         return f"Station {self.name}"

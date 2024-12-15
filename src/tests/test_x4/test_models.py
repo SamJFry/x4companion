@@ -31,5 +31,17 @@ class TestStation:
     def test_create_stations(self, create_station):
         assert len(Station.objects.all()) == 1
 
+    @pytest.mark.usefixtures("_create_multiple_stations")
+    def test_cant_create_duplicates(
+        self, create_save_game, create_basic_sector
+    ):
+        station = Station.objects.create(
+            name="station0",
+            game=create_save_game,
+            sector=create_basic_sector,
+        )
+        with pytest.raises(IntegrityError):
+            station.save()
+
     def test_station_str(self, create_station):
         assert str(create_station) == "Station Hammersmith"
