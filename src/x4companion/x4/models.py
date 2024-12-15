@@ -72,7 +72,7 @@ class Station(models.Model):
         return f"Station {self.name}"
 
 
-class HabitatTemplate(models.Model):
+class HabitatModule(models.Model):
     """Represents a habitat module that can be attached to stations.
 
     Attributes:
@@ -108,7 +108,7 @@ class Habitat(models.Model):
     """
 
     count = models.IntegerField(null=False)
-    template = models.ForeignKey(HabitatTemplate, on_delete=models.CASCADE)
+    template = models.ForeignKey(HabitatModule, on_delete=models.CASCADE)
     station = models.ForeignKey(Station, on_delete=models.CASCADE)
 
     class Meta:

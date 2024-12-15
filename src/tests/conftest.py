@@ -3,7 +3,7 @@ from django.contrib.auth.models import User
 
 from x4companion.x4.models import (
     Habitat,
-    HabitatTemplate,
+    HabitatModule,
     SaveGame,
     Sector,
     Station,
@@ -95,18 +95,18 @@ def create_user_2_save_game(create_user_2):
 
 
 @pytest.fixture
-def create_habitat_template():
-    template = HabitatTemplate.objects.create(
+def create_habitat_module():
+    template = (HabitatModule.objects.create(
         name="Borg Large", capacity=1000, species="borg"
-    )
+    ))
     template.save()
     return template
 
 
 @pytest.fixture
-def create_habitat(create_station, create_habitat_template):
+def create_habitat(create_station, create_habitat_module):
     habitat = Habitat.objects.create(
-        count=1, template=create_habitat_template, station=create_station
+        count=1, template=create_habitat_module, station=create_station
     )
     habitat.save()
     return habitat

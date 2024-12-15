@@ -3,7 +3,7 @@ from django.db import IntegrityError
 
 from x4companion.x4.models import (
     Habitat,
-    HabitatTemplate,
+    HabitatModule,
     SaveGame,
     Sector,
     Station,
@@ -61,12 +61,12 @@ class TestStation:
 
 
 @pytest.mark.django_db
-class TestHabitatTemplate:
-    def test_create_habitat_template(self, create_habitat_template):
-        assert len(HabitatTemplate.objects.all()) == 1
+class TestHabitatModule:
+    def test_create_habitat_template(self, create_habitat_module):
+        assert len(HabitatModule.objects.all()) == 1
 
-    def test_str(self, create_habitat_template):
-        assert str(create_habitat_template) == "Habitat Borg Large"
+    def test_str(self, create_habitat_module):
+        assert str(create_habitat_module) == "Habitat Borg Large"
 
 
 @pytest.mark.django_db
