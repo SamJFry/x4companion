@@ -6,6 +6,7 @@ from rest_framework.request import Request
 from rest_framework.response import Response
 
 from x4companion.x4.models import SaveGame, Sector
+from x4companion.x4.responses import delete_response
 from x4companion.x4.serializers import SectorSerializer, SectorsSerializer
 
 
@@ -90,7 +91,4 @@ class SectorView(GenericAPIView):
             An empty response if the sector has been deleted.
 
         """
-        deleted = Sector.objects.filter(id=id_, game=save_id).delete()[0]
-        if not deleted:
-            return Response(status=status.HTTP_404_NOT_FOUND)
-        return Response(status=status.HTTP_204_NO_CONTENT)
+        return delete_response(Sector, id_, game=save_id)

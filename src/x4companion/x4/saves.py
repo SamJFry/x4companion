@@ -6,6 +6,7 @@ from rest_framework.request import Request
 from rest_framework.response import Response
 
 from x4companion.x4.models import SaveGame
+from x4companion.x4.responses import delete_response
 from x4companion.x4.serializers import SaveGameSerializer
 
 
@@ -85,9 +86,4 @@ class SaveGameView(GenericAPIView):
             Empty response confirming save game has been deleted.
 
         """
-        deleted = SaveGame.objects.filter(id=id_, user=request.user).delete()[
-            0
-        ]
-        if not deleted:
-            return Response(status=status.HTTP_404_NOT_FOUND)
-        return Response(status=status.HTTP_204_NO_CONTENT)
+        return delete_response(SaveGame, id_, user=request.user)

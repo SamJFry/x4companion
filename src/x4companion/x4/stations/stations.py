@@ -5,7 +5,8 @@ from rest_framework.generics import GenericAPIView
 from rest_framework.request import Request
 from rest_framework.response import Response
 
-from x4companion.x4.models import SaveGame
+from x4companion.x4.models import SaveGame, Station
+from x4companion.x4.responses import delete_response
 from x4companion.x4.serializers import (
     StationSerializerRead,
     StationSerializerWrite,
@@ -55,3 +56,21 @@ class Stations(GenericAPIView):
             {"stations": serializer.data},
             status=status.HTTP_200_OK,
         )
+
+
+class StationView(GenericAPIView):
+    """Manage a specific station."""
+
+    def delete(self, request: Request, save_id: int, id_: int) -> Response:
+        """Delete a staion.
+
+        Args:
+            request: DELETE Request.
+            save_id: The ID of the save game the station belong to.
+            id_: The id of the station to delete.
+
+        Returns:
+            An empty response if the station been deleted.
+
+        """
+        return delete_response(Station, id_, game=save_id)

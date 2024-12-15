@@ -74,3 +74,27 @@ class TestStations:
                 },
             ]
         }
+
+
+@pytest.mark.django_db
+class TestStationView:
+    @pytest.mark.usefixtures("_create_multiple_stations")
+    def test_delete(self, authed_client):
+        response = authed_client.delete("/game/1/stations/2/")
+        assert response.status_code == status.HTTP_204_NO_CONTENT
+        assert list(Station.objects.all().values()) == [
+            {
+                "id": 1,
+                "name": "station0",
+                "game_id": 1,
+                "sector_id": 1,
+                "population": 0,
+            },
+            {
+                "id": 3,
+                "name": "station2",
+                "game_id": 1,
+                "sector_id": 1,
+                "population": 0,
+            },
+        ]

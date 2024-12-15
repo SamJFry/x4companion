@@ -68,6 +68,20 @@ def create_station(create_basic_sector, create_save_game):
 
 
 @pytest.fixture
+def _create_multiple_stations(create_basic_sector, create_save_game):
+    Station.objects.bulk_create(
+        [
+            Station(
+                name=f"station{x}",
+                game=create_save_game,
+                sector=create_basic_sector,
+            )
+            for x in range(3)
+        ]
+    )
+
+
+@pytest.fixture
 def create_user_2_save_game(create_user_2):
     game = SaveGame.objects.create(name="Spock's x4 game", user=create_user_2)
     game.save()
