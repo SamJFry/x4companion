@@ -6,6 +6,7 @@ from rest_framework.request import Request
 from rest_framework.response import Response
 
 from x4companion.x4.serializers import HabitatModuleSerializer
+from x4companion.x4.responses import post_response
 
 
 class HabitatModules(GenericAPIView):
@@ -14,13 +15,13 @@ class HabitatModules(GenericAPIView):
     serializer_class = HabitatModuleSerializer
 
     def post(self, request: Request) -> Response:
+        """Create new Habitat Modules.
 
-        serializer = self.serializer_class(
-            data=request.data.get("data"), many=True
-        )
-        if not serializer.is_valid():
-            return Response(
-                status=status.HTTP_400_BAD_REQUEST, data=serializer.errors
-            )
-        serializer.save()
-        return Response(status=status.HTTP_201_CREATED, data=serializer.data)
+        Args:
+            request: POST request with the json to create new modules.
+
+        Returns:
+            JSON Response detailing the objects that have been created.
+
+        """
+        return post_response(self.serializer_class, request.data.get("data"))

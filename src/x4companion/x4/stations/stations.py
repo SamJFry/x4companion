@@ -6,7 +6,7 @@ from rest_framework.request import Request
 from rest_framework.response import Response
 
 from x4companion.x4.models import SaveGame, Station
-from x4companion.x4.responses import delete_response, get_response
+from x4companion.x4.responses import delete_response, get_response, post_response
 from x4companion.x4.serializers import (
     StationSerializerRead,
     StationSerializerWrite,
@@ -27,17 +27,11 @@ class Stations(GenericAPIView):
             JSON Response detailing the objects that have been created.
 
         """
-        serializer = StationSerializerWrite(
+        return post_response(
+            serializer_class=StationSerializerWrite,
             data=request.data.get("data"),
-            many=True,
-            context={"save_id": save_id},
+            context={"save_id": save_id}
         )
-        if not serializer.is_valid():
-            return Response(
-                status=status.HTTP_400_BAD_REQUEST, data=serializer.errors
-            )
-        serializer.save()
-        return Response(status=status.HTTP_201_CREATED, data=serializer.data)
 
     def get(self, request: Request, save_id: int) -> Response:
         """Get all stations currently configured.

@@ -46,3 +46,17 @@ def get_response(
     except models.ObjectDoesNotExist:
         return Response(status=status.HTTP_404_NOT_FOUND)
     return Response(serializer.data, status=status.HTTP_200_OK)
+
+
+def post_response(
+    serializer_class: type[serializers.BaseSerializer],
+    data: dict,
+    context: dict | None = None,
+) -> Response:
+    serializer = serializer_class(data=data, many=True, context=context)
+    if not serializer.is_valid():
+        return Response(
+            status=status.HTTP_400_BAD_REQUEST, data=serializer.errors
+        )
+    serializer.save()
+    return Response(status=status.HTTP_201_CREATED, data=serializer.data)
