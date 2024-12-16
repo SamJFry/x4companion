@@ -34,7 +34,7 @@ class TestHabitatModules:
         response = authed_client.get("/habitat-modules/")
         assert response.status_code == status.HTTP_200_OK
         assert response.json() == {
-            "modules": [
+            "data": [
                 {
                     "id": 1,
                     "name": "Borg Large",

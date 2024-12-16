@@ -20,7 +20,7 @@ class TestSaveGames:
         response = authed_client.get("/game/")
         assert response.status_code == status.HTTP_200_OK
         assert response.json() == {
-            "saves": [
+            "data": [
                 {"id": 1, "name": "game_0", "user": 1},
                 {"id": 2, "name": "game_1", "user": 1},
                 {"id": 3, "name": "game_2", "user": 1},

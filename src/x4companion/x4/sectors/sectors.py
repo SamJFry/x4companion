@@ -1,6 +1,5 @@
 """Contains API views relating to sectors."""
 
-from rest_framework import status
 from rest_framework.generics import GenericAPIView
 from rest_framework.request import Request
 from rest_framework.response import Response
@@ -8,6 +7,7 @@ from rest_framework.response import Response
 from x4companion.x4.models import SaveGame, Sector
 from x4companion.x4.responses import (
     delete_response,
+    get_bulk_response,
     get_response,
     post_response,
 )
@@ -31,11 +31,9 @@ class Sectors(GenericAPIView):
             A JSON response containing a list of sectors and their attributes.
 
         """
-        game = SaveGame.objects.get(id=save_id)
-        serializer = SectorSerializerRead(game.sector_set.all(), many=True)
-        return Response(
-            {"sectors": serializer.data},
-            status=status.HTTP_200_OK,
+        return get_bulk_response(
+            SectorSerializerRead,
+            SaveGame.objects.get(id=save_id).sector_set.all(),
         )
 
     def post(self, request: Request, save_id: int) -> Response:

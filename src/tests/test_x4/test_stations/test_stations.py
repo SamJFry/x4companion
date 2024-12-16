@@ -64,7 +64,7 @@ class TestStations:
         response = authed_client.get("/game/1/stations/")
         assert response.status_code == status.HTTP_200_OK
         assert response.json() == {
-            "stations": [
+            "data": [
                 {
                     "game_id": 1,
                     "id": 1,

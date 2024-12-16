@@ -6,7 +6,7 @@ from rest_framework.request import Request
 from rest_framework.response import Response
 
 from x4companion.x4.models import SaveGame
-from x4companion.x4.responses import delete_response
+from x4companion.x4.responses import delete_response, get_bulk_response
 from x4companion.x4.serializers import SaveGameSerializer
 
 
@@ -45,10 +45,9 @@ class SaveGames(GenericAPIView):
             Response containing all a users save game.
 
         """
-        serializer = self.serializer_class(SaveGame.objects.all(), many=True)
-        return Response(
-            {"saves": serializer.data},
-            status=status.HTTP_200_OK,
+        return get_bulk_response(
+            self.serializer_class,
+            SaveGame.objects.all(),
         )
 
 

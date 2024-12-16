@@ -76,3 +76,20 @@ def post_response(
             status=status.HTTP_404_NOT_FOUND, data={"error": str(e)}
         )
     return Response(status=status.HTTP_201_CREATED, data=serializer.data)
+
+
+def get_bulk_response(
+    serializer_class: type[serializers.BaseSerializer],
+    query_set: models.QuerySet,
+) -> Response:
+    """Get bulk data from the database.
+
+    Args:
+        serializer_class: The serializer class to validate the data with.
+        query_set: The query set to be used to retrieve the data.
+
+    Returns:
+        The DRF response that contains the status and result.
+    """
+    serializer = serializer_class(query_set, many=True)
+    return Response({"data": serializer.data}, status=status.HTTP_200_OK)

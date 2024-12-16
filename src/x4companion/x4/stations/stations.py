@@ -1,6 +1,5 @@
 """Contains API views relating to Stations."""
 
-from rest_framework import status
 from rest_framework.generics import GenericAPIView
 from rest_framework.request import Request
 from rest_framework.response import Response
@@ -8,6 +7,7 @@ from rest_framework.response import Response
 from x4companion.x4.models import SaveGame, Station
 from x4companion.x4.responses import (
     delete_response,
+    get_bulk_response,
     get_response,
     post_response,
 )
@@ -48,11 +48,9 @@ class Stations(GenericAPIView):
             A JSON response containing a list of stations and their attributes.
 
         """
-        game = SaveGame.objects.get(id=save_id)
-        serializer = StationSerializerRead(game.station_set.all(), many=True)
-        return Response(
-            {"stations": serializer.data},
-            status=status.HTTP_200_OK,
+        return get_bulk_response(
+            StationSerializerRead,
+            SaveGame.objects.get(id=save_id).station_set.all(),
         )
 
 

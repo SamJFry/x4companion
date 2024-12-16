@@ -1,12 +1,11 @@
 """Contains API views relating to Habitat Modules."""
 
-from rest_framework import status
 from rest_framework.generics import GenericAPIView
 from rest_framework.request import Request
 from rest_framework.response import Response
 
 from x4companion.x4.models import HabitatModule
-from x4companion.x4.responses import post_response
+from x4companion.x4.responses import get_bulk_response, post_response
 from x4companion.x4.serializers import HabitatModuleSerializer
 
 
@@ -38,9 +37,6 @@ class HabitatModules(GenericAPIView):
             attributes.
 
         """
-        serializer = self.serializer_class(
-            HabitatModule.objects.all(), many=True
-        )
-        return Response(
-            {"modules": serializer.data}, status=status.HTTP_200_OK
+        return get_bulk_response(
+            self.serializer_class, HabitatModule.objects.all()
         )
