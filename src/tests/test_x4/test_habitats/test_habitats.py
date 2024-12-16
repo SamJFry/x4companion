@@ -29,3 +29,17 @@ class TestHabitatModules:
                 "species": "Bajoran",
             }
         ]
+
+    def test_get(self, authed_client, create_habitat_module):
+        response = authed_client.get("/habitat-modules/")
+        assert response.status_code == status.HTTP_200_OK
+        assert response.json() == {
+            "modules": [
+                {
+                    "id": 1,
+                    "name": "Borg Large",
+                    "capacity": 1000,
+                    "species": "borg",
+                }
+            ]
+        }

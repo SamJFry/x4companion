@@ -26,7 +26,7 @@ class SectorSerializerRead(serializers.ModelSerializer):
 
     class Meta:
         model = Sector
-        fields = ["name", "game_id"]
+        fields = ["id", "name", "game_id"]
 
 
 class SectorSerializerWrite(serializers.Serializer):
@@ -123,4 +123,4 @@ class HabitatModuleSerializer(serializers.ModelSerializer):
 
     class Meta:
         model = HabitatModule
-        fields = ["name", "capacity", "species"]
+        fields = ["id", "name", "capacity", "species"]

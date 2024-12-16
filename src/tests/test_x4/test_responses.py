@@ -14,7 +14,7 @@ POST_CASES = [
             "data": [{"name": "test", "capacity": 1, "species": "bob"}],
         },
         status.HTTP_201_CREATED,
-        [{"name": "test", "capacity": 1, "species": "bob"}],
+        [{"id": 1, "name": "test", "capacity": 1, "species": "bob"}],
     ),
     (
         {

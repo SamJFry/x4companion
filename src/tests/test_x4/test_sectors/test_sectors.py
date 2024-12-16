@@ -11,7 +11,7 @@ class TestSectors:
         response = authed_client.get("/game/1/sectors/")
         assert response.status_code == status.HTTP_200_OK
         assert response.json() == {
-            "sectors": [{"game_id": 1, "name": "sector 001"}]
+            "sectors": [{"id": 1, "game_id": 1, "name": "sector 001"}]
         }
 
     def test_post(self, authed_client, create_save_game):
@@ -42,7 +42,7 @@ class TestSectorView:
     def test_get(self, create_basic_sector, authed_client):
         response = authed_client.get("/game/1/sectors/1/")
         assert response.status_code == status.HTTP_200_OK
-        assert response.json() == {"game_id": 1, "name": "sector 001"}
+        assert response.json() == {"id": 1, "game_id": 1, "name": "sector 001"}
 
     @pytest.mark.usefixtures("create_basic_sector")
     def test_get_does_not_give_others_sectors(
