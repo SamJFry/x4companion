@@ -49,6 +49,7 @@ class Stations(GenericAPIView):
 
         """
         return get_bulk_response(
+            request,
             StationSerializerRead,
             SaveGame.objects.get(id=save_id).station_set.all(),
         )

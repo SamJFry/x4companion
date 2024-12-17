@@ -1,8 +1,16 @@
 """Contains generic responses that can be reused across endpoints."""
-
 from django.db import models
 from rest_framework import serializers, status
 from rest_framework.response import Response
+from rest_framework.request import Request
+from rest_framework.pagination import PageNumberPagination
+
+
+class StandardPaginator(PageNumberPagination):
+    """Standard pagination class for all paginated responses."""
+    page_size = 100
+    page_size_query_param = "page_size"
+    max_page_size = 1000
 
 
 def delete_response(model: type[models.Model], id_: int, **kwargs) -> Response:
@@ -79,12 +87,14 @@ def post_response(
 
 
 def get_bulk_response(
+    request: Request,
     serializer_class: type[serializers.BaseSerializer],
     query_set: models.QuerySet,
 ) -> Response:
     """Get bulk data from the database.
 
     Args:
+        request: The incoming HTTP request.
         serializer_class: The serializer class to validate the data with.
         query_set: The query set to be used to retrieve the data.
 
@@ -92,4 +102,16 @@ def get_bulk_response(
         The DRF response that contains the status and result.
     """
     serializer = serializer_class(query_set, many=True)
-    return Response({"data": serializer.data}, status=status.HTTP_200_OK)
+    paginator = StandardPaginator()
+    data = paginator.paginate_queryset(serializer.data, request)
+    if page_size := request.query_params.get(paginator.page_size_query_param):
+        paginator.page_size = page_size
+    return Response({
+        "page": int(paginator.get_page_number(request, paginator)),
+        "pages": paginator.page.paginator.num_pages,
+        "page_size": int(paginator.page_size),
+        "previous": paginator.get_previous_link(),
+        "next": paginator.get_next_link(),
+        "data": data,
+    },
+        status=status.HTTP_200_OK)
