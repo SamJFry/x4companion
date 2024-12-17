@@ -1,13 +1,15 @@
 """Contains generic responses that can be reused across endpoints."""
+
 from django.db import models
 from rest_framework import serializers, status
-from rest_framework.response import Response
-from rest_framework.request import Request
 from rest_framework.pagination import PageNumberPagination
+from rest_framework.request import Request
+from rest_framework.response import Response
 
 
 class StandardPaginator(PageNumberPagination):
     """Standard pagination class for all paginated responses."""
+
     page_size = 100
     page_size_query_param = "page_size"
     max_page_size = 1000
@@ -106,12 +108,14 @@ def get_bulk_response(
     data = paginator.paginate_queryset(serializer.data, request)
     if page_size := request.query_params.get(paginator.page_size_query_param):
         paginator.page_size = page_size
-    return Response({
-        "page": int(paginator.get_page_number(request, paginator)),
-        "pages": paginator.page.paginator.num_pages,
-        "page_size": int(paginator.page_size),
-        "previous": paginator.get_previous_link(),
-        "next": paginator.get_next_link(),
-        "data": data,
-    },
-        status=status.HTTP_200_OK)
+    return Response(
+        {
+            "page": int(paginator.get_page_number(request, paginator)),
+            "pages": paginator.page.paginator.num_pages,
+            "page_size": int(paginator.page_size),
+            "previous": paginator.get_previous_link(),
+            "next": paginator.get_next_link(),
+            "data": data,
+        },
+        status=status.HTTP_200_OK,
+    )

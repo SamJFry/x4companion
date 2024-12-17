@@ -38,5 +38,5 @@ class HabitatModules(GenericAPIView):
 
         """
         return get_bulk_response(
-            self.serializer_class, HabitatModule.objects.all()
+            request, self.serializer_class, HabitatModule.objects.all()
         )

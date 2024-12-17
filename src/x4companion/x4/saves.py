@@ -46,6 +46,7 @@ class SaveGames(GenericAPIView):
 
         """
         return get_bulk_response(
+            request,
             self.serializer_class,
             SaveGame.objects.all(),
         )

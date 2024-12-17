@@ -11,6 +11,11 @@ class TestSectors:
         response = authed_client.get("/game/1/sectors/")
         assert response.status_code == status.HTTP_200_OK
         assert response.json() == {
+            "page": 1,
+            "pages": 1,
+            "page_size": 100,
+            "previous": None,
+            "next": None,
             "data": [{"id": 1, "game_id": 1, "name": "sector 001"}]
         }
 

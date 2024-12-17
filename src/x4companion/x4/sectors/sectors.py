@@ -32,6 +32,7 @@ class Sectors(GenericAPIView):
 
         """
         return get_bulk_response(
+            request,
             SectorSerializerRead,
             SaveGame.objects.get(id=save_id).sector_set.all(),
         )
