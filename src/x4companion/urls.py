@@ -54,4 +54,9 @@ urlpatterns = [
         habitats.HabitatModules.as_view(),
         name="habitat_modules",
     ),
+    path(
+        "dataset/<int:dataset_id>/habitat-modules/<int:id_>/",
+        habitats.HabitatModuleView.as_view(),
+        name="habitat_module",
+    ),
 ]

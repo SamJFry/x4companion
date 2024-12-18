@@ -1,3 +1,3 @@
-from .habitat_modules import HabitatModules
+from .habitat_modules import HabitatModules, HabitatModuleView
 
-__all__ = ["HabitatModules"]
+__all__ = ["HabitatModules", "HabitatModuleView"]

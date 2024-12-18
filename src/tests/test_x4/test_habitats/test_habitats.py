@@ -49,3 +49,21 @@ class TestHabitatModules:
                 }
             ],
         }
+
+
+@pytest.mark.django_db
+class TestHabitatModulesView:
+    def test_get(self, authed_client, create_habitat_module):
+        response = authed_client.get("/dataset/1/habitat-modules/1/")
+        assert response.status_code == status.HTTP_200_OK
+        assert response.json() == {
+            "id": 1,
+            "name": "Borg Large",
+            "capacity": 1000,
+            "species": "borg",
+        }
+
+    def test_delete(self, authed_client, create_habitat_module):
+        response = authed_client.delete("/dataset/1/habitat-modules/1/")
+        assert response.status_code == status.HTTP_204_NO_CONTENT
+        assert list(HabitatModule.objects.all().values()) == []
