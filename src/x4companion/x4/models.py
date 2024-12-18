@@ -123,21 +123,21 @@ class Habitat(models.Model):
 
     Attributes:
         count: The number of modules connected to the station.
-        template: The template that holds the attributes of habitats.
+        module: The habitat module that contains the habitats attributes.
         station: The station these modules are attached to.
 
     """
 
     count = models.IntegerField(null=False)
-    template = models.ForeignKey(HabitatModule, on_delete=models.CASCADE)
+    module = models.ForeignKey(HabitatModule, on_delete=models.CASCADE)
     station = models.ForeignKey(Station, on_delete=models.CASCADE)
 
     class Meta:
         constraints = [
             models.UniqueConstraint(
-                fields=["template", "station"], name="Unique Habitats"
+                fields=["module", "station"], name="Unique Habitats"
             )
         ]
 
     def __str__(self) -> str:
-        return f"Habitats {self.station.name} Station {self.template.name}"
+        return f"Habitats {self.station.name} Station {self.module.name}"

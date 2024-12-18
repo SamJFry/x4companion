@@ -76,7 +76,7 @@ class TestDataset:
 
 @pytest.mark.django_db
 class TestHabitatModule:
-    def test_create_habitat_template(self, create_habitat_module):
+    def test_create_habitat_module(self, create_habitat_module):
         assert len(HabitatModule.objects.all()) == 1
 
     def test_str(self, create_habitat_module):

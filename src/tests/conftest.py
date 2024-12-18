@@ -104,20 +104,20 @@ def create_dataset():
 
 @pytest.fixture
 def create_habitat_module(create_dataset):
-    template = HabitatModule.objects.create(
+    module = HabitatModule.objects.create(
         name="Borg Large",
         capacity=1000,
         species="borg",
         dataset=create_dataset,
     )
-    template.save()
-    return template
+    module.save()
+    return module
 
 
 @pytest.fixture
 def create_habitat(create_station, create_habitat_module):
     habitat = Habitat.objects.create(
-        count=1, template=create_habitat_module, station=create_station
+        count=1, module=create_habitat_module, station=create_station
     )
     habitat.save()
     return habitat

@@ -6,6 +6,7 @@ from rest_framework import serializers
 
 from x4companion.x4.models import (
     Dataset,
+    Habitat,
     HabitatModule,
     SaveGame,
     Sector,
@@ -148,8 +149,38 @@ class HabitatModuleSerializer(serializers.ModelSerializer):
 
         Args:
             validated_data: The data to create a sector with.
+
         """
         return HabitatModule.objects.create(
             **validated_data,
             dataset=Dataset.objects.get(id=self.context.get("dataset_id")),
+        )
+
+
+class HabitatSerializer(serializers.ModelSerializer):
+    """The serializer for station Habitats."""
+
+    module_id = serializers.PrimaryKeyRelatedField(
+        queryset=HabitatModule.objects.all()
+    )
+    station_id = StationSerializerRead
+
+    class Meta:
+        model = Habitat
+        fields = ["id", "count", "module_id", "station_id"]
+
+    def create(self, validated_data: dict) -> models.Model:
+        """Create a station Habitat from validated serial data.
+
+        The ID of the station to create modules for is retrieved from the
+        context.
+
+        Args:
+            validated_data: The data to create a sector with.
+
+        """
+        return Habitat.objects.create(
+            module=validated_data["module_id"],
+            station=Station.objects.get(id=self.context.get("station_id")),
+            count=validated_data["count"]
         )
