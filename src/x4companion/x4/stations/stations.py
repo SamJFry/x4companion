@@ -1,5 +1,7 @@
 """Contains API views relating to Stations."""
 
+from http import HTTPMethod
+
 from rest_framework.generics import GenericAPIView
 from rest_framework.request import Request
 from rest_framework.response import Response
@@ -20,6 +22,11 @@ from x4companion.x4.serializers import (
 class Stations(GenericAPIView):
     """Manage multiple stations."""
 
+    def get_serializer_class(self) -> type[StationSerializerRead] | type[StationSerializerWrite]:
+        if self.request.method == HTTPMethod.POST:
+            return StationSerializerWrite
+        return StationSerializerRead
+
     def post(self, request: Request, save_id: int) -> Response:
         """Create new stations.
 
@@ -32,7 +39,7 @@ class Stations(GenericAPIView):
 
         """
         return post_response(
-            serializer_class=StationSerializerWrite,
+            serializer_class=self.get_serializer_class(),
             data=request.data.get("data"),
             context={"save_id": save_id},
         )
@@ -50,13 +57,15 @@ class Stations(GenericAPIView):
         """
         return get_bulk_response(
             request,
-            StationSerializerRead,
+            self.get_serializer_class(),
             SaveGame.objects.get(id=save_id).station_set.all(),
         )
 
 
 class StationView(GenericAPIView):
     """Manage a specific station."""
+
+    serializer_class = StationSerializerRead
 
     def delete(self, request: Request, save_id: int, id_: int) -> Response:
         """Delete a staion.
@@ -84,4 +93,4 @@ class StationView(GenericAPIView):
             A JSON response for a single station.
 
         """
-        return get_response(Station, StationSerializerRead, id_, game=save_id)
+        return get_response(Station, self.serializer_class, id_, game=save_id)

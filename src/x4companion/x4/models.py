@@ -72,6 +72,24 @@ class Station(models.Model):
         return f"Station {self.name}"
 
 
+class Dataset(models.Model):
+    """Links a set of resources to be loaded into the app.
+
+    This model is referenced by template classes like HabitatModule or
+    FactoryModule. A Dataset is used to present a filtered view of templates,
+    so that only the content that is relevant to a SaveGame is accessible.
+
+    Attributes:
+        name (str): The name of the Dataset.
+
+    """
+
+    name = models.CharField(max_length=50, blank=False, null=False, unique=True)
+
+    def __str__(self) -> str:
+        return f"Dataset {self.name}"
+
+
 class HabitatModule(models.Model):
     """Represents a habitat module that can be attached to stations.
 

@@ -2,6 +2,7 @@ import pytest
 from django.contrib.auth.models import User
 
 from x4companion.x4.models import (
+    Dataset,
     Habitat,
     HabitatModule,
     SaveGame,
@@ -102,6 +103,11 @@ def create_habitat_module():
     template.save()
     return template
 
+@pytest.fixture
+def create_dataset():
+    dataset = Dataset.objects.create(name="StarTrekin")
+    dataset.save()
+    return dataset
 
 @pytest.fixture
 def create_habitat(create_station, create_habitat_module):

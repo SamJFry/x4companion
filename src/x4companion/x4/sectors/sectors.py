@@ -1,4 +1,5 @@
 """Contains API views relating to sectors."""
+from http import HTTPMethod
 
 from rest_framework.generics import GenericAPIView
 from rest_framework.request import Request
@@ -20,6 +21,11 @@ from x4companion.x4.serializers import (
 class Sectors(GenericAPIView):
     """Manage multiple sectors."""
 
+    def get_serializer_class(self) -> type[SectorSerializerRead] | type[SectorSerializerWrite]:
+        if self.request.method == HTTPMethod.POST:
+            return SectorSerializerWrite
+        return SectorSerializerRead
+
     def get(self, request: Request, save_id: int) -> Response:
         """Get all sectors currently configured.
 
@@ -33,7 +39,7 @@ class Sectors(GenericAPIView):
         """
         return get_bulk_response(
             request,
-            SectorSerializerRead,
+            self.get_serializer_class(),
             SaveGame.objects.get(id=save_id).sector_set.all(),
         )
 
@@ -49,7 +55,7 @@ class Sectors(GenericAPIView):
 
         """
         return post_response(
-            serializer_class=SectorSerializerWrite,
+            serializer_class=self.get_serializer_class(),
             data=request.data.get("data"),
             context={"game_id": save_id},
         )

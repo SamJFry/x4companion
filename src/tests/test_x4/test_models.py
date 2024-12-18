@@ -2,6 +2,7 @@ import pytest
 from django.db import IntegrityError
 
 from x4companion.x4.models import (
+    Dataset,
     Habitat,
     HabitatModule,
     SaveGame,
@@ -58,6 +59,19 @@ class TestStation:
 
     def test_station_str(self, create_station):
         assert str(create_station) == "Station Hammersmith"
+
+
+@pytest.mark.django_db
+class TestDataset:
+    def test_create_dataset(self, create_dataset):
+        assert len(Dataset.objects.all()) == 1
+
+    def test_unique_constraint(self, create_dataset):
+        with pytest.raises(IntegrityError):
+            Dataset.objects.create(name="StarTrekin")
+
+    def test_dataset_str(self, create_dataset):
+        assert str(create_dataset) == "Dataset StarTrekin"
 
 
 @pytest.mark.django_db
