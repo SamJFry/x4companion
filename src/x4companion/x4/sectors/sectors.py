@@ -1,4 +1,5 @@
 """Contains API views relating to sectors."""
+
 from http import HTTPMethod
 
 from rest_framework.generics import GenericAPIView
@@ -21,7 +22,10 @@ from x4companion.x4.serializers import (
 class Sectors(GenericAPIView):
     """Manage multiple sectors."""
 
-    def get_serializer_class(self) -> type[SectorSerializerRead] | type[SectorSerializerWrite]:
+    def get_serializer_class(
+        self,
+    ) -> type[SectorSerializerRead] | type[SectorSerializerWrite]:
+        """Returns correct serializer for the request type."""
         if self.request.method == HTTPMethod.POST:
             return SectorSerializerWrite
         return SectorSerializerRead

@@ -6,9 +6,9 @@ from x4companion.x4.models import HabitatModule
 
 @pytest.mark.django_db
 class TestHabitatModules:
-    def test_post(self, authed_client):
+    def test_post(self, authed_client, create_dataset):
         response = authed_client.post(
-            "/habitat-modules/",
+            "/dataset/1/habitat-modules/",
             {
                 "data": [
                     {
@@ -24,6 +24,7 @@ class TestHabitatModules:
         assert list(HabitatModule.objects.all().values()) == [
             {
                 "id": 1,
+                "dataset_id": 1,
                 "name": "Bajoran small habitat",
                 "capacity": 250,
                 "species": "Bajoran",
@@ -31,7 +32,7 @@ class TestHabitatModules:
         ]
 
     def test_get(self, authed_client, create_habitat_module):
-        response = authed_client.get("/habitat-modules/")
+        response = authed_client.get("/dataset/1/habitat-modules/")
         assert response.status_code == status.HTTP_200_OK
         assert response.json() == {
             "page": 1,
@@ -46,5 +47,5 @@ class TestHabitatModules:
                     "capacity": 1000,
                     "species": "borg",
                 }
-            ]
+            ],
         }

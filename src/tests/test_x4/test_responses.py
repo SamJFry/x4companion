@@ -3,19 +3,10 @@ from rest_framework import status
 
 from x4companion.x4.responses import post_response
 from x4companion.x4.serializers import (
-    HabitatModuleSerializer,
     SectorSerializerWrite,
 )
 
 POST_CASES = [
-    (
-        {
-            "serializer_class": HabitatModuleSerializer,
-            "data": [{"name": "test", "capacity": 1, "species": "bob"}],
-        },
-        status.HTTP_201_CREATED,
-        [{"id": 1, "name": "test", "capacity": 1, "species": "bob"}],
-    ),
     (
         {
             "serializer_class": SectorSerializerWrite,

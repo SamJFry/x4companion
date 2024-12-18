@@ -22,7 +22,10 @@ from x4companion.x4.serializers import (
 class Stations(GenericAPIView):
     """Manage multiple stations."""
 
-    def get_serializer_class(self) -> type[StationSerializerRead] | type[StationSerializerWrite]:
+    def get_serializer_class(
+        self,
+    ) -> type[StationSerializerRead] | type[StationSerializerWrite]:
+        """Returns correct serializer for the request type."""
         if self.request.method == HTTPMethod.POST:
             return StationSerializerWrite
         return StationSerializerRead

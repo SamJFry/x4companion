@@ -50,7 +50,7 @@ urlpatterns = [
         name="station",
     ),
     path(
-        "habitat-modules/",
+        "dataset/<int:dataset_id>/habitat-modules/",
         habitats.HabitatModules.as_view(),
         name="habitat_modules",
     ),

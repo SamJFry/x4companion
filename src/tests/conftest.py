@@ -96,18 +96,23 @@ def create_user_2_save_game(create_user_2):
 
 
 @pytest.fixture
-def create_habitat_module():
-    template = HabitatModule.objects.create(
-        name="Borg Large", capacity=1000, species="borg"
-    )
-    template.save()
-    return template
-
-@pytest.fixture
 def create_dataset():
     dataset = Dataset.objects.create(name="StarTrekin")
     dataset.save()
     return dataset
+
+
+@pytest.fixture
+def create_habitat_module(create_dataset):
+    template = HabitatModule.objects.create(
+        name="Borg Large",
+        capacity=1000,
+        species="borg",
+        dataset=create_dataset,
+    )
+    template.save()
+    return template
+
 
 @pytest.fixture
 def create_habitat(create_station, create_habitat_module):

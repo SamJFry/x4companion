@@ -84,7 +84,9 @@ class Dataset(models.Model):
 
     """
 
-    name = models.CharField(max_length=50, blank=False, null=False, unique=True)
+    name = models.CharField(
+        max_length=50, blank=False, null=False, unique=True
+    )
 
     def __str__(self) -> str:
         return f"Dataset {self.name}"
@@ -103,6 +105,7 @@ class HabitatModule(models.Model):
     name = models.CharField(max_length=50, blank=False, null=False)
     capacity = models.IntegerField(null=False)
     species = models.CharField(max_length=50, blank=False, null=False)
+    dataset = models.ForeignKey(Dataset, on_delete=models.CASCADE)
 
     class Meta:
         constraints = [

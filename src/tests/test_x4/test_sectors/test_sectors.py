@@ -16,7 +16,7 @@ class TestSectors:
             "page_size": 100,
             "previous": None,
             "next": None,
-            "data": [{"id": 1, "game_id": 1, "name": "sector 001"}]
+            "data": [{"id": 1, "game_id": 1, "name": "sector 001"}],
         }
 
     def test_post(self, authed_client, create_save_game):

@@ -4,7 +4,13 @@ from django.contrib.auth.models import User
 from django.db import models
 from rest_framework import serializers
 
-from x4companion.x4.models import HabitatModule, SaveGame, Sector, Station
+from x4companion.x4.models import (
+    Dataset,
+    HabitatModule,
+    SaveGame,
+    Sector,
+    Station,
+)
 
 
 class SaveGameSerializer(serializers.ModelSerializer):
@@ -118,9 +124,32 @@ class StationSerializerRead(serializers.ModelSerializer):
         ]
 
 
+class DatasetSerializer(serializers.ModelSerializer):
+    """Serialize Datasets."""
+
+    class Meta:
+        model = Dataset
+        fields = ["id", "name"]
+
+
 class HabitatModuleSerializer(serializers.ModelSerializer):
     """The serializer used for Habitat Modules."""
 
     class Meta:
         model = HabitatModule
         fields = ["id", "name", "capacity", "species"]
+
+    def create(self, validated_data: dict) -> models.Model:
+        """Create a Habitat Module from the validated serializer data.
+
+        Since we don't allow creating modules on different Datasets, all
+        modules are created under a dataset gleaned from the serializers
+        context.
+
+        Args:
+            validated_data: The data to create a sector with.
+        """
+        return HabitatModule.objects.create(
+            **validated_data,
+            dataset=Dataset.objects.get(id=self.context.get("dataset_id")),
+        )

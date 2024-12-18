@@ -77,7 +77,7 @@ class TestStations:
                     "sector_id": 1,
                     "population": 0,
                 },
-            ]
+            ],
         }
 
 
