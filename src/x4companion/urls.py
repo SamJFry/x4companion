@@ -20,7 +20,8 @@ from django.urls import path
 from drf_spectacular.views import SpectacularAPIView, SpectacularSwaggerView
 
 from x4companion import x4
-from x4companion.x4 import habitats, saves, sectors, stations
+from x4companion.x4.dataset import habitat_modules
+from x4companion.x4.game import saves, sectors, stations
 
 urlpatterns = [
     path("admin/", admin.site.urls),
@@ -51,12 +52,12 @@ urlpatterns = [
     ),
     path(
         "dataset/<int:dataset_id>/habitat-modules/",
-        habitats.HabitatModules.as_view(),
+        habitat_modules.HabitatModules.as_view(),
         name="habitat_modules",
     ),
     path(
         "dataset/<int:dataset_id>/habitat-modules/<int:id_>/",
-        habitats.HabitatModuleView.as_view(),
+        habitat_modules.HabitatModuleView.as_view(),
         name="habitat_module",
     ),
 ]
