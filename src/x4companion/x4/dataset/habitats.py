@@ -70,6 +70,6 @@ class StationHabitatsView(GenericAPIView):
                 id=id_,
                 station__id=station_id,
                 station__game__user=request.user,
-                station__game__id=save_id
+                station__game__id=save_id,
             ),
         )

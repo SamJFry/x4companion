@@ -86,9 +86,8 @@ class SectorView(GenericAPIView):
             serializer=self.serializer_class,
             query_set=Sector.objects.filter(
                 id=id_,
-                game=SaveGame.objects.filter(
-                    id=save_id, user=request.user
-                ).first(),
+                game__id=save_id,
+                game__user=request.user,
             ),
         )
 

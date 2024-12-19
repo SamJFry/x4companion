@@ -100,8 +100,7 @@ class StationView(GenericAPIView):
             self.serializer_class,
             Station.objects.filter(
                 id=id_,
-                game=SaveGame.objects.filter(
-                    id=save_id, user=request.user
-                ).first(),
+                game__id=save_id,
+                game__user=request.user,
             ),
         )
