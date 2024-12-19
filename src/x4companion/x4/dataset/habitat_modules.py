@@ -73,7 +73,8 @@ class HabitatModuleView(GenericAPIView):
 
         """
         return get_response(
-            HabitatModule, self.serializer_class, id_, dataset=dataset_id
+            self.serializer_class,
+            HabitatModule.objects.filter(id=id_, dataset=dataset_id)
         )
 
     def delete(self, request: Request, dataset_id: int, id_: int) -> Response:
