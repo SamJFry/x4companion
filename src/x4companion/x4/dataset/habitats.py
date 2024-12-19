@@ -68,11 +68,8 @@ class StationHabitatsView(GenericAPIView):
             self.serializer_class,
             Habitat.objects.filter(
                 id=id_,
-                station=Station.objects.filter(
-                    id=station_id,
-                    game=SaveGame.objects.filter(
-                        id=save_id, user=request.user
-                    ).first(),
-                ).first(),
+                station__id=station_id,
+                station__game__user=request.user,
+                station__game__id=save_id
             ),
         )
