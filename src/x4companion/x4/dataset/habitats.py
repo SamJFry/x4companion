@@ -2,9 +2,10 @@ from rest_framework.generics import GenericAPIView
 from rest_framework.request import Request
 from rest_framework.response import Response
 
-from x4companion.x4.models import Habitat, Station
+from x4companion.x4.models import Habitat, SaveGame, Station
 from x4companion.x4.responses import (
     get_bulk_response,
+    get_response,
     post_response,
 )
 from x4companion.x4.serializers import HabitatSerializer
@@ -15,7 +16,9 @@ class StationHabitats(GenericAPIView):
 
     serializer_class = HabitatSerializer
 
-    def post(self, request: Request, save_id: int, station_id: int) -> Response:
+    def post(
+        self, request: Request, save_id: int, station_id: int
+    ) -> Response:
         """Create new Habitats.
 
         Args:
@@ -50,4 +53,26 @@ class StationHabitats(GenericAPIView):
             request,
             self.serializer_class,
             Station.objects.get(id=station_id).habitat_set.all(),
+        )
+
+
+class StationHabitatsView(GenericAPIView):
+    """Manage individual types of habitat on a station."""
+
+    serializer_class = HabitatSerializer
+
+    def get(
+        self, request: Request, save_id: int, station_id: int, id_: int
+    ) -> Response:
+        return get_response(
+            self.serializer_class,
+            Habitat.objects.filter(
+                id=id_,
+                station=Station.objects.filter(
+                    id=station_id,
+                    game=SaveGame.objects.filter(
+                        id=save_id, user=request.user
+                    ).first(),
+                ).first(),
+            ),
         )

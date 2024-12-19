@@ -82,7 +82,15 @@ class SectorView(GenericAPIView):
             A JSON response for a single sector.
 
         """
-        return get_response(Sector, self.serializer_class, id_, game=save_id)
+        return get_response(
+            serializer=self.serializer_class,
+            query_set=Sector.objects.filter(
+                id=id_,
+                game=SaveGame.objects.filter(
+                    id=save_id, user=request.user
+                ).first(),
+            ),
+        )
 
     def delete(self, request: Request, save_id: int, id_: int) -> Response:
         """Delete a sector from the Database.

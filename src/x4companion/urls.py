@@ -53,6 +53,11 @@ urlpatterns = [
     path(
         "game/<int:save_id>/stations/<int:station_id>/habitats/",
         habitats.StationHabitats.as_view(),
+        name="station_habitats",
+    ),
+    path(
+        "game/<int:save_id>/stations/<int:station_id>/habitats/<int:id_>/",
+        habitats.StationHabitatsView.as_view(),
         name="station_habitat",
     ),
     path(

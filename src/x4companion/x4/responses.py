@@ -34,27 +34,21 @@ def delete_response(model: type[models.Model], id_: int, **kwargs) -> Response:
 
 
 def get_response(
-    model: type[models.Model],
-    serializer: type[serializers.BaseSerializer],
-    id_: int,
-    **kwargs,
+    serializer: type[serializers.BaseSerializer], query_set: models.QuerySet
 ) -> Response:
     """Get a single item from a model.
 
     Args:
-        model: The model the entry belongs to.
         serializer: The serializer used to validate the data.
-        id_: The ID of the DB entry you want to delete.
-        **kwargs: Any additional filters to apply to the delete command.
+        query_set: The ORM query to use to retrieve the data.
 
     Returns:
         The DRF response that contains the status and result.
 
     """
-    try:
-        serializer = serializer(model.objects.get(id=id_, **kwargs))
-    except models.ObjectDoesNotExist:
+    if not query_set.exists():
         return Response(status=status.HTTP_404_NOT_FOUND)
+    serializer = serializer(query_set.first())
     return Response(serializer.data, status=status.HTTP_200_OK)
 
 

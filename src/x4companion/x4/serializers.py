@@ -182,5 +182,5 @@ class HabitatSerializer(serializers.ModelSerializer):
         return Habitat.objects.create(
             module=validated_data["module_id"],
             station=Station.objects.get(id=self.context.get("station_id")),
-            count=validated_data["count"]
+            count=validated_data["count"],
         )

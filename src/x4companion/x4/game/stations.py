@@ -96,4 +96,12 @@ class StationView(GenericAPIView):
             A JSON response for a single station.
 
         """
-        return get_response(Station, self.serializer_class, id_, game=save_id)
+        return get_response(
+            self.serializer_class,
+            Station.objects.filter(
+                id=id_,
+                game=SaveGame.objects.filter(
+                    id=save_id, user=request.user
+                ).first(),
+            ),
+        )

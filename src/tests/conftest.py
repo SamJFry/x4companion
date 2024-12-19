@@ -96,6 +96,33 @@ def create_user_2_save_game(create_user_2):
 
 
 @pytest.fixture
+def create_user_2_sector(create_user_2_save_game):
+    sector = Sector.objects.create(name="Paris", game=create_user_2_save_game)
+    sector.save()
+    return sector
+
+
+@pytest.fixture
+def create_user_2_station(create_user_2_save_game, create_user_2_sector):
+    station = Station.objects.create(
+        name="La Chapelle",
+        game=create_user_2_save_game,
+        sector=create_user_2_sector,
+    )
+    station.save()
+    return station
+
+
+@pytest.fixture
+def create_user_2_habitat(create_user_2_station, create_habitat_module):
+    habitat = Habitat.objects.create(
+        count=1, module=create_habitat_module, station=create_user_2_station
+    )
+    habitat.save()
+    return habitat
+
+
+@pytest.fixture
 def create_dataset():
     dataset = Dataset.objects.create(name="StarTrekin")
     dataset.save()

@@ -6,7 +6,6 @@ from django.db import migrations, models
 
 
 class Migration(migrations.Migration):
-
     initial = True
 
     dependencies = [
@@ -15,71 +14,169 @@ class Migration(migrations.Migration):
 
     operations = [
         migrations.CreateModel(
-            name='Dataset',
+            name="Dataset",
             fields=[
-                ('id', models.BigAutoField(auto_created=True, primary_key=True, serialize=False, verbose_name='ID')),
-                ('name', models.CharField(max_length=50, unique=True)),
+                (
+                    "id",
+                    models.BigAutoField(
+                        auto_created=True,
+                        primary_key=True,
+                        serialize=False,
+                        verbose_name="ID",
+                    ),
+                ),
+                ("name", models.CharField(max_length=50, unique=True)),
             ],
         ),
         migrations.CreateModel(
-            name='HabitatModule',
+            name="HabitatModule",
             fields=[
-                ('id', models.BigAutoField(auto_created=True, primary_key=True, serialize=False, verbose_name='ID')),
-                ('name', models.CharField(max_length=50)),
-                ('capacity', models.IntegerField()),
-                ('species', models.CharField(max_length=50)),
-                ('dataset', models.ForeignKey(on_delete=django.db.models.deletion.CASCADE, to='x4.dataset')),
+                (
+                    "id",
+                    models.BigAutoField(
+                        auto_created=True,
+                        primary_key=True,
+                        serialize=False,
+                        verbose_name="ID",
+                    ),
+                ),
+                ("name", models.CharField(max_length=50)),
+                ("capacity", models.IntegerField()),
+                ("species", models.CharField(max_length=50)),
+                (
+                    "dataset",
+                    models.ForeignKey(
+                        on_delete=django.db.models.deletion.CASCADE,
+                        to="x4.dataset",
+                    ),
+                ),
             ],
         ),
         migrations.CreateModel(
-            name='SaveGame',
+            name="SaveGame",
             fields=[
-                ('id', models.BigAutoField(auto_created=True, primary_key=True, serialize=False, verbose_name='ID')),
-                ('name', models.CharField(max_length=50)),
-                ('user', models.ForeignKey(on_delete=django.db.models.deletion.CASCADE, to=settings.AUTH_USER_MODEL)),
+                (
+                    "id",
+                    models.BigAutoField(
+                        auto_created=True,
+                        primary_key=True,
+                        serialize=False,
+                        verbose_name="ID",
+                    ),
+                ),
+                ("name", models.CharField(max_length=50)),
+                (
+                    "user",
+                    models.ForeignKey(
+                        on_delete=django.db.models.deletion.CASCADE,
+                        to=settings.AUTH_USER_MODEL,
+                    ),
+                ),
             ],
         ),
         migrations.CreateModel(
-            name='Sector',
+            name="Sector",
             fields=[
-                ('id', models.BigAutoField(auto_created=True, primary_key=True, serialize=False, verbose_name='ID')),
-                ('name', models.CharField(max_length=50, unique=True)),
-                ('game', models.ForeignKey(on_delete=django.db.models.deletion.CASCADE, to='x4.savegame')),
+                (
+                    "id",
+                    models.BigAutoField(
+                        auto_created=True,
+                        primary_key=True,
+                        serialize=False,
+                        verbose_name="ID",
+                    ),
+                ),
+                ("name", models.CharField(max_length=50, unique=True)),
+                (
+                    "game",
+                    models.ForeignKey(
+                        on_delete=django.db.models.deletion.CASCADE,
+                        to="x4.savegame",
+                    ),
+                ),
             ],
         ),
         migrations.CreateModel(
-            name='Station',
+            name="Station",
             fields=[
-                ('id', models.BigAutoField(auto_created=True, primary_key=True, serialize=False, verbose_name='ID')),
-                ('name', models.CharField(max_length=50)),
-                ('population', models.IntegerField(default=0)),
-                ('game', models.ForeignKey(on_delete=django.db.models.deletion.CASCADE, to='x4.savegame')),
-                ('sector', models.ForeignKey(on_delete=django.db.models.deletion.CASCADE, to='x4.sector')),
+                (
+                    "id",
+                    models.BigAutoField(
+                        auto_created=True,
+                        primary_key=True,
+                        serialize=False,
+                        verbose_name="ID",
+                    ),
+                ),
+                ("name", models.CharField(max_length=50)),
+                ("population", models.IntegerField(default=0)),
+                (
+                    "game",
+                    models.ForeignKey(
+                        on_delete=django.db.models.deletion.CASCADE,
+                        to="x4.savegame",
+                    ),
+                ),
+                (
+                    "sector",
+                    models.ForeignKey(
+                        on_delete=django.db.models.deletion.CASCADE,
+                        to="x4.sector",
+                    ),
+                ),
             ],
         ),
         migrations.CreateModel(
-            name='Habitat',
+            name="Habitat",
             fields=[
-                ('id', models.BigAutoField(auto_created=True, primary_key=True, serialize=False, verbose_name='ID')),
-                ('count', models.IntegerField()),
-                ('module', models.ForeignKey(on_delete=django.db.models.deletion.CASCADE, to='x4.habitatmodule')),
-                ('station', models.ForeignKey(on_delete=django.db.models.deletion.CASCADE, to='x4.station')),
+                (
+                    "id",
+                    models.BigAutoField(
+                        auto_created=True,
+                        primary_key=True,
+                        serialize=False,
+                        verbose_name="ID",
+                    ),
+                ),
+                ("count", models.IntegerField()),
+                (
+                    "module",
+                    models.ForeignKey(
+                        on_delete=django.db.models.deletion.CASCADE,
+                        to="x4.habitatmodule",
+                    ),
+                ),
+                (
+                    "station",
+                    models.ForeignKey(
+                        on_delete=django.db.models.deletion.CASCADE,
+                        to="x4.station",
+                    ),
+                ),
             ],
         ),
         migrations.AddConstraint(
-            model_name='habitatmodule',
-            constraint=models.UniqueConstraint(fields=('name', 'capacity', 'species'), name='Global unique'),
+            model_name="habitatmodule",
+            constraint=models.UniqueConstraint(
+                fields=("name", "capacity", "species"), name="Global unique"
+            ),
         ),
         migrations.AddConstraint(
-            model_name='sector',
-            constraint=models.UniqueConstraint(fields=('name', 'game'), name='No duplicate sectors'),
+            model_name="sector",
+            constraint=models.UniqueConstraint(
+                fields=("name", "game"), name="No duplicate sectors"
+            ),
         ),
         migrations.AddConstraint(
-            model_name='station',
-            constraint=models.UniqueConstraint(fields=('name', 'game'), name='No duplicate stations'),
+            model_name="station",
+            constraint=models.UniqueConstraint(
+                fields=("name", "game"), name="No duplicate stations"
+            ),
         ),
         migrations.AddConstraint(
-            model_name='habitat',
-            constraint=models.UniqueConstraint(fields=('module', 'station'), name='Unique Habitats'),
+            model_name="habitat",
+            constraint=models.UniqueConstraint(
+                fields=("module", "station"), name="Unique Habitats"
+            ),
         ),
     ]

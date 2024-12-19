@@ -547,8 +547,116 @@ paths:
       responses:
         '204':
           description: No response body
+  /game/{save_id}/stations/{station_id}/habitats/:
+    get:
+      operationId: game_stations_habitats_retrieve
+      description: |-
+        Get all available Habitats for this station.
+
+        Args:
+            request: GET request made to this endpoint.
+            save_id: The ID of the save game this module belongs to.
+            station_id: The ID of the station this module belongs to.
+
+        Returns:
+            A JSON response containing a list of Habitats and their
+            attributes.
+      parameters:
+      - in: path
+        name: save_id
+        schema:
+          type: integer
+        required: true
+      - in: path
+        name: station_id
+        schema:
+          type: integer
+        required: true
+      tags:
+      - game
+      security:
+      - basicAuth: []
+      - cookieAuth: []
+      - {}
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Habitat'
+          description: ''
+    post:
+      operationId: game_stations_habitats_create
+      description: |-
+        Create new Habitats.
+
+        Args:
+            request: POST request with the json to create new modules.
+            save_id: The ID of the save game this module belongs to.
+            station_id: The ID of the station this module belongs to.
+
+        Returns:
+            JSON Response detailing the objects that have been created.
+      parameters:
+      - in: path
+        name: save_id
+        schema:
+          type: integer
+        required: true
+      - in: path
+        name: station_id
+        schema:
+          type: integer
+        required: true
+      tags:
+      - game
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/Habitat'
+          application/x-www-form-urlencoded:
+            schema:
+              $ref: '#/components/schemas/Habitat'
+          multipart/form-data:
+            schema:
+              $ref: '#/components/schemas/Habitat'
+        required: true
+      security:
+      - basicAuth: []
+      - cookieAuth: []
+      - {}
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Habitat'
+          description: ''
 components:
   schemas:
+    Habitat:
+      type: object
+      description: The serializer for station Habitats.
+      properties:
+        id:
+          type: integer
+          readOnly: true
+        count:
+          type: integer
+          maximum: 9223372036854775807
+          minimum: -9223372036854775808
+          format: int64
+        module_id:
+          type: integer
+        station_id:
+          type: integer
+          readOnly: true
+      required:
+      - count
+      - id
+      - module_id
+      - station_id
     HabitatModule:
       type: object
       description: The serializer used for Habitat Modules.
