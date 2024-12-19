@@ -77,6 +77,7 @@ class Station(models.Model):
         self.population = sum(
             [mod.count * mod.module.capacity for mod in modules]
         )
+        self.save()
 
 
 class Dataset(models.Model):
@@ -148,3 +149,12 @@ class Habitat(models.Model):
 
     def __str__(self) -> str:
         return f"Habitats {self.station.name} Station {self.module.name}"
+
+    def save(self, *args, **kwargs) -> None:
+        """Overridden save method to ensure clean is called."""
+        self.clean()
+        return super().save(*args, **kwargs)
+
+    def clean(self) -> None:
+        """Custom clean to calculate new station population."""
+        self.station.calculate_population()

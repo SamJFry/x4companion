@@ -95,3 +95,6 @@ class TestHabitats:
 
     def test_str(self, create_habitat):
         assert str(create_habitat) == "Habitats Hammersmith Station Borg Large"
+
+    def test_clean_calculates_station_population(self, create_habitat):
+        assert Station.objects.get(id=1).population == 1000
