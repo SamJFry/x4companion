@@ -71,6 +71,13 @@ class Station(models.Model):
     def __str__(self) -> str:
         return f"Station {self.name}"
 
+    def calculate_population(self) -> None:
+        """Recalculate the maximum population of a station."""
+        modules = Habitat.objects.filter(station=self)
+        self.population = sum(
+            [mod.count * mod.module.capacity for mod in modules]
+        )
+
 
 class Dataset(models.Model):
     """Links a set of resources to be loaded into the app.

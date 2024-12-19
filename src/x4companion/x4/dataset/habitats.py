@@ -1,12 +1,15 @@
+"""Contains Habitat views."""
+
 from rest_framework.generics import GenericAPIView
 from rest_framework.request import Request
 from rest_framework.response import Response
 
-from x4companion.x4.models import Habitat, SaveGame, Station
+from x4companion.x4.models import Habitat, Station
 from x4companion.x4.responses import (
+    delete_response,
     get_bulk_response,
     get_response,
-    post_response, delete_response,
+    post_response,
 )
 from x4companion.x4.serializers import HabitatSerializer
 
@@ -86,7 +89,9 @@ class StationHabitatsView(GenericAPIView):
             ),
         )
 
-    def delete(self, request: Request, save_id: int, station_id: int, id_: int):
+    def delete(
+        self, request: Request, save_id: int, station_id: int, id_: int
+    ) -> Response:
         """Get a set of habitats from a station.
 
         Args:

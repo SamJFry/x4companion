@@ -60,6 +60,11 @@ class TestStation:
     def test_station_str(self, create_station):
         assert str(create_station) == "Station Hammersmith"
 
+    def test_calculate_population(self, create_habitat):
+        station = Station.objects.get(id=1)
+        station.calculate_population()
+        assert station.population == 1000
+
 
 @pytest.mark.django_db
 class TestDataset:

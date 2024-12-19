@@ -71,7 +71,7 @@ class TestStationHabitatsView:
         assert response.status_code == status.HTTP_204_NO_CONTENT
 
     def test_delete_404_on_not_my_station(
-            self, authed_client, create_user_2_habitat
+        self, authed_client, create_user_2_habitat
     ):
         response = authed_client.delete("/game/1/stations/1/habitats/1/")
         assert response.status_code == status.HTTP_404_NOT_FOUND
