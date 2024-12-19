@@ -6,7 +6,7 @@ from x4companion.x4.models import Habitat, SaveGame, Station
 from x4companion.x4.responses import (
     get_bulk_response,
     get_response,
-    post_response,
+    post_response, delete_response,
 )
 from x4companion.x4.serializers import HabitatSerializer
 
@@ -66,6 +66,16 @@ class StationHabitatsView(GenericAPIView):
     ) -> Response:
         return get_response(
             self.serializer_class,
+            Habitat.objects.filter(
+                id=id_,
+                station__id=station_id,
+                station__game__user=request.user,
+                station__game__id=save_id,
+            ),
+        )
+
+    def delete(self, request: Request, save_id: int, station_id: int, id_: int):
+        return delete_response(
             Habitat.objects.filter(
                 id=id_,
                 station__id=station_id,

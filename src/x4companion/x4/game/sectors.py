@@ -103,4 +103,10 @@ class SectorView(GenericAPIView):
             An empty response if the sector has been deleted.
 
         """
-        return delete_response(Sector, id_, game=save_id)
+        return delete_response(
+            Sector.objects.filter(
+                id=id_,
+                game__id=save_id,
+                game__user=request.user,
+            )
+        )

@@ -86,4 +86,6 @@ class SaveGameView(GenericAPIView):
             Empty response confirming save game has been deleted.
 
         """
-        return delete_response(SaveGame, id_, user=request.user)
+        return delete_response(
+            SaveGame.objects.filter(id=id_, user=request.user)
+        )

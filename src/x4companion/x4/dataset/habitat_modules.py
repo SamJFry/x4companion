@@ -89,4 +89,6 @@ class HabitatModuleView(GenericAPIView):
             An empty response if the module has been deleted.
 
         """
-        return delete_response(HabitatModule, id_, dataset=dataset_id)
+        return delete_response(
+            HabitatModule.objects.filter(id=id_, dataset=dataset_id)
+        )

@@ -82,7 +82,13 @@ class StationView(GenericAPIView):
             An empty response if the station been deleted.
 
         """
-        return delete_response(Station, id_, game=save_id)
+        return delete_response(
+            Station.objects.filter(
+                id=id_,
+                game__id=save_id,
+                game__user=request.user,
+            ),
+        )
 
     def get(self, request: Request, save_id: int, id_: int) -> Response:
         """Get a single sector.

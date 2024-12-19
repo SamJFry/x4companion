@@ -15,21 +15,19 @@ class StandardPaginator(PageNumberPagination):
     max_page_size = 1000
 
 
-def delete_response(model: type[models.Model], id_: int, **kwargs) -> Response:
+def delete_response(query_set: models.QuerySet) -> Response:
     """Delete a resource from a model.
 
     Args:
-        model: The model the entry belongs to.
-        id_: The ID of the DB entry you want to delete.
-        **kwargs: Any additional filters to apply to the delete command.
+        query_set: The ORM query to use to retrieve the data.
 
     Returns:
         The DRF response that contains the status.
 
     """
-    deleted = model.objects.filter(id=id_, **kwargs).delete()[0]
-    if not deleted:
+    if not query_set.exists():
         return Response(status=status.HTTP_404_NOT_FOUND)
+    query_set.delete()
     return Response(status=status.HTTP_204_NO_CONTENT)
 
 
