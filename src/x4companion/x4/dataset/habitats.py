@@ -64,6 +64,18 @@ class StationHabitatsView(GenericAPIView):
     def get(
         self, request: Request, save_id: int, station_id: int, id_: int
     ) -> Response:
+        """Get a single habitat module associated with a station.
+
+        Args:
+            request: GET request made to this endpoint.
+            save_id: The ID of the save game this module belongs to.
+            station_id: The ID of the station this module belongs to.
+            id_: The ID of modules.
+
+        Returns:
+            A JSON response containing the habitat modules.
+
+        """
         return get_response(
             self.serializer_class,
             Habitat.objects.filter(
@@ -75,6 +87,18 @@ class StationHabitatsView(GenericAPIView):
         )
 
     def delete(self, request: Request, save_id: int, station_id: int, id_: int):
+        """Get a set of habitats from a station.
+
+        Args:
+            request: GET request made to this endpoint.
+            save_id: The ID of the save game this module belongs to.
+            station_id: The ID of the station this module belongs to.
+            id_: The ID of modules.
+
+        Returns:
+            An empty response if the modules were deleted.
+
+        """
         return delete_response(
             Habitat.objects.filter(
                 id=id_,
