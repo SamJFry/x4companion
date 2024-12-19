@@ -6,7 +6,7 @@ from rest_framework.request import Request
 from rest_framework.response import Response
 
 from x4companion.x4.models import SaveGame
-from x4companion.x4.responses import delete_response, get_bulk_response
+from x4companion.x4.responses import delete_response, get_bulk_response, get_response
 from x4companion.x4.serializers import SaveGameSerializer
 
 
@@ -68,12 +68,10 @@ class SaveGameView(GenericAPIView):
             Response containing a single save game.
 
         """
-        serializer = self.serializer_class(
-            SaveGame.objects.filter(id=id_, user=request.user).first()
+        return get_response(
+            self.serializer_class,
+            SaveGame.objects.filter(id=id_, user=request.user),
         )
-        if not serializer.data["user"]:
-            return Response(status=status.HTTP_404_NOT_FOUND)
-        return Response(serializer.data, status=status.HTTP_200_OK)
 
     def delete(self, request: Request, id_: int) -> Response:
         """Delete a save game.
