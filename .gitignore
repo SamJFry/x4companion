@@ -170,3 +170,4 @@ cython_debug/
 # Custom stuff
 .ruff_cache
 *.sqlite3
+.node_modules/
