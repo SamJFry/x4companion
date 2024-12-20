@@ -8,7 +8,7 @@ dynamic = ["version"]
 description = "A Companion web app for the game X4 foundations."
 readme = "README.md"
 requires-python = ">=3.13"
-license = "MIT"
+license = "GNU"
 keywords = []
 authors = [
   { name = "sam", email = "samueljfry@protonmail.com" },
