@@ -5,10 +5,10 @@ build-backend = "hatchling.build"
 [project]
 name = "x4companion"
 dynamic = ["version"]
-description = 'A Companion web app for the game X4 foundations.'
+description = "A Companion web app for the game X4 foundations."
 readme = "README.md"
 requires-python = ">=3.13"
-license = "MIT"
+license = "GNU"
 keywords = []
 authors = [
   { name = "sam", email = "samueljfry@protonmail.com" },
@@ -16,16 +16,13 @@ authors = [
 classifiers = [
   "Development Status :: 4 - Beta",
   "Programming Language :: Python",
-  "Programming Language :: Python :: 3.8",
-  "Programming Language :: Python :: 3.9",
-  "Programming Language :: Python :: 3.10",
-  "Programming Language :: Python :: 3.11",
-  "Programming Language :: Python :: 3.12",
+  "Programming Language :: Python :: 3.13",
   "Programming Language :: Python :: Implementation :: CPython",
   "Programming Language :: Python :: Implementation :: PyPy",
 ]
 dependencies = [
   "djangorestframework==3.15.2",
+  "drf-spectacular==0.28.0",
 ]
 
 [project.urls]
@@ -35,6 +32,26 @@ Source = "https://github.com/sam/x4companion"
 
 [tool.hatch.version]
 path = "src/x4companion/__about__.py"
+
+[tool.hatch.envs.default]
+extra-dependencies = [
+  "pytest",
+  "pytest-django",
+]
+
+[tool.hatch.envs.hatch-test]
+default-args = ["--config-file=pyproject.toml"]
+extra-dependencies = [
+  "pytest",
+  "pytest-django",
+]
+
+[tool.hatch.envs.default.scripts]
+devserver = "python src/x4companion/manage.py runserver"
+makemigrations = "python src/x4companion/manage.py makemigrations"
+migrate = "python src/x4companion/manage.py migrate"
+create-su = "python src/x4companion/manage.py createsuperuser --username admin --email admin@example.com"
+spectacular = "python src/x4companion/manage.py spectacular --color --file schema.yml"
 
 [tool.hatch.envs.types]
 extra-dependencies = [
@@ -49,6 +66,7 @@ branch = true
 parallel = true
 omit = [
   "src/x4companion/__about__.py",
+  "*/migrations/*",
 ]
 
 [tool.coverage.paths]
@@ -68,8 +86,16 @@ line-length = 79
 [tool.ruff.lint]
 pydocstyle.convention = "google"
 extend-select = ["ALL"]
-extend-ignore = ["COM812", "ISC001"]
+extend-ignore = ["COM812", "ISC001", "S101", "ANN002", "ANN101", "ANN003", "D105", "D106", "ARG", "TD", "FIX002", "RUF012"]
+exclude = ["settings.py", "manage.py", "*/migrations/*"]
 
 [tool.ruff.lint.per-file-ignores]
 "__about__.py" = ["ALL"]
-"tests/*" = ["D"]
+"__init__.py" = ["D", "F401", "TID252"]
+"*/tests/*" = ["D", "S", "ANN", "PLR2004"]
+
+[tool.pytest.ini_options]
+python_files = "test_*.py"
+pythonpath = ["src"]
+testpaths = ["src"]
+DJANGO_SETTINGS_MODULE = "x4companion.settings"

@@ -1,0 +1,979 @@
+openapi: 3.0.3
+info:
+  title: x4 Companion
+  version: 0.0.1
+  description: A Companion web app for the game X4 foundations.
+paths:
+  /dataset/:
+    get:
+      operationId: dataset_retrieve
+      description: |-
+        Get all the currently configured Datasets.
+
+        Args:
+            request: The incoming GET request.
+
+        returns:
+            A DRF response with the existing objects.
+      tags:
+      - dataset
+      security:
+      - basicAuth: []
+      - cookieAuth: []
+      - {}
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Dataset'
+          description: ''
+    post:
+      operationId: dataset_create
+      description: |-
+        Create new Datasets in the app.
+
+        Args:
+            request: The incoming POST request.
+
+        returns:
+            A DRF response with the created objects.
+      tags:
+      - dataset
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/Dataset'
+          application/x-www-form-urlencoded:
+            schema:
+              $ref: '#/components/schemas/Dataset'
+          multipart/form-data:
+            schema:
+              $ref: '#/components/schemas/Dataset'
+        required: true
+      security:
+      - basicAuth: []
+      - cookieAuth: []
+      - {}
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Dataset'
+          description: ''
+  /dataset/{dataset_id}/habitat-modules/:
+    get:
+      operationId: dataset_habitat_modules_retrieve
+      description: |-
+        Get all available Habitat Modules.
+
+        Args:
+            request: GET request made to this endpoint.
+            dataset_id: The dataset you want to add the module to.
+
+        Returns:
+            A JSON response containing a list of Habitat Modules and their
+            attributes.
+      parameters:
+      - in: path
+        name: dataset_id
+        schema:
+          type: integer
+        required: true
+      tags:
+      - dataset
+      security:
+      - basicAuth: []
+      - cookieAuth: []
+      - {}
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/HabitatModule'
+          description: ''
+    post:
+      operationId: dataset_habitat_modules_create
+      description: |-
+        Create new Habitat Modules.
+
+        Args:
+            request: POST request with the json to create new modules.
+            dataset_id: The dataset you want to add the module to.
+
+        Returns:
+            JSON Response detailing the objects that have been created.
+      parameters:
+      - in: path
+        name: dataset_id
+        schema:
+          type: integer
+        required: true
+      tags:
+      - dataset
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/HabitatModule'
+          application/x-www-form-urlencoded:
+            schema:
+              $ref: '#/components/schemas/HabitatModule'
+          multipart/form-data:
+            schema:
+              $ref: '#/components/schemas/HabitatModule'
+        required: true
+      security:
+      - basicAuth: []
+      - cookieAuth: []
+      - {}
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/HabitatModule'
+          description: ''
+  /dataset/{dataset_id}/habitat-modules/{id_}/:
+    get:
+      operationId: dataset_habitat_modules_retrieve_2
+      description: |-
+        Get a Habitat Module.
+
+        Args:
+            request: The incoming GET request.
+            dataset_id: The ID of the dataset the module belongs to.
+            id_: The ID of the Module.
+
+        Returns:
+            A JSON Response containing the requested Module.
+      parameters:
+      - in: path
+        name: dataset_id
+        schema:
+          type: integer
+        required: true
+      - in: path
+        name: id_
+        schema:
+          type: integer
+        required: true
+      tags:
+      - dataset
+      security:
+      - basicAuth: []
+      - cookieAuth: []
+      - {}
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/HabitatModule'
+          description: ''
+    delete:
+      operationId: dataset_habitat_modules_destroy
+      description: |-
+        Delete a Habitat Module.
+
+        Args:
+            request: The incoming DELETE request.
+            dataset_id: The dataset the module belongs to.
+            id_: The ID of the Module.
+
+        Returns:
+            An empty response if the module has been deleted.
+      parameters:
+      - in: path
+        name: dataset_id
+        schema:
+          type: integer
+        required: true
+      - in: path
+        name: id_
+        schema:
+          type: integer
+        required: true
+      tags:
+      - dataset
+      security:
+      - basicAuth: []
+      - cookieAuth: []
+      - {}
+      responses:
+        '204':
+          description: No response body
+  /dataset/{id_}/:
+    get:
+      operationId: dataset_retrieve_2
+      description: |-
+        Get a dataset.
+
+        Args:
+            request: GET request.
+            id_: Unique ID of the dataset.
+
+        Returns:
+            Response containing a single dataset.
+      parameters:
+      - in: path
+        name: id_
+        schema:
+          type: integer
+        required: true
+      tags:
+      - dataset
+      security:
+      - basicAuth: []
+      - cookieAuth: []
+      - {}
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Dataset'
+          description: ''
+    delete:
+      operationId: dataset_destroy
+      description: |-
+        Delete a dataset.
+
+        Args:
+            request: DELETE Request.
+            id_: Unique ID of the dataset to delete.
+
+        Returns:
+            Empty response confirming dataset has been deleted.
+      parameters:
+      - in: path
+        name: id_
+        schema:
+          type: integer
+        required: true
+      tags:
+      - dataset
+      security:
+      - basicAuth: []
+      - cookieAuth: []
+      - {}
+      responses:
+        '204':
+          description: No response body
+  /game/:
+    get:
+      operationId: game_retrieve
+      description: |-
+        Get all the save games.
+
+        Args:
+            request: GET request.
+
+        Returns:
+            Response containing all a users save game.
+      tags:
+      - game
+      security:
+      - basicAuth: []
+      - cookieAuth: []
+      - {}
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/SaveGame'
+          description: ''
+    post:
+      operationId: game_create
+      description: |-
+        Create a new save game.
+
+        Args:
+            request: POST request.
+
+        Returns:
+            A JSON response of the objects created.
+      tags:
+      - game
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/SaveGame'
+          application/x-www-form-urlencoded:
+            schema:
+              $ref: '#/components/schemas/SaveGame'
+          multipart/form-data:
+            schema:
+              $ref: '#/components/schemas/SaveGame'
+        required: true
+      security:
+      - basicAuth: []
+      - cookieAuth: []
+      - {}
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/SaveGame'
+          description: ''
+  /game/{id_}/:
+    get:
+      operationId: game_retrieve_2
+      description: |-
+        Get a save game.
+
+        Args:
+            request: GET request.
+            id_: Unique ID of the save game.
+
+        Returns:
+            Response containing a single save game.
+      parameters:
+      - in: path
+        name: id_
+        schema:
+          type: integer
+        required: true
+      tags:
+      - game
+      security:
+      - basicAuth: []
+      - cookieAuth: []
+      - {}
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/SaveGame'
+          description: ''
+    delete:
+      operationId: game_destroy
+      description: |-
+        Delete a save game.
+
+        Args:
+            request: DELETE Request.
+            id_: Unique ID of the save game to delete.
+
+        Returns:
+            Empty response confirming save game has been deleted.
+      parameters:
+      - in: path
+        name: id_
+        schema:
+          type: integer
+        required: true
+      tags:
+      - game
+      security:
+      - basicAuth: []
+      - cookieAuth: []
+      - {}
+      responses:
+        '204':
+          description: No response body
+  /game/{save_id}/sectors/:
+    get:
+      operationId: game_sectors_retrieve
+      description: |-
+        Get all sectors currently configured.
+
+        Args:
+            request: GET request made to this endpoint.
+            save_id: The ID of the save game the sectors belong to.
+
+        Returns:
+            A JSON response containing a list of sectors and their attributes.
+      parameters:
+      - in: path
+        name: save_id
+        schema:
+          type: integer
+        required: true
+      tags:
+      - game
+      security:
+      - basicAuth: []
+      - cookieAuth: []
+      - {}
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/SectorSerializerRead'
+          description: ''
+    post:
+      operationId: game_sectors_create
+      description: |-
+        Creates a new sector in the database.
+
+        Args:
+            request: POST request with the json to create a new sector.
+            save_id: The ID of the save game the sectors belong to.
+
+        Returns:
+            JSON Response detailing the objects that have been created.
+      parameters:
+      - in: path
+        name: save_id
+        schema:
+          type: integer
+        required: true
+      tags:
+      - game
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/SectorSerializerWrite'
+          application/x-www-form-urlencoded:
+            schema:
+              $ref: '#/components/schemas/SectorSerializerWrite'
+          multipart/form-data:
+            schema:
+              $ref: '#/components/schemas/SectorSerializerWrite'
+        required: true
+      security:
+      - basicAuth: []
+      - cookieAuth: []
+      - {}
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/SectorSerializerWrite'
+          description: ''
+  /game/{save_id}/sectors/{id_}/:
+    get:
+      operationId: game_sectors_retrieve_2
+      description: |-
+        Get a single sector.
+
+        Args:
+            request: GET request.
+            save_id: The ID of the save game the sector belongs to.
+            id_: The ID of the sector to get.
+
+        Returns:
+            A JSON response for a single sector.
+      parameters:
+      - in: path
+        name: id_
+        schema:
+          type: integer
+        required: true
+      - in: path
+        name: save_id
+        schema:
+          type: integer
+        required: true
+      tags:
+      - game
+      security:
+      - basicAuth: []
+      - cookieAuth: []
+      - {}
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/SectorSerializerRead'
+          description: ''
+    delete:
+      operationId: game_sectors_destroy
+      description: |-
+        Delete a sector from the Database.
+
+        Args:
+            request: DELETE Request.
+            save_id: The ID of the save game the sector belong to.
+            id_: The id of the sector to delete.
+
+        Returns:
+            An empty response if the sector has been deleted.
+      parameters:
+      - in: path
+        name: id_
+        schema:
+          type: integer
+        required: true
+      - in: path
+        name: save_id
+        schema:
+          type: integer
+        required: true
+      tags:
+      - game
+      security:
+      - basicAuth: []
+      - cookieAuth: []
+      - {}
+      responses:
+        '204':
+          description: No response body
+  /game/{save_id}/stations/:
+    get:
+      operationId: game_stations_retrieve
+      description: |-
+        Get all stations currently configured.
+
+        Args:
+            request: GET request made to this endpoint.
+            save_id: The ID of the save game the stations belong to.
+
+        Returns:
+            A JSON response containing a list of stations and their attributes.
+      parameters:
+      - in: path
+        name: save_id
+        schema:
+          type: integer
+        required: true
+      tags:
+      - game
+      security:
+      - basicAuth: []
+      - cookieAuth: []
+      - {}
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/StationSerializerRead'
+          description: ''
+    post:
+      operationId: game_stations_create
+      description: |-
+        Create new stations.
+
+        Args:
+            request: POST request with the json to create new stations.
+            save_id: The ID of the save game the stations belong to.
+
+        Returns:
+            JSON Response detailing the objects that have been created.
+      parameters:
+      - in: path
+        name: save_id
+        schema:
+          type: integer
+        required: true
+      tags:
+      - game
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/StationSerializerWrite'
+          application/x-www-form-urlencoded:
+            schema:
+              $ref: '#/components/schemas/StationSerializerWrite'
+          multipart/form-data:
+            schema:
+              $ref: '#/components/schemas/StationSerializerWrite'
+        required: true
+      security:
+      - basicAuth: []
+      - cookieAuth: []
+      - {}
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/StationSerializerWrite'
+          description: ''
+  /game/{save_id}/stations/{id_}/:
+    get:
+      operationId: game_stations_retrieve_2
+      description: |-
+        Get a single sector.
+
+        Args:
+            request: GET request.
+            save_id: The ID of the save game the station belongs to.
+            id_: The ID of the station to get.
+
+        Returns:
+            A JSON response for a single station.
+      parameters:
+      - in: path
+        name: id_
+        schema:
+          type: integer
+        required: true
+      - in: path
+        name: save_id
+        schema:
+          type: integer
+        required: true
+      tags:
+      - game
+      security:
+      - basicAuth: []
+      - cookieAuth: []
+      - {}
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/StationSerializerRead'
+          description: ''
+    delete:
+      operationId: game_stations_destroy
+      description: |-
+        Delete a staion.
+
+        Args:
+            request: DELETE Request.
+            save_id: The ID of the save game the station belong to.
+            id_: The id of the station to delete.
+
+        Returns:
+            An empty response if the station been deleted.
+      parameters:
+      - in: path
+        name: id_
+        schema:
+          type: integer
+        required: true
+      - in: path
+        name: save_id
+        schema:
+          type: integer
+        required: true
+      tags:
+      - game
+      security:
+      - basicAuth: []
+      - cookieAuth: []
+      - {}
+      responses:
+        '204':
+          description: No response body
+  /game/{save_id}/stations/{station_id}/habitats/:
+    get:
+      operationId: game_stations_habitats_retrieve
+      description: |-
+        Get all available Habitats for this station.
+
+        Args:
+            request: GET request made to this endpoint.
+            save_id: The ID of the save game this module belongs to.
+            station_id: The ID of the station this module belongs to.
+
+        Returns:
+            A JSON response containing a list of Habitats and their
+            attributes.
+      parameters:
+      - in: path
+        name: save_id
+        schema:
+          type: integer
+        required: true
+      - in: path
+        name: station_id
+        schema:
+          type: integer
+        required: true
+      tags:
+      - game
+      security:
+      - basicAuth: []
+      - cookieAuth: []
+      - {}
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Habitat'
+          description: ''
+    post:
+      operationId: game_stations_habitats_create
+      description: |-
+        Create new Habitats.
+
+        Args:
+            request: POST request with the json to create new modules.
+            save_id: The ID of the save game this module belongs to.
+            station_id: The ID of the station this module belongs to.
+
+        Returns:
+            JSON Response detailing the objects that have been created.
+      parameters:
+      - in: path
+        name: save_id
+        schema:
+          type: integer
+        required: true
+      - in: path
+        name: station_id
+        schema:
+          type: integer
+        required: true
+      tags:
+      - game
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/Habitat'
+          application/x-www-form-urlencoded:
+            schema:
+              $ref: '#/components/schemas/Habitat'
+          multipart/form-data:
+            schema:
+              $ref: '#/components/schemas/Habitat'
+        required: true
+      security:
+      - basicAuth: []
+      - cookieAuth: []
+      - {}
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Habitat'
+          description: ''
+  /game/{save_id}/stations/{station_id}/habitats/{id_}/:
+    get:
+      operationId: game_stations_habitats_retrieve_2
+      description: |-
+        Get a single habitat module associated with a station.
+
+        Args:
+            request: GET request made to this endpoint.
+            save_id: The ID of the save game this module belongs to.
+            station_id: The ID of the station this module belongs to.
+            id_: The ID of modules.
+
+        Returns:
+            A JSON response containing the habitat modules.
+      parameters:
+      - in: path
+        name: id_
+        schema:
+          type: integer
+        required: true
+      - in: path
+        name: save_id
+        schema:
+          type: integer
+        required: true
+      - in: path
+        name: station_id
+        schema:
+          type: integer
+        required: true
+      tags:
+      - game
+      security:
+      - basicAuth: []
+      - cookieAuth: []
+      - {}
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Habitat'
+          description: ''
+    delete:
+      operationId: game_stations_habitats_destroy
+      description: |-
+        Get a set of habitats from a station.
+
+        Args:
+            request: GET request made to this endpoint.
+            save_id: The ID of the save game this module belongs to.
+            station_id: The ID of the station this module belongs to.
+            id_: The ID of modules.
+
+        Returns:
+            An empty response if the modules were deleted.
+      parameters:
+      - in: path
+        name: id_
+        schema:
+          type: integer
+        required: true
+      - in: path
+        name: save_id
+        schema:
+          type: integer
+        required: true
+      - in: path
+        name: station_id
+        schema:
+          type: integer
+        required: true
+      tags:
+      - game
+      security:
+      - basicAuth: []
+      - cookieAuth: []
+      - {}
+      responses:
+        '204':
+          description: No response body
+components:
+  schemas:
+    Dataset:
+      type: object
+      description: Serialize Datasets.
+      properties:
+        id:
+          type: integer
+          readOnly: true
+        name:
+          type: string
+          maxLength: 50
+      required:
+      - id
+      - name
+    Habitat:
+      type: object
+      description: The serializer for station Habitats.
+      properties:
+        id:
+          type: integer
+          readOnly: true
+        count:
+          type: integer
+          maximum: 9223372036854775807
+          minimum: -9223372036854775808
+          format: int64
+        module_id:
+          type: integer
+        station_id:
+          type: integer
+          readOnly: true
+      required:
+      - count
+      - id
+      - module_id
+      - station_id
+    HabitatModule:
+      type: object
+      description: The serializer used for Habitat Modules.
+      properties:
+        id:
+          type: integer
+          readOnly: true
+        name:
+          type: string
+          maxLength: 50
+        capacity:
+          type: integer
+          maximum: 9223372036854775807
+          minimum: -9223372036854775808
+          format: int64
+        species:
+          type: string
+          maxLength: 50
+      required:
+      - capacity
+      - id
+      - name
+      - species
+    SaveGame:
+      type: object
+      description: Serialize SaveGames.
+      properties:
+        id:
+          type: integer
+          readOnly: true
+        name:
+          type: string
+          maxLength: 50
+        user:
+          type: integer
+      required:
+      - id
+      - name
+      - user
+    SectorSerializerRead:
+      type: object
+      description: Validates Sectors values.
+      properties:
+        id:
+          type: integer
+          readOnly: true
+        name:
+          type: string
+          maxLength: 50
+        game_id:
+          type: integer
+      required:
+      - game_id
+      - id
+      - name
+    SectorSerializerWrite:
+      type: object
+      description: Serializer class used to create sectors.
+      properties:
+        name:
+          type: string
+          maxLength: 50
+      required:
+      - name
+    StationSerializerRead:
+      type: object
+      description: The serializer used for reading stations from the DB.
+      properties:
+        id:
+          type: integer
+          readOnly: true
+        name:
+          type: string
+          maxLength: 50
+        sector_id:
+          type: integer
+          readOnly: true
+        game_id:
+          type: integer
+          readOnly: true
+        population:
+          type: integer
+          maximum: 9223372036854775807
+          minimum: -9223372036854775808
+          format: int64
+      required:
+      - game_id
+      - id
+      - name
+      - sector_id
+    StationSerializerWrite:
+      type: object
+      description: The serializer used for stations when createing new ones.
+      properties:
+        name:
+          type: string
+          maxLength: 50
+        sector_id:
+          type: integer
+      required:
+      - name
+      - sector_id
+  securitySchemes:
+    basicAuth:
+      type: http
+      scheme: basic
+    cookieAuth:
+      type: apiKey
+      in: cookie
+      name: sessionid
