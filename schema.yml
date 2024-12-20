@@ -4,6 +4,65 @@ info:
   version: 0.0.1
   description: A Companion web app for the game X4 foundations.
 paths:
+  /dataset/:
+    get:
+      operationId: dataset_retrieve
+      description: |-
+        Get all the currently configured Datasets.
+
+        Args:
+            request: The incoming GET request.
+
+        returns:
+            A DRF response with the existing objects.
+      tags:
+      - dataset
+      security:
+      - basicAuth: []
+      - cookieAuth: []
+      - {}
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Dataset'
+          description: ''
+    post:
+      operationId: dataset_create
+      description: |-
+        Create new Datasets in the app.
+
+        Args:
+            request: The incoming POST request.
+
+        returns:
+            A DRF response with the created objects.
+      tags:
+      - dataset
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/Dataset'
+          application/x-www-form-urlencoded:
+            schema:
+              $ref: '#/components/schemas/Dataset'
+          multipart/form-data:
+            schema:
+              $ref: '#/components/schemas/Dataset'
+        required: true
+      security:
+      - basicAuth: []
+      - cookieAuth: []
+      - {}
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Dataset'
+          description: ''
   /dataset/{dataset_id}/habitat-modules/:
     get:
       operationId: dataset_habitat_modules_retrieve
@@ -133,6 +192,63 @@ paths:
         schema:
           type: integer
         required: true
+      - in: path
+        name: id_
+        schema:
+          type: integer
+        required: true
+      tags:
+      - dataset
+      security:
+      - basicAuth: []
+      - cookieAuth: []
+      - {}
+      responses:
+        '204':
+          description: No response body
+  /dataset/{id_}/:
+    get:
+      operationId: dataset_retrieve_2
+      description: |-
+        Get a dataset.
+
+        Args:
+            request: GET request.
+            id_: Unique ID of the dataset.
+
+        Returns:
+            Response containing a single dataset.
+      parameters:
+      - in: path
+        name: id_
+        schema:
+          type: integer
+        required: true
+      tags:
+      - dataset
+      security:
+      - basicAuth: []
+      - cookieAuth: []
+      - {}
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Dataset'
+          description: ''
+    delete:
+      operationId: dataset_destroy
+      description: |-
+        Delete a dataset.
+
+        Args:
+            request: DELETE Request.
+            id_: Unique ID of the dataset to delete.
+
+        Returns:
+            Empty response confirming dataset has been deleted.
+      parameters:
       - in: path
         name: id_
         schema:
@@ -633,8 +749,102 @@ paths:
               schema:
                 $ref: '#/components/schemas/Habitat'
           description: ''
+  /game/{save_id}/stations/{station_id}/habitats/{id_}/:
+    get:
+      operationId: game_stations_habitats_retrieve_2
+      description: |-
+        Get a single habitat module associated with a station.
+
+        Args:
+            request: GET request made to this endpoint.
+            save_id: The ID of the save game this module belongs to.
+            station_id: The ID of the station this module belongs to.
+            id_: The ID of modules.
+
+        Returns:
+            A JSON response containing the habitat modules.
+      parameters:
+      - in: path
+        name: id_
+        schema:
+          type: integer
+        required: true
+      - in: path
+        name: save_id
+        schema:
+          type: integer
+        required: true
+      - in: path
+        name: station_id
+        schema:
+          type: integer
+        required: true
+      tags:
+      - game
+      security:
+      - basicAuth: []
+      - cookieAuth: []
+      - {}
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Habitat'
+          description: ''
+    delete:
+      operationId: game_stations_habitats_destroy
+      description: |-
+        Get a set of habitats from a station.
+
+        Args:
+            request: GET request made to this endpoint.
+            save_id: The ID of the save game this module belongs to.
+            station_id: The ID of the station this module belongs to.
+            id_: The ID of modules.
+
+        Returns:
+            An empty response if the modules were deleted.
+      parameters:
+      - in: path
+        name: id_
+        schema:
+          type: integer
+        required: true
+      - in: path
+        name: save_id
+        schema:
+          type: integer
+        required: true
+      - in: path
+        name: station_id
+        schema:
+          type: integer
+        required: true
+      tags:
+      - game
+      security:
+      - basicAuth: []
+      - cookieAuth: []
+      - {}
+      responses:
+        '204':
+          description: No response body
 components:
   schemas:
+    Dataset:
+      type: object
+      description: Serialize Datasets.
+      properties:
+        id:
+          type: integer
+          readOnly: true
+        name:
+          type: string
+          maxLength: 50
+      required:
+      - id
+      - name
     Habitat:
       type: object
       description: The serializer for station Habitats.
