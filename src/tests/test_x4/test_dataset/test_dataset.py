@@ -33,3 +33,16 @@ class TestDataset:
                 }
             ],
         }
+
+
+@pytest.mark.django_db
+class TestDataSetView:
+    def test_get(self, authed_client, create_dataset):
+        response = authed_client.get("/dataset/1/")
+        assert response.status_code == status.HTTP_200_OK
+        assert response.json() == {"id": 1, "name": "StarTrekin"}
+
+    def test_delete(self, authed_client, create_dataset):
+        response = authed_client.delete("/dataset/1/")
+        assert response.status_code == status.HTTP_204_NO_CONTENT
+        assert list(Dataset.objects.filter(id=1).values()) == []

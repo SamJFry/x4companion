@@ -61,6 +61,7 @@ urlpatterns = [
         name="station_habitat",
     ),
     path("dataset/", dataset.Datasets.as_view(), name="datasets"),
+    path("dataset/<int:id_>/", dataset.DatasetView.as_view(), name="dataset"),
     path(
         "dataset/<int:dataset_id>/habitat-modules/",
         habitat_modules.HabitatModules.as_view(),
