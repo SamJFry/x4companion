@@ -1,5 +1,5 @@
-import {AppProvider, Navigation} from '@toolpad/core/AppProvider';
-import { DashboardLayout, ThemeSwitcher } from '@toolpad/core/DashboardLayout';
+import {AppProvider, Navigation} from "@toolpad/core/AppProvider";
+import {DashboardLayout, ThemeSwitcher} from '@toolpad/core/DashboardLayout';
 import FlagOutlinedIcon from '@mui/icons-material/FlagOutlined';
 import PlaceOutlinedIcon from "@mui/icons-material/PlaceOutlined";
 import PrecisionManufacturingOutlinedIcon from '@mui/icons-material/PrecisionManufacturingOutlined';
@@ -7,6 +7,10 @@ import FactoryOutlinedIcon from '@mui/icons-material/FactoryOutlined';
 import ApartmentOutlinedIcon from '@mui/icons-material/ApartmentOutlined';
 import HouseOutlinedIcon from '@mui/icons-material/HouseOutlined';
 import LandslideOutlinedIcon from '@mui/icons-material/LandslideOutlined';
+import AddIcon from '@mui/icons-material/Add';
+import DeleteOutlinedIcon from '@mui/icons-material/DeleteOutlined';
+import ListItemText from '@mui/material/ListItemText';
+import ListItemIcon from '@mui/material/ListItemIcon';
 import ListIcon from '@mui/icons-material/List';
 import PopupState, {bindMenu, bindTrigger} from "material-ui-popup-state";
 import * as React from "react";
@@ -14,6 +18,8 @@ import Button from "@mui/material/Button";
 import Menu from "@mui/material/Menu";
 import MenuItem from "@mui/material/MenuItem";
 import {useEffect, useState} from "react";
+import {getSaveGames} from "../responses"
+import {Divider} from "@mui/material";
 
 const NAVIGATION: Navigation = [
   {kind: 'divider'},
@@ -71,14 +77,6 @@ const NAVIGATION: Navigation = [
   },
   {kind: 'divider'},
 ]
-const backend: string = import.meta.env.VITE_BACKEND
-
-async function getSaveGames() {
-  const response = await fetch(`${backend}/game/`)
-  const data = await response.json()
-  console.log(response.status)
-  return data["data"]
-}
 
 function TopBarActions() {
   const [saves, setSaves] = useState<Array<object>>([])
@@ -98,8 +96,18 @@ function TopBarActions() {
           </Button>
           <Menu {...bindMenu(popupState)}>
             {saves.map((save: object) => (
-              <MenuItem onClick={popupState.close} key={save["id"]}>{save["name"]}</MenuItem>
+              <MenuItem onClick={popupState.close} key={save["id"]}>
+                <ListItemText>{save["name"]}</ListItemText>
+                <Button startIcon={<DeleteOutlinedIcon />} />
+              </MenuItem>
             ))}
+            <Divider />
+            <MenuItem>
+              <ListItemIcon>
+                <AddIcon fontSize="small" />
+              </ListItemIcon>
+              <ListItemText>New Save</ListItemText>
+            </MenuItem>
           </Menu>
           <ThemeSwitcher />
         </React.Fragment>
