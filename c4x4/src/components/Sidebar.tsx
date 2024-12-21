@@ -7,11 +7,13 @@ import FactoryOutlinedIcon from '@mui/icons-material/FactoryOutlined';
 import ApartmentOutlinedIcon from '@mui/icons-material/ApartmentOutlined';
 import HouseOutlinedIcon from '@mui/icons-material/HouseOutlined';
 import LandslideOutlinedIcon from '@mui/icons-material/LandslideOutlined';
+import ListIcon from '@mui/icons-material/List';
 import PopupState, {bindMenu, bindTrigger} from "material-ui-popup-state";
 import * as React from "react";
 import Button from "@mui/material/Button";
 import Menu from "@mui/material/Menu";
 import MenuItem from "@mui/material/MenuItem";
+import {useEffect, useState} from "react";
 
 const NAVIGATION: Navigation = [
   {kind: 'divider'},
@@ -69,18 +71,35 @@ const NAVIGATION: Navigation = [
   },
   {kind: 'divider'},
 ]
+const backend: string = import.meta.env.VITE_BACKEND
+
+async function getSaveGames() {
+  const response = await fetch(`${backend}/game/`)
+  const data = await response.json()
+  console.log(response.status)
+  return data["data"]
+}
 
 function TopBarActions() {
+  const [saves, setSaves] = useState<Array<object>>([])
+  useEffect(() => {
+    const getSaves = async () => {
+      const fetchedSaves = await getSaveGames()
+      setSaves(fetchedSaves)
+    }
+    getSaves()
+  }, [])
   return (
     <PopupState variant="popover" popupId="demo-popup-menu">
       {(popupState) => (
         <React.Fragment>
-          <Button variant="outlined" {...bindTrigger(popupState)}>
-            Sign In
+          <Button variant="outlined" startIcon={<ListIcon />}{...bindTrigger(popupState)}>
+            Saves
           </Button>
           <Menu {...bindMenu(popupState)}>
-            <MenuItem onClick={popupState.close}>My account</MenuItem>
-            <MenuItem onClick={popupState.close}>Logout</MenuItem>
+            {saves.map((save: object) => (
+              <MenuItem onClick={popupState.close} key={save["id"]}>{save["name"]}</MenuItem>
+            ))}
           </Menu>
           <ThemeSwitcher />
         </React.Fragment>
