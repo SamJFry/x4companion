@@ -1,5 +1,5 @@
 import {AppProvider, Navigation} from '@toolpad/core/AppProvider';
-import { DashboardLayout } from '@toolpad/core/DashboardLayout';
+import { DashboardLayout, ThemeSwitcher } from '@toolpad/core/DashboardLayout';
 import FlagOutlinedIcon from '@mui/icons-material/FlagOutlined';
 import PlaceOutlinedIcon from "@mui/icons-material/PlaceOutlined";
 import PrecisionManufacturingOutlinedIcon from '@mui/icons-material/PrecisionManufacturingOutlined';
@@ -70,19 +70,19 @@ const NAVIGATION: Navigation = [
   {kind: 'divider'},
 ]
 
-function ProfileDropdown() {
+function TopBarActions() {
   return (
     <PopupState variant="popover" popupId="demo-popup-menu">
       {(popupState) => (
         <React.Fragment>
-          <Button variant="contained" {...bindTrigger(popupState)}>
-            Dashboard
+          <Button variant="outlined" {...bindTrigger(popupState)}>
+            Sign In
           </Button>
           <Menu {...bindMenu(popupState)}>
-            <MenuItem onClick={popupState.close}>Profile</MenuItem>
             <MenuItem onClick={popupState.close}>My account</MenuItem>
             <MenuItem onClick={popupState.close}>Logout</MenuItem>
           </Menu>
+          <ThemeSwitcher />
         </React.Fragment>
       )}
     </PopupState>
@@ -100,7 +100,9 @@ export default function X4Base() {
       }}
     >
       <DashboardLayout
-        children={ProfileDropdown()}
+        slots={{
+          toolbarActions: TopBarActions
+        }}
       ></DashboardLayout>
     </AppProvider>
   )
