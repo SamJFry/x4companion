@@ -79,6 +79,24 @@ const NAVIGATION: Navigation = [
   {kind: 'divider'},
 ]
 
+interface OnHoverDeleteProps {
+  size: 'small' | 'large'
+}
+
+function OnHoverDelete(props: OnHoverDeleteProps): React.ReactElement {
+  const [isHovered, setIsHovered] = useState(false)
+  return (
+      <IconButton
+        color={isHovered ? "error": "default"}
+        size={props.size}
+        onMouseEnter={() => setIsHovered(true)}
+        onMouseLeave={() => setIsHovered(false)}
+      >
+        <DeleteOutlinedIcon fontSize={props.size} />
+      </IconButton>
+  )
+}
+
 function TopBarActions() {
   const [saves, setSaves] = useState<Array<object>>([])
   useEffect(() => {
@@ -99,9 +117,7 @@ function TopBarActions() {
             {saves.map((save: object) => (
               <MenuItem onClick={popupState.close} key={save["id"]}>
                 <ListItemText>{save["name"]}</ListItemText>
-                <IconButton color="error" size-="small">
-                  <DeleteOutlinedIcon fontSize="small"/>
-                </IconButton>
+                <OnHoverDelete size="small" />
               </MenuItem>
             ))}
             <Divider />
