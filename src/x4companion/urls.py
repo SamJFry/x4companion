@@ -18,6 +18,7 @@ Including another URLconf
 from django.contrib import admin
 from django.urls import path
 from drf_spectacular.views import SpectacularAPIView, SpectacularSwaggerView
+from rest_framework.authtoken import views
 
 from x4companion import x4
 from x4companion.x4.dataset import dataset, habitat_modules, habitats
@@ -26,6 +27,7 @@ from x4companion.x4.game import saves, sectors, stations
 urlpatterns = [
     path("admin/", admin.site.urls),
     path("", x4.index),
+    path("api/auth/", views.obtain_auth_token),
     path("schema/", SpectacularAPIView.as_view(), name="schema"),
     path("docs/", SpectacularSwaggerView.as_view(), name="swagger"),
     path(
