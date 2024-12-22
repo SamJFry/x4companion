@@ -8,9 +8,9 @@ export async function getUserToken(username: string, password: string): Promise<
     method: 'POST',
     body: formData
   })
+
   const response = await request.json()
   if (!("token" in response)) {
-    console.log("asdfasdf")
     return response
   }
   document.cookie = `token=Bearer ${response['token']}`

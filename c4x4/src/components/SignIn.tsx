@@ -21,6 +21,14 @@ const signIn: (provider: AuthProvider, formData: FormData) => void = async (
       resolve(getUserToken(formData.get('username-or-email'), formData.get('password')));
     }, 30);
   });
+  const response = await promise
+  if (response !== undefined) {
+    const error: AuthResponse = {
+      error: response['non_field_errors'],
+      type: "InvalidCreds"
+    }
+    return error
+  }
   return promise;
 };
 
