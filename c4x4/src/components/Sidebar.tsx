@@ -15,6 +15,7 @@ import ListIcon from '@mui/icons-material/List';
 import PopupState, {bindMenu, bindTrigger} from "material-ui-popup-state";
 import * as React from "react";
 import Button from "@mui/material/Button";
+import IconButton from '@mui/material/IconButton';
 import Menu from "@mui/material/Menu";
 import MenuItem from "@mui/material/MenuItem";
 import {useEffect, useState} from "react";
@@ -98,7 +99,9 @@ function TopBarActions() {
             {saves.map((save: object) => (
               <MenuItem onClick={popupState.close} key={save["id"]}>
                 <ListItemText>{save["name"]}</ListItemText>
-                <Button startIcon={<DeleteOutlinedIcon />} />
+                <IconButton color="error" size-="small">
+                  <DeleteOutlinedIcon fontSize="small"/>
+                </IconButton>
               </MenuItem>
             ))}
             <Divider />
