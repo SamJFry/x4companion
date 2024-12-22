@@ -25,10 +25,21 @@ export async function getSaveGames() {
 
 export async function deleteSaveGame(gameId: Number) {
   const response = await fetch(`${backend}/game/${gameId}/`, {
-    method: 'DELETE'
+    method: 'DELETE',
+    headers: {
+      "Authorization": `${getCookie('token')}`
+    }
   })
   if (response.status !== 204) {
     return "ERROR: Could not process delete."
   }
   return response.status
+}
+
+function getCookie(name: String) {
+  const value = `; ${document.cookie}`
+  const parts = value.split(`; ${name}=`)
+  if (parts.length === 2) {
+    return parts.pop().split(';').shift();
+  }
 }
