@@ -102,7 +102,6 @@ function TopBarActions() {
           <Button variant="outlined" startIcon={<ListIcon />}{...bindTrigger(popupState)}>
             Saves
           </Button>
-          <Button>Login</Button>
           <Menu {...bindMenu(popupState)}>
             {saves.map((save: object) => (
               <MenuItem onClick={popupState.close} key={save["id"]}>
