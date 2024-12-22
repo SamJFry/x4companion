@@ -8,18 +8,17 @@ import ApartmentOutlinedIcon from '@mui/icons-material/ApartmentOutlined';
 import HouseOutlinedIcon from '@mui/icons-material/HouseOutlined';
 import LandslideOutlinedIcon from '@mui/icons-material/LandslideOutlined';
 import AddIcon from '@mui/icons-material/Add';
-import DeleteOutlinedIcon from '@mui/icons-material/DeleteOutlined';
 import ListItemText from '@mui/material/ListItemText';
 import ListItemIcon from '@mui/material/ListItemIcon';
 import ListIcon from '@mui/icons-material/List';
 import PopupState, {bindMenu, bindTrigger} from "material-ui-popup-state";
 import * as React from "react";
 import Button from "@mui/material/Button";
-import IconButton from '@mui/material/IconButton';
 import Menu from "@mui/material/Menu";
 import MenuItem from "@mui/material/MenuItem";
+import {OnHoverDelete} from "./DeleteButton.tsx";
 import {useEffect, useState} from "react";
-import {getSaveGames, deleteSaveGame} from "../responses"
+import {getSaveGames, deleteSaveGame} from "../responses";
 import {Divider} from "@mui/material";
 
 const NAVIGATION: Navigation = [
@@ -79,26 +78,6 @@ const NAVIGATION: Navigation = [
   {kind: 'divider'},
 ]
 
-interface OnHoverDeleteProps {
-  size: 'small' | 'large'
-  onClick: () => void
-}
-
-function OnHoverDelete(props: OnHoverDeleteProps): React.ReactElement {
-  const [isHovered, setIsHovered] = useState(false)
-  return (
-      <IconButton
-        color={isHovered ? "error": "default"}
-        size={props.size}
-        onMouseEnter={() => setIsHovered(true)}
-        onMouseLeave={() => setIsHovered(false)}
-        onClick={props.onClick}
-      >
-        <DeleteOutlinedIcon fontSize={props.size} />
-      </IconButton>
-  )
-}
-
 function TopBarActions() {
   const [saves, setSaves] = useState<Array<object>>([])
   const [deleteAction, setDeleteAction] = useState(true)
@@ -123,6 +102,7 @@ function TopBarActions() {
           <Button variant="outlined" startIcon={<ListIcon />}{...bindTrigger(popupState)}>
             Saves
           </Button>
+          <Button>Login</Button>
           <Menu {...bindMenu(popupState)}>
             {saves.map((save: object) => (
               <MenuItem onClick={popupState.close} key={save["id"]}>
