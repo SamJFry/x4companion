@@ -6,3 +6,13 @@ export async function getSaveGames() {
   console.log(response.status)
   return data["data"]
 }
+
+export async function deleteSaveGame(gameId: Number) {
+  const response = await fetch(`${backend}/game/${gameId}/`, {
+    method: 'DELETE'
+  })
+  if (response.status !== 204) {
+    return "ERROR: Could not process delete."
+  }
+  return response.status
+}

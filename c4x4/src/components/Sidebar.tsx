@@ -19,7 +19,7 @@ import IconButton from '@mui/material/IconButton';
 import Menu from "@mui/material/Menu";
 import MenuItem from "@mui/material/MenuItem";
 import {useEffect, useState} from "react";
-import {getSaveGames} from "../responses"
+import {getSaveGames, deleteSaveGame} from "../responses"
 import {Divider} from "@mui/material";
 
 const NAVIGATION: Navigation = [
@@ -81,6 +81,7 @@ const NAVIGATION: Navigation = [
 
 interface OnHoverDeleteProps {
   size: 'small' | 'large'
+  onClick: () => void
 }
 
 function OnHoverDelete(props: OnHoverDeleteProps): React.ReactElement {
@@ -91,6 +92,7 @@ function OnHoverDelete(props: OnHoverDeleteProps): React.ReactElement {
         size={props.size}
         onMouseEnter={() => setIsHovered(true)}
         onMouseLeave={() => setIsHovered(false)}
+        onClick={props.onClick}
       >
         <DeleteOutlinedIcon fontSize={props.size} />
       </IconButton>
@@ -99,13 +101,21 @@ function OnHoverDelete(props: OnHoverDeleteProps): React.ReactElement {
 
 function TopBarActions() {
   const [saves, setSaves] = useState<Array<object>>([])
+  const [deleteAction, setDeleteAction] = useState(true)
   useEffect(() => {
-    const getSaves = async () => {
-      const fetchedSaves = await getSaveGames()
-      setSaves(fetchedSaves)
+    if (deleteAction) {
+      const getSaves = async () => {
+        const fetchedSaves = await getSaveGames()
+        setSaves(fetchedSaves)
+      }
+      getSaves()
+      setDeleteAction(false)
     }
-    getSaves()
   }, [])
+  const handleClickDelete = async (id: Number) => {
+    await deleteSaveGame(id)
+    setDeleteAction(true)
+  }
   return (
     <PopupState variant="popover" popupId="demo-popup-menu">
       {(popupState) => (
@@ -117,7 +127,7 @@ function TopBarActions() {
             {saves.map((save: object) => (
               <MenuItem onClick={popupState.close} key={save["id"]}>
                 <ListItemText>{save["name"]}</ListItemText>
-                <OnHoverDelete size="small" />
+                <OnHoverDelete size="small" onClick={() => handleClickDelete(save["id"])}/>
               </MenuItem>
             ))}
             <Divider />
