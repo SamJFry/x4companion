@@ -1,8 +1,10 @@
 import * as React from 'react';
+import { useEffect } from "react";
 import { AppProvider } from '@toolpad/core/AppProvider';
 import { SignInPage, type AuthProvider } from '@toolpad/core/SignInPage';
 import { useTheme } from '@mui/material/styles';
 import { getUserToken } from "../responses.ts";
+import { useNavigate } from "react-router";
 import TextField from "@mui/material/TextField";
 
 const providers = [{ id: 'credentials', name: 'Email and Password' }];
@@ -54,10 +56,27 @@ function UsernNameOrEmailField() {
 
 export default function CredentialsSignInPage() {
   const theme = useTheme();
+  const navigate = useNavigate()
+  useEffect(() =>{
+    if (document.cookie.includes('token=Bearer')) {
+      navigate('app');
+    }
+  }, [])
+  const handleSignIn: (provider: AuthProvider, formData: FormData) => void = async (
+    provider,
+    formData,
+  ) => {
+    const loginResponse = await signIn(provider, formData);
+    if (loginResponse === undefined && document.cookie.includes('token=Bearer')) {
+      console.log(loginResponse)
+      navigate('app')
+    }
+    return loginResponse
+  }
   return (
     <AppProvider theme={theme}>
       <SignInPage
-        signIn={signIn}
+        signIn={handleSignIn}
         providers={providers}
         slots={{
           emailField: UsernNameOrEmailField

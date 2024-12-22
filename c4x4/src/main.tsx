@@ -9,7 +9,7 @@ createRoot(document.getElementById('root')!).render(
   <BrowserRouter>
     <StrictMode>
       <Routes>
-        <Route path="login" element={<CredentialsSignInPage />} />
+        <Route path="/" element={<CredentialsSignInPage />} />
         <Route path="app" element={<X4Base />} />
       </Routes>
     </StrictMode>
