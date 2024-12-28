@@ -23,6 +23,20 @@ export async function getSaveGames() {
   return data["data"]
 }
 
+export async function getDatasets() {
+  const response = await fetch(`${backend}/dataset/`, {
+    method: 'GET',
+    headers: {
+      "Authorization": `${getCookie('token')}`
+    }
+  })
+  if (response.status !== 200) {
+    return "ERROR: Could not get datasets."
+  }
+  const data = await response.json()
+  return data["data"]
+}
+
 export async function deleteSaveGame(gameId: Number) {
   const response = await fetch(`${backend}/game/${gameId}/`, {
     method: 'DELETE',

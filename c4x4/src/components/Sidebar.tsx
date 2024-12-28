@@ -19,6 +19,7 @@ import MenuItem from "@mui/material/MenuItem";
 import {OnHoverDelete} from "./DeleteButton.tsx";
 import {useEffect, useState} from "react";
 import {getSaveGames, deleteSaveGame} from "../responses";
+import {NewSaveModal} from "./SaveModal.tsx";
 import {Divider} from "@mui/material";
 
 const NAVIGATION: Navigation = [
@@ -110,12 +111,7 @@ function TopBarActions() {
               </MenuItem>
             ))}
             <Divider />
-            <MenuItem>
-              <ListItemIcon>
-                <AddIcon fontSize="small" />
-              </ListItemIcon>
-              <ListItemText>New Save</ListItemText>
-            </MenuItem>
+            <NewSaveModal/>
           </Menu>
           <ThemeSwitcher />
         </React.Fragment>
