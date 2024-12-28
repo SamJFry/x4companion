@@ -15,7 +15,7 @@ const style = {
   top: '20%',
   left: '50%',
   transform: 'translate(-50%, -50%)',
-  minWidth: 400,
+  width: '60%',
   bgcolor: 'background.paper',
   boxShadow: 24,
   p: 4,
@@ -41,14 +41,14 @@ export function NewSaveModal() {
           <Typography id="modal-modal-title" variant="h6" component="h2">
             Create New Save
           </Typography>
-          <DatasetForm/>
+          <DatasetForm cancelAction={handleClose} createAction={handleClose} />
         </Box>
       </Modal>
     </>
   )
 }
 
-function DatasetForm() {
+function DatasetForm({ cancelAction, createAction }: ActionProp) {
   const [dataset, setDataset] = useState('');
   const handleChange = (event: SelectChangeEvent) => {
     setDataset(event.target.value);
@@ -63,9 +63,8 @@ function DatasetForm() {
   }, [])
   return (
     <>
-      <FormControl sx={{ m: 1, minWidth: 400 }}>
+      <FormControl sx={{ m: 1, minWidth: '100%' }}>
         <TextField
-          className="left-0"
           id="save-name"
           variant="outlined"
           label="Save Name"
@@ -74,7 +73,7 @@ function DatasetForm() {
           size="small"
         />
       </FormControl>
-      <FormControl required size="small" sx={{ m: 1, minWidth: 400 }}>
+      <FormControl required size="small" sx={{ m: 1, minWidth: '100%' }}>
         <InputLabel className="left-0" id="dataset-select">Dataset</InputLabel>
         <Select
           labelId="dataset-select"
@@ -88,9 +87,25 @@ function DatasetForm() {
         </Select>
       </FormControl>
       <Box sx={{ display: 'flex', justifyContent: 'flex-end' }}>
-        <Button variant="outlined" sx={{ m: 0.5 }}>Cancel</Button>
-        <Button variant="contained" sx={{ m: 0.5 }}>Create</Button>
+        <CancelButton action={cancelAction} />
+        <CreateButton action={createAction} />
       </Box>
     </>
+  )
+}
+
+interface ActionProp {
+  action: () => void;
+}
+
+function CancelButton({ action }: ActionProp) {
+  return (
+    <Button onClick={action} variant="outlined" sx={{ m: 0.5 }}>Cancel</Button>
+  )
+}
+
+function CreateButton({ action }: ActionProp) {
+  return (
+    <Button onClick={action} variant="contained" sx={{ m: 0.5 }}>Create</Button>
   )
 }
