@@ -1,6 +1,7 @@
 import {useState, useEffect} from "react";
 import {Modal, Box, Typography, FormControl, InputLabel} from "@mui/material";
 import Select, { SelectChangeEvent } from '@mui/material/Select';
+import Button from "@mui/material/Button";
 import TextField from '@mui/material/TextField';
 import MenuItem from "@mui/material/MenuItem";
 import ListItemIcon from "@mui/material/ListItemIcon";
@@ -62,16 +63,17 @@ function DatasetForm() {
   }, [])
   return (
     <>
-      <TextField
-        className="left-0"
-        id="save-name"
-        variant="outlined"
-        label="Save Name"
-        type="text"
-        required
-        size="small"
-        sx={{ mt: 1 , minWidth: 400 }}
-      />
+      <FormControl sx={{ m: 1, minWidth: 400 }}>
+        <TextField
+          className="left-0"
+          id="save-name"
+          variant="outlined"
+          label="Save Name"
+          type="text"
+          required
+          size="small"
+        />
+      </FormControl>
       <FormControl required size="small" sx={{ m: 1, minWidth: 400 }}>
         <InputLabel className="left-0" id="dataset-select">Dataset</InputLabel>
         <Select
@@ -85,6 +87,10 @@ function DatasetForm() {
           ))}
         </Select>
       </FormControl>
+      <Box sx={{ display: 'flex', justifyContent: 'flex-end' }}>
+        <Button variant="outlined" sx={{ m: 0.5 }}>Cancel</Button>
+        <Button variant="contained" sx={{ m: 0.5 }}>Create</Button>
+      </Box>
     </>
   )
 }
