@@ -1,3 +1,5 @@
+import json
+
 import pytest
 from rest_framework import status
 
@@ -9,7 +11,7 @@ class TestDataset:
     def test_post(self, authed_client):
         response = authed_client.post(
             "/dataset/",
-            {"data": [{"name": "StarTrekin"}]},
+            json.dumps({"data": [{"name": "StarTrekin"}]}),
             content_type="application/json",
         )
         assert response.status_code == status.HTTP_201_CREATED

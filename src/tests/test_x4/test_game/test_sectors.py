@@ -1,3 +1,5 @@
+import json
+
 import pytest
 from django.contrib.auth.models import User
 from rest_framework import status
@@ -22,12 +24,12 @@ class TestSectors:
     def test_post(self, authed_client, create_save_game):
         response = authed_client.post(
             "/game/1/sectors/",
-            {
+            json.dumps({
                 "data": [
                     {"name": "test sector"},
                     {"name": "cool sector"},
                 ]
-            },
+            }),
             content_type="application/json",
         )
         assert response.status_code == status.HTTP_201_CREATED
@@ -51,11 +53,9 @@ class TestSectorView:
 
     @pytest.mark.usefixtures("create_basic_sector")
     def test_get_does_not_give_others_sectors(
-        self, create_basic_sector, create_user_2_save_game, client
+        self, create_basic_sector, create_user_2_save_game, authed_client_2
     ):
-        user = User.objects.get(id=2)
-        client.force_login(user)
-        response = client.get("/game/2/sectors/1/")
+        response = authed_client_2.get("/game/2/sectors/1/")
         assert response.status_code == status.HTTP_404_NOT_FOUND
 
     def test_get_does_not_exist(self, authed_client):
@@ -73,11 +73,9 @@ class TestSectorView:
         ]
 
     def test_cant_delete_others_sectors(
-        self, create_basic_sector, create_user_2_save_game, client
+        self, create_basic_sector, create_user_2_save_game, authed_client_2
     ):
-        user = User.objects.get(id=2)
-        client.force_login(user)
-        response = client.delete("/game/2/sectors/1/")
+        response = authed_client_2.delete("/game/2/sectors/1/")
         assert list(Sector.objects.filter(id=1).values()) == [
             {"id": 1, "name": "sector 001", "game_id": 1}
         ]

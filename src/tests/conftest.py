@@ -1,5 +1,6 @@
 import pytest
 from django.contrib.auth.models import User
+from rest_framework.test import APIClient
 
 from x4companion.x4.models import (
     Dataset,
@@ -26,14 +27,16 @@ def create_user_2():
 
 
 @pytest.fixture
-def authed_client(client, create_user):
-    client.force_login(create_user)
+def authed_client(create_user):
+    client = APIClient()
+    client.force_authenticate(create_user)
     return client
 
 
 @pytest.fixture
-def authed_client_2(client, create_user_2):
-    client.force_login(create_user_2)
+def authed_client_2(create_user_2):
+    client = APIClient()
+    client.force_authenticate(create_user_2)
     return client
 
 

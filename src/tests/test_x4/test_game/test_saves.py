@@ -1,3 +1,5 @@
+import json
+
 import pytest
 from rest_framework import status
 
@@ -9,7 +11,7 @@ class TestSaveGames:
     def test_post(self, authed_client):
         response = authed_client.post(
             "/game/",
-            {"name": "Spock's Game"},
+            json.dumps({"name": "Spock's Game"}),
             content_type="application/json",
         )
         assert response.status_code == status.HTTP_201_CREATED

@@ -17,7 +17,7 @@ import {OnHoverDelete} from "./DeleteButton.tsx";
 import {useEffect, useState} from "react";
 import {getSaveGames, deleteSaveGame} from "../responses";
 import {NewSaveModal} from "./SaveModal.tsx";
-import {Divider, Box} from "@mui/material";
+import {Divider} from "@mui/material";
 
 const NAVIGATION: Navigation = [
   {kind: 'divider'},

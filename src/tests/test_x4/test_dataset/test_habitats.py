@@ -1,3 +1,5 @@
+import json
+
 import pytest
 from rest_framework import status
 
@@ -9,7 +11,7 @@ class TestStationHabitats:
     def test_post(self, authed_client, create_habitat_module, create_station):
         response = authed_client.post(
             "/game/1/stations/1/habitats/",
-            {"data": [{"module_id": 1, "count": 5}]},
+            json.dumps({"data": [{"module_id": 1, "count": 5}]}),
             content_type="application/json",
         )
         assert response.status_code == status.HTTP_201_CREATED
