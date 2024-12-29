@@ -17,6 +17,7 @@ import {OnHoverDelete} from "./DeleteButton.tsx";
 import {useEffect, useState} from "react";
 import {getSaveGames, deleteSaveGame} from "../responses";
 import {NewSaveModal} from "./SaveModal.tsx"
+import OnHoverLogout from "./Logout.tsx";
 import {SaveIndicator} from "./SaveIndicator.tsx";
 import {Divider} from "@mui/material";
 
@@ -126,6 +127,7 @@ function TopBarActions() {
       </Popover>
       <SaveIndicator saves={saves}/>
       <ThemeSwitcher />
+      <OnHoverLogout size="medium" onClick={() => console.log("clicked")} />
     </>
   );
 }

@@ -5,7 +5,7 @@ export function SaveIndicator({ saves }) {
   if (saves.length !== 0) {
     return (
       <>
-        <Typography color="primary">Save: {saves[1]["name"]}</Typography>
+        <Typography color="primary">Save: {saves[0]["name"]}</Typography>
       </>
     )
   }
