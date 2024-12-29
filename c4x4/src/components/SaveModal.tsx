@@ -27,9 +27,14 @@ interface ActionProp {
 
 interface DatasetFormProps {
   cancelAction: () => void;
+  createAction: () => void;
 }
 
-export function NewSaveModal() {
+interface NewSaveModalProps {
+  createAction: () => void;
+}
+
+export function NewSaveModal({ createAction }: NewSaveModalProps): JSX.Element {
   const [isOpen, setOpen] = useState(false)
   const handleOpen = () => setOpen(true)
   const handleClose = () => setOpen(false)
@@ -49,17 +54,17 @@ export function NewSaveModal() {
           <Typography id="modal-modal-title" variant="h6" component="h2">
             Create New Save
           </Typography>
-          <DatasetForm cancelAction={handleClose} />
+          <DatasetForm cancelAction={handleClose} createAction={createAction} />
         </Box>
       </Modal>
     </>
   )
 }
 
-function DatasetForm({ cancelAction }: DatasetFormProps) {
+function DatasetForm({ cancelAction, createAction }: DatasetFormProps) {
   const [dataset, setDataset] = useState('');
   const handleDatasetChange = (event: SelectChangeEvent) => {
-    setDataset(Number(event.target.value));
+    setDataset(event.target.value);
   };
   const [name, setName] = useState('');
   const handleNameChange = (event: ChangeEvent<HTMLInputElement>) => {
@@ -74,7 +79,8 @@ function DatasetForm({ cancelAction }: DatasetFormProps) {
     getData()
   }, [])
   const handleCreate = async () => {
-    await createSaveGame(name, dataset)
+    await createSaveGame(name, Number(dataset))
+    createAction()
     cancelAction()
   }
   return (

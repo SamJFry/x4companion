@@ -121,7 +121,7 @@ function TopBarActions() {
           </MenuItem>
         ))}
         <Divider />
-        <NewSaveModal />
+        <NewSaveModal createAction={getSaves} />
       </Popover>
       <ThemeSwitcher />
     </>
