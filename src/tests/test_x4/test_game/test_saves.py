@@ -8,14 +8,19 @@ from x4companion.x4.models import SaveGame
 
 @pytest.mark.django_db
 class TestSaveGames:
-    def test_post(self, authed_client):
+    def test_post(self, authed_client, create_dataset):
         response = authed_client.post(
             "/game/",
-            json.dumps({"name": "Spock's Game"}),
+            json.dumps({"name": "Spock's Game", "dataset_id": 1}),
             content_type="application/json",
         )
         assert response.status_code == status.HTTP_201_CREATED
-        assert response.json() == {"id": 1, "name": "Spock's Game", "user": 1}
+        assert response.json() == {
+            "id": 1,
+            "name": "Spock's Game",
+            "user": 1,
+            "dataset_id": 1,
+        }
 
     @pytest.mark.usefixtures("_create_multiple_saves")
     def test_get(self, authed_client):
@@ -28,9 +33,9 @@ class TestSaveGames:
             "previous": None,
             "next": None,
             "data": [
-                {"id": 1, "name": "game_0", "user": 1},
-                {"id": 2, "name": "game_1", "user": 1},
-                {"id": 3, "name": "game_2", "user": 1},
+                {"id": 1, "name": "game_0", "user": 1, "dataset_id": 1},
+                {"id": 2, "name": "game_1", "user": 1, "dataset_id": 1},
+                {"id": 3, "name": "game_2", "user": 1, "dataset_id": 1},
             ],
         }
 
@@ -43,15 +48,20 @@ class TestSaveGameView:
         response = authed_client.get(f"/game/{id_}/")
         assert response.status_code == expected
         if response == status.HTTP_200_OK:
-            assert response.json() == {"id": 1, "name": "game_0", "user": 1}
+            assert response.json() == {
+                "id": 1,
+                "name": "game_0",
+                "user": 1,
+                "dataset_id": 1,
+            }
 
     @pytest.mark.usefixtures("_create_multiple_saves")
     def test_delete(self, authed_client):
         response = authed_client.delete("/game/2/")
         assert response.status_code == status.HTTP_204_NO_CONTENT
         assert list(SaveGame.objects.all().values()) == [
-            {"id": 1, "name": "game_0", "user_id": 1},
-            {"id": 3, "name": "game_2", "user_id": 1},
+            {"id": 1, "name": "game_0", "user_id": 1, "dataset_id": 1},
+            {"id": 3, "name": "game_2", "user_id": 1, "dataset_id": 1},
         ]
 
     @pytest.mark.usefixtures("_create_multiple_saves")

@@ -1,7 +1,6 @@
 import json
 
 import pytest
-from django.contrib.auth.models import User
 from rest_framework import status
 
 from x4companion.x4.models import Sector
@@ -24,12 +23,14 @@ class TestSectors:
     def test_post(self, authed_client, create_save_game):
         response = authed_client.post(
             "/game/1/sectors/",
-            json.dumps({
-                "data": [
-                    {"name": "test sector"},
-                    {"name": "cool sector"},
-                ]
-            }),
+            json.dumps(
+                {
+                    "data": [
+                        {"name": "test sector"},
+                        {"name": "cool sector"},
+                    ]
+                }
+            ),
             content_type="application/json",
         )
         assert response.status_code == status.HTTP_201_CREATED

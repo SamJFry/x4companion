@@ -11,15 +11,17 @@ class TestHabitatModules:
     def test_post(self, authed_client, create_dataset):
         response = authed_client.post(
             "/dataset/1/habitat-modules/",
-            json.dumps({
-                "data": [
-                    {
-                        "name": "Bajoran small habitat",
-                        "capacity": 250,
-                        "species": "Bajoran",
-                    }
-                ]
-            }),
+            json.dumps(
+                {
+                    "data": [
+                        {
+                            "name": "Bajoran small habitat",
+                            "capacity": 250,
+                            "species": "Bajoran",
+                        }
+                    ]
+                }
+            ),
             content_type="application/json",
         )
         assert response.status_code == status.HTTP_201_CREATED

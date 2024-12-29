@@ -4,6 +4,26 @@ from django.contrib.auth.models import User
 from django.db import models
 
 
+class Dataset(models.Model):
+    """Links a set of resources to be loaded into the app.
+
+    This model is referenced by template classes like HabitatModule or
+    FactoryModule. A Dataset is used to present a filtered view of templates,
+    so that only the content that is relevant to a SaveGame is accessible.
+
+    Attributes:
+        name (str): The name of the Dataset.
+
+    """
+
+    name = models.CharField(
+        max_length=50, blank=False, null=False, unique=True
+    )
+
+    def __str__(self) -> str:
+        return f"Dataset {self.name}"
+
+
 class SaveGame(models.Model):
     """The overarching save game that's being modeled.
 
@@ -15,6 +35,7 @@ class SaveGame(models.Model):
 
     name = models.CharField(max_length=50, blank=False, null=False)
     user = models.ForeignKey(User, on_delete=models.CASCADE)
+    dataset = models.ForeignKey(Dataset, on_delete=models.CASCADE)
 
     def __str__(self) -> str:
         return f"SaveGame {self.name}"
@@ -78,26 +99,6 @@ class Station(models.Model):
             [mod.count * mod.module.capacity for mod in modules]
         )
         self.save()
-
-
-class Dataset(models.Model):
-    """Links a set of resources to be loaded into the app.
-
-    This model is referenced by template classes like HabitatModule or
-    FactoryModule. A Dataset is used to present a filtered view of templates,
-    so that only the content that is relevant to a SaveGame is accessible.
-
-    Attributes:
-        name (str): The name of the Dataset.
-
-    """
-
-    name = models.CharField(
-        max_length=50, blank=False, null=False, unique=True
-    )
-
-    def __str__(self) -> str:
-        return f"Dataset {self.name}"
 
 
 class HabitatModule(models.Model):

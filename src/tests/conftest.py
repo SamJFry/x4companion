@@ -55,15 +55,22 @@ def _create_multiple_sectors(create_save_game):
 
 
 @pytest.fixture
-def _create_multiple_saves(create_user):
+def _create_multiple_saves(create_user, create_dataset):
     SaveGame.objects.bulk_create(
-        [SaveGame(name=f"game_{x}", user=create_user) for x in range(3)]
+        [
+            SaveGame(
+                name=f"game_{x}", user=create_user, dataset=create_dataset
+            )
+            for x in range(3)
+        ]
     )
 
 
 @pytest.fixture
-def create_save_game(create_user):
-    game = SaveGame.objects.create(name="Kirk's x4 game", user=create_user)
+def create_save_game(create_user, create_dataset):
+    game = SaveGame.objects.create(
+        name="Kirk's x4 game", user=create_user, dataset=create_dataset
+    )
     game.save()
     return game
 
@@ -92,8 +99,10 @@ def _create_multiple_stations(create_basic_sector, create_save_game):
 
 
 @pytest.fixture
-def create_user_2_save_game(create_user_2):
-    game = SaveGame.objects.create(name="Spock's x4 game", user=create_user_2)
+def create_user_2_save_game(create_user_2, create_dataset):
+    game = SaveGame.objects.create(
+        name="Spock's x4 game", user=create_user_2, dataset=create_dataset
+    )
     game.save()
     return game
 

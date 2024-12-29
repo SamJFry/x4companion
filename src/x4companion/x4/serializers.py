@@ -14,14 +14,42 @@ from x4companion.x4.models import (
 )
 
 
+class DatasetSerializer(serializers.ModelSerializer):
+    """Serialize Datasets."""
+
+    class Meta:
+        model = Dataset
+        fields = ["id", "name"]
+
+
 class SaveGameSerializer(serializers.ModelSerializer):
     """Serialize SaveGames."""
 
     user = serializers.PrimaryKeyRelatedField(queryset=User.objects.all())
+    dataset_id = serializers.PrimaryKeyRelatedField(
+        queryset=Dataset.objects.all()
+    )
 
     class Meta:
         model = SaveGame
-        fields = ["id", "name", "user"]
+        fields = ["id", "name", "user", "dataset_id"]
+
+    def create(self, validated_data: dict) -> models.Model:
+        """Create a save game from the validated data.
+
+        Args:
+            validated_data: The data that has been validated by the
+                serializer.
+
+        Returns:
+            A model instance of the created object.
+
+        """
+        return SaveGame.objects.create(
+            name=validated_data["name"],
+            user=validated_data["user"],
+            dataset=validated_data["dataset_id"],
+        )
 
 
 class SectorSerializerRead(serializers.ModelSerializer):
@@ -123,14 +151,6 @@ class StationSerializerRead(serializers.ModelSerializer):
             "game_id",
             "population",
         ]
-
-
-class DatasetSerializer(serializers.ModelSerializer):
-    """Serialize Datasets."""
-
-    class Meta:
-        model = Dataset
-        fields = ["id", "name"]
 
 
 class HabitatModuleSerializer(serializers.ModelSerializer):
