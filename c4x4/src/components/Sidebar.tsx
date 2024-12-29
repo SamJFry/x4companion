@@ -17,7 +17,7 @@ import {OnHoverDelete} from "./DeleteButton.tsx";
 import {useEffect, useState} from "react";
 import {getSaveGames, deleteSaveGame} from "../responses";
 import {NewSaveModal} from "./SaveModal.tsx";
-import {Divider} from "@mui/material";
+import {Divider, Box} from "@mui/material";
 
 const NAVIGATION: Navigation = [
   {kind: 'divider'},
@@ -79,7 +79,6 @@ const NAVIGATION: Navigation = [
 function TopBarActions() {
   const [saves, setSaves] = useState<Array<object>>([])
   const getSaves = async () => {
-    console.log("called")
     const fetchedSaves = await getSaveGames()
     setSaves(fetchedSaves)
   }
@@ -88,7 +87,7 @@ function TopBarActions() {
   }, [])
   const handleClickDelete = async (id: Number) => {
     await deleteSaveGame(id)
-    getSaves()
+    await getSaves()
   }
   const [anchorEl, setAnchorEl] = React.useState<HTMLButtonElement | null>(null);
 

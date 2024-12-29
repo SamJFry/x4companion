@@ -27,11 +27,10 @@ interface ActionProp {
 
 interface DatasetFormProps {
   cancelAction: () => void;
-  createAction: () => void;
 }
 
 export function NewSaveModal() {
-  const [isOpen, setOpen] = useState(true)
+  const [isOpen, setOpen] = useState(false)
   const handleOpen = () => setOpen(true)
   const handleClose = () => setOpen(false)
   return (
