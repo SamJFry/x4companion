@@ -18,8 +18,17 @@ const style = {
   width: '60%',
   bgcolor: 'background.paper',
   boxShadow: 24,
-  p: 4,
+  p: 4
 };
+
+interface ActionProp {
+  action: () => void;
+}
+
+interface DatasetFormProps {
+  cancelAction: () => void;
+  createAction: () => void;
+}
 
 export function NewSaveModal() {
   const [isOpen, setOpen] = useState(true)
@@ -48,7 +57,7 @@ export function NewSaveModal() {
   )
 }
 
-function DatasetForm({ cancelAction, createAction }: ActionProp) {
+function DatasetForm({ cancelAction, createAction }: DatasetFormProps) {
   const [dataset, setDataset] = useState('');
   const handleChange = (event: SelectChangeEvent) => {
     setDataset(event.target.value);
@@ -92,10 +101,6 @@ function DatasetForm({ cancelAction, createAction }: ActionProp) {
       </Box>
     </>
   )
-}
-
-interface ActionProp {
-  action: () => void;
 }
 
 function CancelButton({ action }: ActionProp) {

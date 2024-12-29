@@ -7,14 +7,11 @@ import FactoryOutlinedIcon from '@mui/icons-material/FactoryOutlined';
 import ApartmentOutlinedIcon from '@mui/icons-material/ApartmentOutlined';
 import HouseOutlinedIcon from '@mui/icons-material/HouseOutlined';
 import LandslideOutlinedIcon from '@mui/icons-material/LandslideOutlined';
-import AddIcon from '@mui/icons-material/Add';
 import ListItemText from '@mui/material/ListItemText';
-import ListItemIcon from '@mui/material/ListItemIcon';
 import ListIcon from '@mui/icons-material/List';
-import PopupState, {bindMenu, bindTrigger} from "material-ui-popup-state";
+import Popover from '@mui/material/Popover';
 import * as React from "react";
 import Button from "@mui/material/Button";
-import Menu from "@mui/material/Menu";
 import MenuItem from "@mui/material/MenuItem";
 import {OnHoverDelete} from "./DeleteButton.tsx";
 import {useEffect, useState} from "react";
@@ -96,27 +93,42 @@ function TopBarActions() {
     await deleteSaveGame(id)
     setDeleteAction(true)
   }
+  const [anchorEl, setAnchorEl] = React.useState<HTMLButtonElement | null>(null);
+
+  const handleClick = (event: React.MouseEvent<HTMLButtonElement>) => {
+    setAnchorEl(event.currentTarget);
+  };
+
+  const handleClose = () => {
+    setAnchorEl(null);
+  };
+
+  const open = Boolean(anchorEl);
   return (
-    <PopupState variant="popover" popupId="demo-popup-menu">
-      {(popupState) => (
-        <React.Fragment>
-          <Button variant="outlined" startIcon={<ListIcon />}{...bindTrigger(popupState)}>
-            Saves
-          </Button>
-          <Menu {...bindMenu(popupState)}>
-            {saves.map((save: object) => (
-              <MenuItem onClick={popupState.close} key={save["id"]}>
-                <ListItemText>{save["name"]}</ListItemText>
-                <OnHoverDelete size="small" onClick={() => handleClickDelete(save["id"])}/>
-              </MenuItem>
-            ))}
-            <Divider />
-            <NewSaveModal/>
-          </Menu>
-          <ThemeSwitcher />
-        </React.Fragment>
-      )}
-    </PopupState>
+    <>
+      <Button variant="outlined" startIcon={<ListIcon />} onClick={handleClick}>
+        Saves
+      </Button>
+      <Popover
+        open={open}
+        anchorEl={anchorEl}
+        onClose={handleClose}
+        anchorOrigin={{
+          vertical: 'bottom',
+          horizontal: 'left',
+        }}
+      >
+        {saves.map((save: object) => (
+          <MenuItem onClick={handleClose} key={save["id"]}>
+            <ListItemText>{save["name"]}</ListItemText>
+            <OnHoverDelete size="small" onClick={() => handleClickDelete(save["id"])}/>
+          </MenuItem>
+        ))}
+        <Divider />
+        <NewSaveModal />
+      </Popover>
+      <ThemeSwitcher />
+    </>
   );
 }
 
