@@ -50,6 +50,19 @@ export async function deleteSaveGame(gameId: Number) {
   return response.status
 }
 
+export async function createSaveGame(name: String, dataset: number) {
+  await fetch(`${backend}/game/`, {
+    method: 'POST',
+    headers: {
+      "Authorization": `${getCookie('token')}`,
+      "Content-Type": "application/json",
+    },
+    body: JSON.stringify({
+      name: name,
+    })
+  })
+}
+
 function getCookie(name: String) {
   const value = `; ${document.cookie}`
   const parts = value.split(`; ${name}=`)

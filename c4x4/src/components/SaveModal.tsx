@@ -1,4 +1,4 @@
-import {useState, useEffect} from "react";
+import {useState, useEffect, ChangeEvent} from "react";
 import {Modal, Box, Typography, FormControl, InputLabel} from "@mui/material";
 import Select, { SelectChangeEvent } from '@mui/material/Select';
 import Button from "@mui/material/Button";
@@ -7,7 +7,7 @@ import MenuItem from "@mui/material/MenuItem";
 import ListItemIcon from "@mui/material/ListItemIcon";
 import AddIcon from "@mui/icons-material/Add";
 import ListItemText from "@mui/material/ListItemText";
-import { getDatasets } from "../responses.ts";
+import { getDatasets, createSaveGame } from "../responses.ts";
 
 
 const style = {
@@ -50,18 +50,22 @@ export function NewSaveModal() {
           <Typography id="modal-modal-title" variant="h6" component="h2">
             Create New Save
           </Typography>
-          <DatasetForm cancelAction={handleClose} createAction={handleClose} />
+          <DatasetForm cancelAction={handleClose} />
         </Box>
       </Modal>
     </>
   )
 }
 
-function DatasetForm({ cancelAction, createAction }: DatasetFormProps) {
+function DatasetForm({ cancelAction }: DatasetFormProps) {
   const [dataset, setDataset] = useState('');
-  const handleChange = (event: SelectChangeEvent) => {
-    setDataset(event.target.value);
+  const handleDatasetChange = (event: SelectChangeEvent) => {
+    setDataset(Number(event.target.value));
   };
+  const [name, setName] = useState('');
+  const handleNameChange = (event: ChangeEvent<HTMLInputElement>) => {
+    setName(event.target.value)
+  }
   const [datasets, setDatasets] = useState<Array<object[]>>([])
   useEffect(() => {
     const getData = async () => {
@@ -70,6 +74,10 @@ function DatasetForm({ cancelAction, createAction }: DatasetFormProps) {
     }
     getData()
   }, [])
+  const handleCreate = async () => {
+    await createSaveGame(name, dataset)
+    cancelAction()
+  }
   return (
     <>
       <FormControl sx={{ m: 1, minWidth: '100%' }}>
@@ -80,6 +88,7 @@ function DatasetForm({ cancelAction, createAction }: DatasetFormProps) {
           type="text"
           required
           size="small"
+          onChange={handleNameChange}
         />
       </FormControl>
       <FormControl required size="small" sx={{ m: 1, minWidth: '100%' }}>
@@ -88,7 +97,7 @@ function DatasetForm({ cancelAction, createAction }: DatasetFormProps) {
           labelId="dataset-select"
           value={dataset}
           label="Dataset *"
-          onChange={handleChange}
+          onChange={handleDatasetChange}
         >
           {datasets.map((data: object) => (
             <MenuItem value={data["id"]}>{data["name"]}</MenuItem>
@@ -97,7 +106,7 @@ function DatasetForm({ cancelAction, createAction }: DatasetFormProps) {
       </FormControl>
       <Box sx={{ display: 'flex', justifyContent: 'flex-end' }}>
         <CancelButton action={cancelAction} />
-        <CreateButton action={createAction} />
+        <CreateButton action={handleCreate} />
       </Box>
     </>
   )
