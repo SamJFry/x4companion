@@ -78,20 +78,17 @@ const NAVIGATION: Navigation = [
 
 function TopBarActions() {
   const [saves, setSaves] = useState<Array<object>>([])
-  const [deleteAction, setDeleteAction] = useState(true)
+  const getSaves = async () => {
+    console.log("called")
+    const fetchedSaves = await getSaveGames()
+    setSaves(fetchedSaves)
+  }
   useEffect(() => {
-    if (deleteAction) {
-      const getSaves = async () => {
-        const fetchedSaves = await getSaveGames()
-        setSaves(fetchedSaves)
-      }
-      getSaves()
-      setDeleteAction(false)
-    }
+    getSaves()
   }, [])
   const handleClickDelete = async (id: Number) => {
     await deleteSaveGame(id)
-    setDeleteAction(true)
+    getSaves()
   }
   const [anchorEl, setAnchorEl] = React.useState<HTMLButtonElement | null>(null);
 
