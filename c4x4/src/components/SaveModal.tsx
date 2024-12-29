@@ -79,6 +79,9 @@ function DatasetForm({ cancelAction, createAction }: DatasetFormProps) {
     getData()
   }, [])
   const handleCreate = async () => {
+    if (!name || !dataset) {
+      return
+    }
     await createSaveGame(name, Number(dataset))
     createAction()
     cancelAction()

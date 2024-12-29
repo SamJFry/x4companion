@@ -59,6 +59,7 @@ export async function createSaveGame(name: String, dataset: number) {
     },
     body: JSON.stringify({
       name: name,
+      dataset_id: dataset
     })
   })
 }
