@@ -68,12 +68,39 @@ class SectorSerializerRead(serializers.ModelSerializer):
         fields = ["id", "template_id", "game_id"]
 
 
+class SectorTemplateSerializer(serializers.ModelSerializer):
+    """Serializer class used for Sector Templates."""
+
+    dataset_id = serializers.PrimaryKeyRelatedField(
+        queryset=Dataset.objects.all()
+    )
+
+    class Meta:
+        model = SectorTemplate
+        fields = ["id", "name", "dataset_id"]
+
+    def create(self, validated_data: dict) -> models.Model:
+        """Creates a sector template from validated data.
+
+        Args:
+            validated_data: The data from the serializer.
+
+        Returns:
+            A new SectorTemplate instance.
+
+        """
+        return SectorTemplate.objects.create(
+            name=validated_data["name"], dataset=validated_data["dataset_id"]
+        )
+
+
 class SectorSerializerWrite(serializers.Serializer):
     """Serializer class used to create sectors."""
 
     template_id = serializers.PrimaryKeyRelatedField(
         queryset=SectorTemplate.objects.all()
     )
+
     def create(self, validated_data: dict) -> models.Model:
         """Create a sector from the validated serializer data.
 

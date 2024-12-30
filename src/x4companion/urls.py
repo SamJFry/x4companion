@@ -21,7 +21,12 @@ from drf_spectacular.views import SpectacularAPIView, SpectacularSwaggerView
 from rest_framework.authtoken import views
 
 from x4companion import x4
-from x4companion.x4.dataset import dataset, habitat_modules, habitats
+from x4companion.x4.dataset import (
+    dataset,
+    habitat_modules,
+    habitats,
+    sector_templates,
+)
 from x4companion.x4.game import saves, sectors, stations
 
 urlpatterns = [
@@ -64,6 +69,16 @@ urlpatterns = [
     ),
     path("dataset/", dataset.Datasets.as_view(), name="datasets"),
     path("dataset/<int:id_>/", dataset.DatasetView.as_view(), name="dataset"),
+    path(
+        "dataset/<int:dataset_id>/sector-templates/",
+        sector_templates.SectorTemplates.as_view(),
+        name="sector_templates",
+    ),
+    path(
+        "dataset/<int:dataset_id>/sector-templates/<int:id_>/",
+        sector_templates.SectorTemplatesView.as_view(),
+        name="sector_template",
+    ),
     path(
         "dataset/<int:dataset_id>/habitat-modules/",
         habitat_modules.HabitatModules.as_view(),

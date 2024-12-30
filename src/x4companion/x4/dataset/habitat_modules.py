@@ -41,7 +41,7 @@ class HabitatModules(GenericAPIView):
 
         Args:
             request: GET request made to this endpoint.
-            dataset_id: The dataset you want to add the module to.
+            dataset_id: The dataset you want to retrieve modules from.
 
         Returns:
             A JSON response containing a list of Habitat Modules and their
