@@ -146,21 +146,22 @@ function TopBarActions() {
   );
 }
 
-export default function X4Base() {
+export default function X4Base({ children }) {
   return (
     <AppProvider
       navigation={NAVIGATION}
       branding={{
         logo: <img src="/src/assets/X4.svg" alt="x4 logo"/>,
         title: 'Companion',
-        homeUrl: '',
+        homeUrl: 'app',
       }}
     >
       <DashboardLayout
         slots={{
           toolbarActions: TopBarActions
         }}
-      ></DashboardLayout>
+        children={children}
+      />
     </AppProvider>
   )
 }
