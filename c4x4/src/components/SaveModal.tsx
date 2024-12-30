@@ -7,7 +7,7 @@ import MenuItem from "@mui/material/MenuItem";
 import ListItemIcon from "@mui/material/ListItemIcon";
 import AddIcon from "@mui/icons-material/Add";
 import ListItemText from "@mui/material/ListItemText";
-import { getDatasets, createSaveGame } from "../responses.ts";
+import { getDatasets, createSaveGame } from "../functions/responses.ts";
 
 
 const style = {

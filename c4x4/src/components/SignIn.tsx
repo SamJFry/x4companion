@@ -3,7 +3,7 @@ import { useEffect } from "react";
 import { AppProvider } from '@toolpad/core/AppProvider';
 import { SignInPage, type AuthProvider } from '@toolpad/core/SignInPage';
 import { useTheme } from '@mui/material/styles';
-import { getUserToken } from "../responses.ts";
+import { getUserToken } from "../functions/responses.ts";
 import { useNavigate } from "react-router";
 import TextField from "@mui/material/TextField";
 
@@ -68,7 +68,6 @@ export default function CredentialsSignInPage() {
   ) => {
     const loginResponse = await signIn(provider, formData);
     if (loginResponse === undefined && document.cookie.includes('token=Bearer')) {
-      console.log(loginResponse)
       navigate('app')
     }
     return loginResponse

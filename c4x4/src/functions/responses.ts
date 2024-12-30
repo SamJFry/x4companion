@@ -1,3 +1,5 @@
+import getCookie from "./cookies.ts";
+
 const backend: string = import.meta.env.VITE_BACKEND
 
 export async function getUserToken(username: string, password: string): Promise<void | object> {
@@ -19,7 +21,6 @@ export async function getUserToken(username: string, password: string): Promise<
 export async function getSaveGames() {
   const response = await fetch(`${backend}/game/`)
   const data = await response.json()
-  console.log(response.status)
   return data["data"]
 }
 
@@ -62,12 +63,4 @@ export async function createSaveGame(name: String, dataset: number) {
       dataset_id: dataset
     })
   })
-}
-
-function getCookie(name: String) {
-  const value = `; ${document.cookie}`
-  const parts = value.split(`; ${name}=`)
-  if (parts.length === 2) {
-    return parts.pop().split(';').shift();
-  }
 }
