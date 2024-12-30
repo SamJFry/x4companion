@@ -12,6 +12,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
   - Sign in and authentication.
   - Save management.
   - basic page layout for all future pages.
+- Added API endpoints for Sector Templates.
 
 ### Changed
 - Sectors now map to sector templates, previously each sector was unique within a save game.
