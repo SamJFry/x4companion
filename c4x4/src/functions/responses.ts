@@ -1,4 +1,4 @@
-import getCookie from "./cookies.ts";
+import getCookie, {setCookie} from "./cookies.ts";
 
 const backend: string = import.meta.env.VITE_BACKEND
 
@@ -15,7 +15,7 @@ export async function getUserToken(username: string, password: string): Promise<
   if (!("token" in response)) {
     return response
   }
-  document.cookie = `token=Bearer ${response['token']}`
+  setCookie('token', `Bearer ${response['token']}`)
 }
 
 export async function getSaveGames() {

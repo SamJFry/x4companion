@@ -16,10 +16,12 @@ import MenuItem from "@mui/material/MenuItem";
 import {OnHoverDelete} from "./DeleteButton.tsx";
 import {useEffect, useState} from "react";
 import {getSaveGames, deleteSaveGame} from "../functions/responses.ts";
+import {setCookie} from "../functions/cookies.ts";
 import {NewSaveModal} from "./SaveModal.tsx"
 import LogOut from "./Logout.tsx";
 import {SaveIndicator} from "./SaveIndicator.tsx";
-import {Divider} from "@mui/material";
+import {Divider, Box} from "@mui/material";
+import ListItemIcon from "@mui/material/ListItemIcon";
 
 const NAVIGATION: Navigation = [
   {kind: 'divider'},
@@ -101,6 +103,9 @@ function TopBarActions() {
     setAnchorEl(null);
   };
 
+  const handleSwitchSave = (saveId: Number) => {
+    setCookie('saveId', saveId)
+  }
   const open = Boolean(anchorEl);
   return (
     <>
@@ -117,9 +122,13 @@ function TopBarActions() {
         }}
       >
         {saves.map((save: object) => (
-          <MenuItem onClick={handleClose} key={save["id"]}>
-            <ListItemText>{save["name"]}</ListItemText>
-            <OnHoverDelete size="small" onClick={() => handleClickDelete(save["id"])}/>
+          <MenuItem  key={save["id"]}>
+            <ListItemIcon>
+              <OnHoverDelete size="small" onClick={() => handleClickDelete(save["id"])}/>
+            </ListItemIcon>
+            <Box onClick={() => handleSwitchSave(save["id"])}>
+              <ListItemText>{save["name"]}</ListItemText>
+            </Box>
           </MenuItem>
         ))}
         <Divider />

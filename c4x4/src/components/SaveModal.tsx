@@ -41,7 +41,7 @@ export function NewSaveModal({ createAction }: NewSaveModalProps): JSX.Element {
   return (
     <>
       <MenuItem onClick={handleOpen}>
-        <ListItemIcon>
+        <ListItemIcon sx={{ml: 0.5}}>
           <AddIcon fontSize="small" />
         </ListItemIcon>
         <ListItemText>New Save</ListItemText>
