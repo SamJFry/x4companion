@@ -11,6 +11,7 @@ from x4companion.x4.models import (
     Station,
 )
 
+
 @pytest.mark.django_db
 class TestSectorTemplate:
     def test_create_sector_template(self, create_sector_template):
@@ -37,16 +38,16 @@ class TestSector:
     def test_cant_create_duplicates(self, create_save_game):
         with pytest.raises(IntegrityError):
             Sector.objects.create(
-                name="sector0",
+                template_id=0,
                 game=create_save_game,
             )
 
     def test_sector_str(self, create_basic_sector):
         assert str(create_basic_sector) == "Sector sector 001"
 
-    def test_sector_unique_names(self, create_basic_sector):
+    def test_sector_unique_instances(self, create_basic_sector):
         with pytest.raises(IntegrityError):
-            Sector.objects.create(name="sector 001")
+            Sector.objects.create(template_id=0)
 
 
 @pytest.mark.django_db

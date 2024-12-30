@@ -67,7 +67,7 @@ class SectorTemplate(models.Model):
 
 
 class Sector(models.Model):
-    """Represents an in game sector.
+    """Represents an instance of a sector in a users save game.
 
     Attributes:
         name (str): The name of the sector.
@@ -75,20 +75,19 @@ class Sector(models.Model):
 
     """
 
-    name = models.CharField(
-        max_length=50, unique=True, blank=False, null=False
-    )
+    template = models.ForeignKey(SectorTemplate, on_delete=models.CASCADE)
     game = models.ForeignKey(SaveGame, on_delete=models.CASCADE)
 
     class Meta:
         constraints = [
             models.UniqueConstraint(
-                fields=["name", "game"], name="No duplicate sector templates"
+                fields=["template", "game"],
+                name="No duplicate sector templates",
             )
         ]
 
     def __str__(self) -> str:
-        return f"Sector {self.name}"
+        return f"Sector {self.template.name}"
 
 
 class Station(models.Model):

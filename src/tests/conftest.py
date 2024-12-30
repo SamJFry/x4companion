@@ -40,23 +40,35 @@ def authed_client_2(create_user_2):
     client.force_authenticate(create_user_2)
     return client
 
+
 @pytest.fixture
 def create_sector_template(create_dataset):
-    template = SectorTemplate.objects.create(name="sector 001", dataset=create_dataset)
+    template = SectorTemplate.objects.create(
+        name="sector 001", dataset=create_dataset
+    )
     template.save()
     return template
 
+
 @pytest.fixture
-def create_basic_sector(create_save_game):
-    sector = Sector.objects.create(name="sector 001", game=create_save_game)
+def create_basic_sector(create_save_game, create_sector_template):
+    sector = Sector.objects.create(
+        template=create_sector_template, game=create_save_game
+    )
     sector.save()
     return sector
 
 
 @pytest.fixture
-def _create_multiple_sectors(create_save_game):
+def _create_multiple_sectors(create_save_game, create_dataset):
+    SectorTemplate.objects.bulk_create(
+        [
+            SectorTemplate(name=f"sector{x}", dataset=create_dataset)
+            for x in range(4)
+        ]
+    )
     Sector.objects.bulk_create(
-        [Sector(name=f"sector{x}", game=create_save_game) for x in range(4)]
+        [Sector(template_id=x, game=create_save_game) for x in range(4)]
     )
 
 
