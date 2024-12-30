@@ -10,6 +10,7 @@ from x4companion.x4.models import (
     HabitatModule,
     SaveGame,
     Sector,
+    SectorTemplate,
     Station,
 )
 
@@ -55,20 +56,24 @@ class SaveGameSerializer(serializers.ModelSerializer):
 class SectorSerializerRead(serializers.ModelSerializer):
     """Validates Sectors values."""
 
+    template_id = serializers.PrimaryKeyRelatedField(
+        queryset=SectorTemplate.objects.all()
+    )
     game_id = serializers.PrimaryKeyRelatedField(
         queryset=SaveGame.objects.all()
     )
 
     class Meta:
         model = Sector
-        fields = ["id", "name", "game_id"]
+        fields = ["id", "template_id", "game_id"]
 
 
 class SectorSerializerWrite(serializers.Serializer):
     """Serializer class used to create sectors."""
 
-    name = serializers.CharField(max_length=50)
-
+    template_id = serializers.PrimaryKeyRelatedField(
+        queryset=SectorTemplate.objects.all()
+    )
     def create(self, validated_data: dict) -> models.Model:
         """Create a sector from the validated serializer data.
 
@@ -80,7 +85,7 @@ class SectorSerializerWrite(serializers.Serializer):
             validated_data: The data to create a sector with.
         """
         return Sector.objects.create(
-            name=validated_data["name"],
+            template=validated_data["template_id"],
             game=SaveGame.objects.get(id=self.context.get("game_id")),
         )
 

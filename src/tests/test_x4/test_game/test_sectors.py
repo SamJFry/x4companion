@@ -17,17 +17,18 @@ class TestSectors:
             "page_size": 100,
             "previous": None,
             "next": None,
-            "data": [{"id": 1, "game_id": 1, "name": "sector 001"}],
+            "data": [{"id": 1, "game_id": 1, "template_id": 1}],
         }
 
+    @pytest.mark.usefixtures("_create_multiple_sector_templates")
     def test_post(self, authed_client, create_save_game):
         response = authed_client.post(
             "/game/1/sectors/",
             json.dumps(
                 {
                     "data": [
-                        {"name": "test sector"},
-                        {"name": "cool sector"},
+                        {"template_id": 1},
+                        {"template_id": 2},
                     ]
                 }
             ),
@@ -35,8 +36,8 @@ class TestSectors:
         )
         assert response.status_code == status.HTTP_201_CREATED
         assert list(Sector.objects.all().values()) == [
-            {"game_id": 1, "id": 1, "name": "test sector"},
-            {"game_id": 1, "id": 2, "name": "cool sector"},
+            {"game_id": 1, "id": 1, "template_id": 1},
+            {"game_id": 1, "id": 2, "template_id": 2},
         ]
 
     def test_post_rejects_bad_request(self, authed_client):
@@ -50,9 +51,8 @@ class TestSectorView:
     def test_get(self, create_basic_sector, authed_client):
         response = authed_client.get("/game/1/sectors/1/")
         assert response.status_code == status.HTTP_200_OK
-        assert response.json() == {"id": 1, "game_id": 1, "name": "sector 001"}
+        assert response.json() == {"id": 1, "game_id": 1, "template_id": 1}
 
-    @pytest.mark.usefixtures("create_basic_sector")
     def test_get_does_not_give_others_sectors(
         self, create_basic_sector, create_user_2_save_game, authed_client_2
     ):
@@ -68,9 +68,9 @@ class TestSectorView:
         response = authed_client.delete("/game/1/sectors/2/")
         assert response.status_code == status.HTTP_204_NO_CONTENT
         assert list(Sector.objects.all().values()) == [
-            {"game_id": 1, "id": 1, "name": "sector0"},
-            {"game_id": 1, "id": 3, "name": "sector2"},
-            {"game_id": 1, "id": 4, "name": "sector3"},
+            {"game_id": 1, "id": 1, "template_id": 1},
+            {"game_id": 1, "id": 3, "template_id": 3},
+            {"game_id": 1, "id": 4, "template_id": 4},
         ]
 
     def test_cant_delete_others_sectors(
@@ -78,6 +78,6 @@ class TestSectorView:
     ):
         response = authed_client_2.delete("/game/2/sectors/1/")
         assert list(Sector.objects.filter(id=1).values()) == [
-            {"id": 1, "name": "sector 001", "game_id": 1}
+            {"id": 1, "template_id": 1, "game_id": 1}
         ]
         assert response.status_code == status.HTTP_404_NOT_FOUND

@@ -60,6 +60,15 @@ def create_basic_sector(create_save_game, create_sector_template):
 
 
 @pytest.fixture
+def _create_multiple_sector_templates(create_dataset):
+    SectorTemplate.objects.bulk_create(
+        [
+            SectorTemplate(name=f"sector{x}", dataset=create_dataset)
+            for x in range(4)
+        ]
+    )
+
+@pytest.fixture
 def _create_multiple_sectors(create_save_game, create_dataset):
     SectorTemplate.objects.bulk_create(
         [
@@ -68,7 +77,7 @@ def _create_multiple_sectors(create_save_game, create_dataset):
         ]
     )
     Sector.objects.bulk_create(
-        [Sector(template_id=x, game=create_save_game) for x in range(4)]
+        [Sector(template_id=x, game=create_save_game) for x in range(1, 5)]
     )
 
 
