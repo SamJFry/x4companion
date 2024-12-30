@@ -41,6 +41,31 @@ class SaveGame(models.Model):
         return f"SaveGame {self.name}"
 
 
+class SectorTemplate(models.Model):
+    """Represents an in game sector.
+
+    Attributes:
+        name (str): The name of the sector.
+        dataset (Dataset): The Dataset this sector belongs to.
+
+    """
+
+    name = models.CharField(
+        max_length=50, unique=True, blank=False, null=False
+    )
+    dataset = models.ForeignKey(Dataset, on_delete=models.CASCADE)
+
+    class Meta:
+        constraints = [
+            models.UniqueConstraint(
+                fields=["name", "dataset"], name="No duplicate sectors"
+            )
+        ]
+
+    def __str__(self) -> str:
+        return f"Sector {self.name}"
+
+
 class Sector(models.Model):
     """Represents an in game sector.
 
@@ -58,7 +83,7 @@ class Sector(models.Model):
     class Meta:
         constraints = [
             models.UniqueConstraint(
-                fields=["name", "game"], name="No duplicate sectors"
+                fields=["name", "game"], name="No duplicate sector templates"
             )
         ]
 

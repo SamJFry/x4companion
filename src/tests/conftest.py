@@ -8,6 +8,7 @@ from x4companion.x4.models import (
     HabitatModule,
     SaveGame,
     Sector,
+    SectorTemplate,
     Station,
 )
 
@@ -39,6 +40,11 @@ def authed_client_2(create_user_2):
     client.force_authenticate(create_user_2)
     return client
 
+@pytest.fixture
+def create_sector_template(create_dataset):
+    template = SectorTemplate.objects.create(name="sector 001", dataset=create_dataset)
+    template.save()
+    return template
 
 @pytest.fixture
 def create_basic_sector(create_save_game):

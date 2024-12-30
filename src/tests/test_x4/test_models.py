@@ -7,8 +7,25 @@ from x4companion.x4.models import (
     HabitatModule,
     SaveGame,
     Sector,
+    SectorTemplate,
     Station,
 )
+
+@pytest.mark.django_db
+class TestSectorTemplate:
+    def test_create_sector_template(self, create_sector_template):
+        assert len(SectorTemplate.objects.all()) == 1
+
+    @pytest.mark.usefixtures("create_sector_template")
+    def test_cant_create_duplicates(self, create_dataset):
+        with pytest.raises(IntegrityError):
+            SectorTemplate.objects.create(
+                name="sector 001",
+                dataset=create_dataset,
+            )
+
+    def test_sector_str(self, create_basic_sector):
+        assert str(create_basic_sector) == "Sector sector 001"
 
 
 @pytest.mark.django_db
