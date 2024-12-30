@@ -38,7 +38,7 @@ class TestSector:
     def test_cant_create_duplicates(self, create_save_game):
         with pytest.raises(IntegrityError):
             Sector.objects.create(
-                template_id=0,
+                template_id=1,
                 game=create_save_game,
             )
 

@@ -133,10 +133,15 @@ def create_user_2_save_game(create_user_2, create_dataset):
     game.save()
     return game
 
+@pytest.fixture
+def create_user_2_sector_template(create_dataset):
+    template = SectorTemplate.objects.create(name="Paris", dataset=create_dataset)
+    template.save()
+    return template
 
 @pytest.fixture
-def create_user_2_sector(create_user_2_save_game):
-    sector = Sector.objects.create(name="Paris", game=create_user_2_save_game)
+def create_user_2_sector(create_user_2_save_game, create_user_2_sector_template):
+    sector = Sector.objects.create(template=create_user_2_sector_template, game=create_user_2_save_game)
     sector.save()
     return sector
 
