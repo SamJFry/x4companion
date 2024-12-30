@@ -40,7 +40,7 @@ export function NewSaveModal({ createAction }: NewSaveModalProps): JSX.Element {
   const handleClose = () => setOpen(false)
   return (
     <>
-      <MenuItem onClick={handleOpen}>
+      <MenuItem onClick={handleOpen} sx={{mb: 0.5}}>
         <ListItemIcon sx={{ml: 0.5}}>
           <AddIcon fontSize="small" />
         </ListItemIcon>

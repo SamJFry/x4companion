@@ -16,7 +16,7 @@ import MenuItem from "@mui/material/MenuItem";
 import {OnHoverDelete} from "./DeleteButton.tsx";
 import {useEffect, useState} from "react";
 import {getSaveGames, deleteSaveGame} from "../functions/responses.ts";
-import {setCookie} from "../functions/cookies.ts";
+import getCookie, {deleteCookie, setCookie} from "../functions/cookies.ts";
 import {NewSaveModal} from "./SaveModal.tsx"
 import LogOut from "./Logout.tsx";
 import {SaveIndicator} from "./SaveIndicator.tsx";
@@ -90,6 +90,10 @@ function TopBarActions() {
     getSaves()
   }, [])
   const handleClickDelete = async (id: Number) => {
+    const cookie = Number(getCookie('saveId'))
+    if (id === cookie) {
+      deleteCookie('saveId')
+    }
     await deleteSaveGame(id)
     await getSaves()
   }
@@ -105,6 +109,7 @@ function TopBarActions() {
 
   const handleSwitchSave = (saveId: Number) => {
     setCookie('saveId', saveId)
+    handleClose()
   }
   const open = Boolean(anchorEl);
   return (
