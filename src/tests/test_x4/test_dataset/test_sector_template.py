@@ -11,12 +11,27 @@ class TestSectorTemplates:
     def test_post(self, authed_client, create_dataset):
         response = authed_client.post(
             "/dataset/1/sector-templates/",
-            json.dumps({"data": [{"name": "sector1", "dataset_id": 1}]}),
+            json.dumps(
+                {
+                    "data": [
+                        {
+                            "name": "sector1",
+                            "dataset_id": 1,
+                            "sunlight_percent": 100,
+                        }
+                    ]
+                }
+            ),
             content_type="application/json",
         )
         assert response.status_code == status.HTTP_201_CREATED
         assert list(SectorTemplate.objects.all().values()) == [
-            {"id": 1, "name": "sector1", "dataset_id": 1}
+            {
+                "id": 1,
+                "name": "sector1",
+                "dataset_id": 1,
+                "sunlight_percent": 100,
+            }
         ]
 
     def test_get(self, authed_client, create_sector_template):
@@ -32,6 +47,7 @@ class TestSectorTemplates:
                 {
                     "id": 1,
                     "name": "sector 001",
+                    "sunlight_percent": 100,
                     "dataset_id": 1,
                 }
             ],
@@ -46,6 +62,7 @@ class TestSectorTemplatesView:
         assert response.json() == {
             "id": 1,
             "name": "sector 001",
+            "sunlight_percent": 100,
             "dataset_id": 1,
         }
 

@@ -77,7 +77,7 @@ class SectorTemplateSerializer(serializers.ModelSerializer):
 
     class Meta:
         model = SectorTemplate
-        fields = ["id", "name", "dataset_id"]
+        fields = ["id", "name", "dataset_id", "sunlight_percent"]
 
     def create(self, validated_data: dict) -> models.Model:
         """Creates a sector template from validated data.
@@ -90,7 +90,9 @@ class SectorTemplateSerializer(serializers.ModelSerializer):
 
         """
         return SectorTemplate.objects.create(
-            name=validated_data["name"], dataset=validated_data["dataset_id"]
+            name=validated_data["name"],
+            dataset=validated_data["dataset_id"],
+            sunlight_percent=validated_data["sunlight_percent"],
         )
 
 

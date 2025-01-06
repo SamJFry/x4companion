@@ -47,6 +47,7 @@ class SectorTemplate(models.Model):
     Attributes:
         name (str): The name of the sector.
         dataset (Dataset): The Dataset this sector belongs to.
+        sunlight_percent (int): The sunlight intensity in this sector.
 
     """
 
@@ -54,6 +55,7 @@ class SectorTemplate(models.Model):
         max_length=50, unique=True, blank=False, null=False
     )
     dataset = models.ForeignKey(Dataset, on_delete=models.CASCADE)
+    sunlight_percent = models.IntegerField(blank=False)
 
     class Meta:
         constraints = [
