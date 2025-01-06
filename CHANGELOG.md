@@ -18,6 +18,10 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - Sectors now map to sector templates, previously each sector was unique within a save game.
 - Save games must be associated to a dataset.
 
+## [Unreleased]
+## Added
+- Sector Templates now have a Sunlight Percent field.
+
 ## [0.0.1] - 2024-12-20
 
 ### Added
