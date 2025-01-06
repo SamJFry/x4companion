@@ -1,5 +1,6 @@
 import pytest
 from django.contrib.auth.models import User
+from rest_framework.test import APIClient
 
 from x4companion.x4.models import (
     Dataset,
@@ -7,6 +8,7 @@ from x4companion.x4.models import (
     HabitatModule,
     SaveGame,
     Sector,
+    SectorTemplate,
     Station,
 )
 
@@ -26,41 +28,77 @@ def create_user_2():
 
 
 @pytest.fixture
-def authed_client(client, create_user):
-    client.force_login(create_user)
+def authed_client(create_user):
+    client = APIClient()
+    client.force_authenticate(create_user)
     return client
 
 
 @pytest.fixture
-def authed_client_2(client, create_user_2):
-    client.force_login(create_user_2)
+def authed_client_2(create_user_2):
+    client = APIClient()
+    client.force_authenticate(create_user_2)
     return client
 
 
 @pytest.fixture
-def create_basic_sector(create_save_game):
-    sector = Sector.objects.create(name="sector 001", game=create_save_game)
+def create_sector_template(create_dataset):
+    template = SectorTemplate.objects.create(
+        name="sector 001", dataset=create_dataset
+    )
+    template.save()
+    return template
+
+
+@pytest.fixture
+def create_basic_sector(create_save_game, create_sector_template):
+    sector = Sector.objects.create(
+        template=create_sector_template, game=create_save_game
+    )
     sector.save()
     return sector
 
 
 @pytest.fixture
-def _create_multiple_sectors(create_save_game):
+def _create_multiple_sector_templates(create_dataset):
+    SectorTemplate.objects.bulk_create(
+        [
+            SectorTemplate(name=f"sector{x}", dataset=create_dataset)
+            for x in range(4)
+        ]
+    )
+
+
+@pytest.fixture
+def _create_multiple_sectors(create_save_game, create_dataset):
+    SectorTemplate.objects.bulk_create(
+        [
+            SectorTemplate(name=f"sector{x}", dataset=create_dataset)
+            for x in range(4)
+        ]
+    )
     Sector.objects.bulk_create(
-        [Sector(name=f"sector{x}", game=create_save_game) for x in range(4)]
+        [Sector(template_id=x, game=create_save_game) for x in range(1, 5)]
     )
 
 
 @pytest.fixture
-def _create_multiple_saves(create_user):
+def _create_multiple_saves(create_user, create_dataset):
     SaveGame.objects.bulk_create(
-        [SaveGame(name=f"game_{x}", user=create_user) for x in range(3)]
+        [
+            SaveGame(
+                name=f"game_{x}", user=create_user, dataset=create_dataset
+            )
+            for x in range(3)
+        ]
     )
 
 
 @pytest.fixture
-def create_save_game(create_user):
-    game = SaveGame.objects.create(name="Kirk's x4 game", user=create_user)
+def create_save_game(create_user, create_dataset):
+    game = SaveGame.objects.create(
+        name="Kirk's x4 game", user=create_user, dataset=create_dataset
+    )
     game.save()
     return game
 
@@ -89,15 +127,30 @@ def _create_multiple_stations(create_basic_sector, create_save_game):
 
 
 @pytest.fixture
-def create_user_2_save_game(create_user_2):
-    game = SaveGame.objects.create(name="Spock's x4 game", user=create_user_2)
+def create_user_2_save_game(create_user_2, create_dataset):
+    game = SaveGame.objects.create(
+        name="Spock's x4 game", user=create_user_2, dataset=create_dataset
+    )
     game.save()
     return game
 
 
 @pytest.fixture
-def create_user_2_sector(create_user_2_save_game):
-    sector = Sector.objects.create(name="Paris", game=create_user_2_save_game)
+def create_user_2_sector_template(create_dataset):
+    template = SectorTemplate.objects.create(
+        name="Paris", dataset=create_dataset
+    )
+    template.save()
+    return template
+
+
+@pytest.fixture
+def create_user_2_sector(
+    create_user_2_save_game, create_user_2_sector_template
+):
+    sector = Sector.objects.create(
+        template=create_user_2_sector_template, game=create_user_2_save_game
+    )
     sector.save()
     return sector
 

@@ -2,9 +2,16 @@
 
 from django.db import models
 from rest_framework import serializers, status
+from rest_framework.authentication import TokenAuthentication
 from rest_framework.pagination import PageNumberPagination
 from rest_framework.request import Request
 from rest_framework.response import Response
+
+
+class BearerTokenAuthentication(TokenAuthentication):
+    """Overrides DRFs default token auth to use more standard settings."""
+
+    keyword = "Bearer"
 
 
 class StandardPaginator(PageNumberPagination):

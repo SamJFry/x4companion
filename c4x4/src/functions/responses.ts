@@ -1,0 +1,66 @@
+import getCookie, {setCookie} from "./cookies.ts";
+
+const backend: string = import.meta.env.VITE_BACKEND
+
+export async function getUserToken(username: string, password: string): Promise<void | object> {
+  const formData = new FormData()
+  formData.append("username", username)
+  formData.append("password", password)
+  const request = await fetch(`${backend}/api/auth/`, {
+    method: 'POST',
+    body: formData
+  })
+
+  const response = await request.json()
+  if (!("token" in response)) {
+    return response
+  }
+  setCookie('token', `Bearer ${response['token']}`)
+}
+
+export async function getSaveGames() {
+  const response = await fetch(`${backend}/game/`)
+  const data = await response.json()
+  return data["data"]
+}
+
+export async function getDatasets() {
+  const response = await fetch(`${backend}/dataset/`, {
+    method: 'GET',
+    headers: {
+      "Authorization": `${getCookie('token')}`
+    }
+  })
+  if (response.status !== 200) {
+    return "ERROR: Could not get datasets."
+  }
+  const data = await response.json()
+  return data["data"]
+}
+
+export async function deleteSaveGame(gameId: Number) {
+  const response = await fetch(`${backend}/game/${gameId}/`, {
+    method: 'DELETE',
+    headers: {
+      "Authorization": `${getCookie('token')}`
+    }
+  })
+  if (response.status !== 204) {
+    return "ERROR: Could not process delete."
+  }
+  return response.status
+}
+
+export async function createSaveGame(name: String, dataset: number) {
+  await fetch(`${backend}/game/`, {
+    method: 'POST',
+    headers: {
+      "Authorization": `${getCookie('token')}`,
+      "Content-Type": "application/json",
+    },
+    body: JSON.stringify({
+      name: name,
+      dataset_id: dataset
+    })
+  })
+}

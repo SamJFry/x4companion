@@ -1,3 +1,5 @@
+import json
+
 import pytest
 from rest_framework import status
 
@@ -10,18 +12,20 @@ class TestStations:
     def test_post(self, authed_client):
         response = authed_client.post(
             "/game/1/stations/",
-            {
-                "data": [
-                    {
-                        "name": "Baron's Court",
-                        "sector_id": 1,
-                    },
-                    {
-                        "name": "Earl's Court",
-                        "sector_id": 2,
-                    },
-                ]
-            },
+            json.dumps(
+                {
+                    "data": [
+                        {
+                            "name": "Baron's Court",
+                            "sector_id": 1,
+                        },
+                        {
+                            "name": "Earl's Court",
+                            "sector_id": 2,
+                        },
+                    ]
+                }
+            ),
             content_type="application/json",
         )
         assert response.status_code == status.HTTP_201_CREATED

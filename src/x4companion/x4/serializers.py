@@ -10,36 +10,96 @@ from x4companion.x4.models import (
     HabitatModule,
     SaveGame,
     Sector,
+    SectorTemplate,
     Station,
 )
+
+
+class DatasetSerializer(serializers.ModelSerializer):
+    """Serialize Datasets."""
+
+    class Meta:
+        model = Dataset
+        fields = ["id", "name"]
 
 
 class SaveGameSerializer(serializers.ModelSerializer):
     """Serialize SaveGames."""
 
     user = serializers.PrimaryKeyRelatedField(queryset=User.objects.all())
+    dataset_id = serializers.PrimaryKeyRelatedField(
+        queryset=Dataset.objects.all()
+    )
 
     class Meta:
         model = SaveGame
-        fields = ["id", "name", "user"]
+        fields = ["id", "name", "user", "dataset_id"]
+
+    def create(self, validated_data: dict) -> models.Model:
+        """Create a save game from the validated data.
+
+        Args:
+            validated_data: The data that has been validated by the
+                serializer.
+
+        Returns:
+            A model instance of the created object.
+
+        """
+        return SaveGame.objects.create(
+            name=validated_data["name"],
+            user=validated_data["user"],
+            dataset=validated_data["dataset_id"],
+        )
 
 
 class SectorSerializerRead(serializers.ModelSerializer):
     """Validates Sectors values."""
 
+    template_id = serializers.PrimaryKeyRelatedField(
+        queryset=SectorTemplate.objects.all()
+    )
     game_id = serializers.PrimaryKeyRelatedField(
         queryset=SaveGame.objects.all()
     )
 
     class Meta:
         model = Sector
-        fields = ["id", "name", "game_id"]
+        fields = ["id", "template_id", "game_id"]
+
+
+class SectorTemplateSerializer(serializers.ModelSerializer):
+    """Serializer class used for Sector Templates."""
+
+    dataset_id = serializers.PrimaryKeyRelatedField(
+        queryset=Dataset.objects.all()
+    )
+
+    class Meta:
+        model = SectorTemplate
+        fields = ["id", "name", "dataset_id"]
+
+    def create(self, validated_data: dict) -> models.Model:
+        """Creates a sector template from validated data.
+
+        Args:
+            validated_data: The data from the serializer.
+
+        Returns:
+            A new SectorTemplate instance.
+
+        """
+        return SectorTemplate.objects.create(
+            name=validated_data["name"], dataset=validated_data["dataset_id"]
+        )
 
 
 class SectorSerializerWrite(serializers.Serializer):
     """Serializer class used to create sectors."""
 
-    name = serializers.CharField(max_length=50)
+    template_id = serializers.PrimaryKeyRelatedField(
+        queryset=SectorTemplate.objects.all()
+    )
 
     def create(self, validated_data: dict) -> models.Model:
         """Create a sector from the validated serializer data.
@@ -52,7 +112,7 @@ class SectorSerializerWrite(serializers.Serializer):
             validated_data: The data to create a sector with.
         """
         return Sector.objects.create(
-            name=validated_data["name"],
+            template=validated_data["template_id"],
             game=SaveGame.objects.get(id=self.context.get("game_id")),
         )
 
@@ -123,14 +183,6 @@ class StationSerializerRead(serializers.ModelSerializer):
             "game_id",
             "population",
         ]
-
-
-class DatasetSerializer(serializers.ModelSerializer):
-    """Serialize Datasets."""
-
-    class Meta:
-        model = Dataset
-        fields = ["id", "name"]
 
 
 class HabitatModuleSerializer(serializers.ModelSerializer):
