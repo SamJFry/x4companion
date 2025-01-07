@@ -4,6 +4,7 @@ import pathlib
 
 from x4companion.x4.serializers import DatasetSerializer
 from x4companion.x4.management.exceptions import ValidationError
+from x4companion.x4.models import Dataset
 
 
 @dataclasses.dataclass
@@ -16,6 +17,9 @@ class DatasetTransaction:
         if not dataset.is_valid():
             raise ValidationError(dataset.errors)
         dataset.save()
+
+    def rollback(self):
+        Dataset.objects.get(name=self.name).delete()
 
 
 def load_datasets(dataset_dir: pathlib.Path) -> list[DatasetTransaction]:

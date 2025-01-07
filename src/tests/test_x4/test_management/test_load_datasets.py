@@ -11,13 +11,20 @@ def test_load_datasets(create_good_data):
         assert dataset.name == f"test_dataset_{index}"
         assert len(dataset.sectors) == 10
 
+
 @pytest.mark.django_db
 class TestDataset:
     def test_create_root(self):
         DatasetTransaction(name="test", sectors=[]).create_root()
-        assert list(Dataset.objects.all().values()) == [{"id": 1, "name": "test"}]
+        assert list(Dataset.objects.all().values()) == [
+            {"id": 1, "name": "test"}
+        ]
 
     def test_create_root_raises_on_bad_name(self):
         with pytest.raises(ValidationError):
             DatasetTransaction(name="", sectors=[]).create_root()
 
+    def test_rollback(self, create_dataset):
+        transaction = DatasetTransaction(name="StarTrekin", sectors=[])
+        transaction.rollback()
+        assert list(Dataset.objects.all().values()) == []
