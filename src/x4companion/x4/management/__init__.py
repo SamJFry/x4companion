@@ -1,13 +1,17 @@
 import dataclasses
 import json
 import pathlib
+import logging
 
 from x4companion.x4.serializers import (
     DatasetSerializer,
     SectorTemplateSerializer,
 )
 from x4companion.x4.management.exceptions import ValidationError
-from x4companion.x4.models import Dataset, SectorTemplate
+from x4companion.x4.models import Dataset
+
+
+logger = logging.getLogger(__name__)
 
 
 @dataclasses.dataclass
@@ -26,9 +30,19 @@ class DatasetTransaction:
         Dataset.objects.get(name=self.name).delete()
 
 
-class RegisterDatasets:
+class RegisterDataset:
     def __init__(self, transaction: DatasetTransaction):
         self.transaction = transaction
+
+    def register(self):
+        try:
+            logger.info("Registering dataset: %s", self.transaction.name)
+            self.transaction.create_root()
+            self.create_sectors()
+            logger.info("Successfully registered dataset %s", self.transaction.name)
+        except ValidationError as e:
+            logger.exception("Error registering dataset: %s", self.transaction.name)
+            self.transaction.rollback()
 
     def create_sectors(self) -> None:
         sectors = SectorTemplateSerializer(
@@ -39,9 +53,10 @@ class RegisterDatasets:
         if not sectors.is_valid():
             raise ValidationError(sectors.errors)
         sectors.save()
+        logger.info("Registered %d sectors", len(self.transaction.sectors))
 
 
-def load_datasets(dataset_dir: pathlib.Path) -> list[DatasetTransaction]:
+def collect_datasets(dataset_dir: pathlib.Path) -> list[DatasetTransaction]:
     datasets = dataset_dir.glob("*.json")
     loaded_sets = []
     for dset in datasets:
@@ -52,4 +67,11 @@ def load_datasets(dataset_dir: pathlib.Path) -> list[DatasetTransaction]:
             sectors=data.get("sectors"),
         )
         loaded_sets.append(dataset)
+    logger.info("Collected %d datasets", len(loaded_sets))
     return loaded_sets
+
+
+def register_datasets(dataset_dir: pathlib.Path):
+    sets = collect_datasets(dataset_dir)
+    for dataset in sets:
+        RegisterDataset(dataset).register()
