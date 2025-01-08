@@ -16,7 +16,6 @@ class TestSectorTemplates:
                     "data": [
                         {
                             "name": "sector1",
-                            "dataset_id": 1,
                             "sunlight_percent": 100,
                         }
                     ]
@@ -48,7 +47,6 @@ class TestSectorTemplates:
                     "id": 1,
                     "name": "sector 001",
                     "sunlight_percent": 100,
-                    "dataset_id": 1,
                 }
             ],
         }
@@ -63,7 +61,6 @@ class TestSectorTemplatesView:
             "id": 1,
             "name": "sector 001",
             "sunlight_percent": 100,
-            "dataset_id": 1,
         }
 
     def test_delete(self, authed_client, create_sector_template):
