@@ -1,6 +1,10 @@
 import pytest
 
-from x4companion.x4.management import load_datasets, DatasetTransaction, RegisterDatasets
+from x4companion.x4.management import (
+    load_datasets,
+    DatasetTransaction,
+    RegisterDatasets,
+)
 from x4companion.x4.management import ValidationError
 from x4companion.x4.models import Dataset, SectorTemplate
 
@@ -14,13 +18,11 @@ def test_load_datasets(create_good_data):
 
 @pytest.mark.django_db
 class TestDataset:
-    def test_create_root(self):
-        transaction = DatasetTransaction(name="test", sectors=[])
-        transaction.create_root()
+    def test_create_root(self, create_transaction):
         assert list(Dataset.objects.all().values()) == [
             {"id": 1, "name": "test"}
         ]
-        assert transaction.dataset_id == 1
+        assert create_transaction.id_ == 1
 
     def test_create_root_raises_on_bad_name(self):
         with pytest.raises(ValidationError):
@@ -31,14 +33,19 @@ class TestDataset:
         transaction.rollback()
         assert list(Dataset.objects.all().values()) == []
 
+
 @pytest.mark.django_db
 class TestRegisterDataset:
-    def test_create_sectors(self):
-        transaction = DatasetTransaction(name="test", sectors=[
-            {"name": "good_sector", "sunlight_percent": 100}
-        ])
-        transaction.create_root()
-        RegisterDatasets(transaction).create_sectors()
+    def test_create_sectors(self, create_transaction):
+        RegisterDatasets(create_transaction).create_sectors()
         assert list(SectorTemplate.objects.all().values()) == [
-            {"name": "good", "sunlight_percent": 100, "dataset_id": 1}
+            {
+                "id": 1,
+                "name": "good_sector",
+                "sunlight_percent": 100,
+                "dataset_id": 1,
+            }
         ]
+
+    def test_create_sectors_raises_on_bad_data(self):
+        pass

@@ -3,6 +3,7 @@ import pathlib
 
 import pytest
 
+from x4companion.x4.management import DatasetTransaction
 
 @pytest.fixture
 def create_test_dir():
@@ -28,3 +29,13 @@ def create_good_data(create_test_dir):
         )
     yield create_test_dir
     pathlib.Path.unlink(create_test_dir / "test_dataset_0.json")
+
+
+@pytest.fixture
+def create_transaction():
+    transaction = DatasetTransaction(
+        name="test",
+        sectors=[{"name": "good_sector", "sunlight_percent": 100}],
+    )
+    transaction.create_root()
+    return transaction

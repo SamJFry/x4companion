@@ -2,7 +2,10 @@ import dataclasses
 import json
 import pathlib
 
-from x4companion.x4.serializers import DatasetSerializer, SectorTemplateSerializer
+from x4companion.x4.serializers import (
+    DatasetSerializer,
+    SectorTemplateSerializer,
+)
 from x4companion.x4.management.exceptions import ValidationError
 from x4companion.x4.models import Dataset, SectorTemplate
 
@@ -12,7 +15,6 @@ class DatasetTransaction:
     name: str
     sectors: list[dict]
     id_: int = 0
-
 
     def create_root(self):
         dataset = DatasetSerializer(data={"name": self.name})
@@ -32,7 +34,7 @@ class RegisterDatasets:
         sectors = SectorTemplateSerializer(
             data=self.transaction.sectors,
             many=True,
-            context={"dataset_id": self.transaction.id_}
+            context={"dataset_id": self.transaction.id_},
         )
         if not sectors.is_valid():
             raise ValidationError(sectors.errors)
