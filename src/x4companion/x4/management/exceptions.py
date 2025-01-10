@@ -19,8 +19,12 @@ class ValidationError(Exception):
 
     """
 
-    def __init__(self, errors: dict[str, list[ErrorDetail]]) -> None:
-        name_error = errors.get("name")
+    def __init__(
+        self,
+        errors: list[dict[str, list[ErrorDetail]]]
+        | dict[str, list[ErrorDetail]],
+    ) -> None:
+        name_error = None if isinstance(errors, list) else errors.get("name")
         if (
             name_error
             and len(name_error) == 1

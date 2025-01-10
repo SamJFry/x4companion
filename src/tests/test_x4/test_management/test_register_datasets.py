@@ -3,9 +3,9 @@ import pytest
 from x4companion.x4.management import (
     DatasetTransaction,
     RegisterDataset,
-    ValidationError,
     collect_datasets,
 )
+from x4companion.x4.management.exceptions import ValidationError
 from x4companion.x4.models import Dataset, SectorTemplate
 
 
