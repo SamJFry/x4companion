@@ -4,6 +4,7 @@ from x4companion.x4.management import (
     DatasetTransaction,
     RegisterDataset,
     collect_datasets,
+    register_datasets,
 )
 from x4companion.x4.management.exceptions import ValidationError
 from x4companion.x4.models import Dataset, SectorTemplate
@@ -15,6 +16,10 @@ def test_collect_datasets(create_good_data):
         assert dataset.name == f"test_dataset_{index}"
         assert len(dataset.sectors) == 10
 
+@pytest.mark.django_db
+def test_register_datasets(create_good_data):
+    register_datasets(create_good_data)
+    assert Dataset.objects.count() == 1
 
 @pytest.mark.django_db
 class TestDataset:
