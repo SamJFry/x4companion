@@ -7,7 +7,7 @@ from x4companion.x4.serializers import (
     DatasetSerializer,
     SectorTemplateSerializer,
 )
-from x4companion.x4.management.exceptions import ValidationError
+from x4companion.x4.management.exceptions import ValidationError, DatasetExistsError
 from x4companion.x4.models import Dataset
 
 
@@ -21,7 +21,7 @@ class DatasetTransaction:
     id_: int = 0
 
     def create_root(self):
-        dataset = DatasetSerializer(data={"name": self.name})
+        dataset = DatasetSerializer(data={"name": self.name}, many=False)
         if not dataset.is_valid():
             raise ValidationError(dataset.errors)
         self.id_ = dataset.save().id
@@ -43,6 +43,8 @@ class RegisterDataset:
         except ValidationError as e:
             logger.exception("Error registering dataset: %s", self.transaction.name)
             self.transaction.rollback()
+        except DatasetExistsError:
+            logger.info("%s already registered", self.transaction.name)
 
     def create_sectors(self) -> None:
         sectors = SectorTemplateSerializer(
