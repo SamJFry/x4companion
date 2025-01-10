@@ -7,6 +7,10 @@ class DatasetExistsError(Exception):
 class ValidationError(Exception):
     def __init__(self, errors):
         name_error = errors.get("name")
-        if name_error and len(name_error) == 1 and name_error[0].code == "unique":
+        if (
+            name_error
+            and len(name_error) == 1
+            and name_error[0].code == "unique"
+        ):
             raise DatasetExistsError
         super().__init__(errors)

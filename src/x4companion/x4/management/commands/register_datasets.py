@@ -10,4 +10,3 @@ class Command(BaseCommand):
 
     def handle(self, *args, **kwargs):
         register_datasets(pathlib.Path(__file__).parents[3] / "datasets")
-

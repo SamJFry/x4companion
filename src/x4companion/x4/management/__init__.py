@@ -2,16 +2,24 @@ import dataclasses
 import json
 import pathlib
 import logging
+from colorama import Fore
 
 from x4companion.x4.serializers import (
     DatasetSerializer,
     SectorTemplateSerializer,
 )
-from x4companion.x4.management.exceptions import ValidationError, DatasetExistsError
+from x4companion.x4.management.exceptions import (
+    ValidationError,
+    DatasetExistsError,
+)
 from x4companion.x4.models import Dataset
 
 
 logger = logging.getLogger(__name__)
+
+
+def log_ok() -> str:
+    return "[" + Fore.GREEN + " OK " + Fore.RESET + "]"
 
 
 @dataclasses.dataclass
@@ -39,9 +47,13 @@ class RegisterDataset:
             logger.info("Registering dataset: %s", self.transaction.name)
             self.transaction.create_root()
             self.create_sectors()
-            logger.info("Successfully registered dataset %s", self.transaction.name)
+            logger.info(
+                "%s Registered dataset %s", log_ok(), self.transaction.name
+            )
         except ValidationError as e:
-            logger.exception("Error registering dataset: %s", self.transaction.name)
+            logger.exception(
+                "Error registering dataset: %s", self.transaction.name
+            )
             self.transaction.rollback()
         except DatasetExistsError:
             logger.info("%s already registered", self.transaction.name)
