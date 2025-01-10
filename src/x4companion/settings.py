@@ -162,3 +162,5 @@ LOGGING = {
         },
     },
 }
+
+DATASETS_PATH = Path(__file__).parent / "datasets"
