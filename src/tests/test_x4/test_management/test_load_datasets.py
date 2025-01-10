@@ -69,6 +69,11 @@ class TestRegisterDataset:
             }
         ]
 
+    def test_register_handles_already_registered(self, create_good_data, create_dataset):
+        dataset = DatasetTransaction(name="StarTrekin", sectors=[])
+        RegisterDataset(dataset).register()
+        assert Dataset.objects.count() == 1
+
     def test_register_rollback_on_sector_error(self):
         dataset = DatasetTransaction(name="test", sectors=[{"name": "s1"}])
         RegisterDataset(dataset).register()
