@@ -1,9 +1,7 @@
 """Contains the command to register Datasets."""
 
-import pathlib
-
-from django.core.management.base import BaseCommand
 from django.conf import settings
+from django.core.management.base import BaseCommand
 
 from x4companion.x4.management import register_datasets
 
@@ -15,7 +13,9 @@ class Command(BaseCommand):
     overridden by setting settings.DATASETS_PATH.
 
     """
+
     help = "Registers all dataset files in the datasets directory"
 
     def handle(self, *args, **kwargs) -> None:
+        """Runs the command."""
         register_datasets(settings.DATASETS_PATH)

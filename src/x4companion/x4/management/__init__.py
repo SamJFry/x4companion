@@ -6,7 +6,7 @@ import pathlib
 from colorama import Fore
 
 from x4companion.x4.management.exceptions import (
-    DatasetExistsError,
+    ObjectExistsError,
     ValidationError,
 )
 from x4companion.x4.models import Dataset
@@ -55,7 +55,7 @@ class RegisterDataset:
                 "Error registering dataset: %s", self.transaction.name
             )
             self.transaction.rollback()
-        except DatasetExistsError:
+        except ObjectExistsError:
             logger.info("%s already registered", self.transaction.name)
 
     def create_sectors(self) -> None:

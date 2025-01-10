@@ -1,11 +1,11 @@
 import pytest
 
 from x4companion.x4.management import (
-    collect_datasets,
     DatasetTransaction,
     RegisterDataset,
+    ValidationError,
+    collect_datasets,
 )
-from x4companion.x4.management import ValidationError
 from x4companion.x4.models import Dataset, SectorTemplate
 
 
@@ -69,7 +69,9 @@ class TestRegisterDataset:
             }
         ]
 
-    def test_register_handles_already_registered(self, create_good_data, create_dataset):
+    def test_register_handles_already_registered(
+        self, create_good_data, create_dataset
+    ):
         dataset = DatasetTransaction(name="StarTrekin", sectors=[])
         RegisterDataset(dataset).register()
         assert Dataset.objects.count() == 1

@@ -87,7 +87,7 @@ line-length = 79
 [tool.ruff.lint]
 pydocstyle.convention = "google"
 extend-select = ["ALL"]
-extend-ignore = ["COM812", "ISC001", "S101", "ANN002", "ANN101", "ANN003", "D105", "D106", "ARG", "TD", "FIX002", "RUF012"]
+extend-ignore = ["COM812", "ISC001", "S101", "ANN002", "ANN101", "ANN003", "D105", "D106", "D107", "ARG", "TD", "FIX002", "RUF012"]
 exclude = ["settings.py", "manage.py", "*/migrations/*"]
 
 [tool.ruff.lint.per-file-ignores]
