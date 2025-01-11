@@ -13,21 +13,21 @@ def create_test_dir():
     yield test_dir
     test_dir.rmdir()
 
+@pytest.fixture
+def create_test_sectors():
+    return {
+        "sectors": [
+            {"name": f"sector_{x}", "sunlight_percent": 100}
+            for x in range(10)
+        ]
+    }
 
 @pytest.fixture
-def create_good_data(create_test_dir):
+def create_good_data(create_test_dir, create_test_sectors):
     with pathlib.Path.open(
         create_test_dir / "test_dataset_0.json", "w"
     ) as file:
-        json.dump(
-            {
-                "sectors": [
-                    {"name": f"sector_{x}", "sunlight_percent": 100}
-                    for x in range(10)
-                ]
-            },
-            file,
-        )
+        json.dump(create_test_sectors, file)
     yield create_test_dir
     pathlib.Path.unlink(create_test_dir / "test_dataset_0.json")
 

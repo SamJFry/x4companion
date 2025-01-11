@@ -9,7 +9,7 @@ from x4companion.x4.management.exceptions import (
     ObjectExistsError,
     ValidationError,
 )
-from x4companion.x4.management.logging import log_ok
+from x4companion.x4.management.logging import log_ok, log_warning
 from x4companion.x4.models import Dataset, SectorTemplate
 from x4companion.x4.serializers import (
     DatasetSerializer,
@@ -88,6 +88,7 @@ class RegisterDataset:
             logger.info("%s already registered", self.transaction.name)
 
     def update(self) -> None:
+        """Updates a dataset that exists in the DB already."""
         self.transaction.get_existing_id()
         self.update_sectors()
 
@@ -104,18 +105,37 @@ class RegisterDataset:
         logger.info("Registered %d sectors", len(self.transaction.sectors))
 
     def update_sectors(self) -> None:
+        """Updates fields on existing sectors.
+
+        If a sector does not exist, it is created.
+
+        """
+        failed_sectors = 0
         for sector in self.transaction.sectors:
-            updated = SectorTemplateSerializer(
-                SectorTemplate.objects.filter(
-                    name=sector["name"], dataset_id=self.transaction.id_
-                ).first(),
-                data=sector,
-                context={"dataset_id": self.transaction.id_},
-            )
-            if not updated.is_valid():
-                raise ValidationError(updated.errors)
-            updated.save()
+            try:
+                self._update_sector(sector)
+            except ValidationError:
+                logger.exception(
+                    "%s Could not update/create sector, fix the error then "
+                    "re-run the command.",
+                    log_warning(),
+                )
+                failed_sectors += 1
         logger.info("Registered %d sectors", len(self.transaction.sectors))
+        logger.info("Failed to register %d sectors", failed_sectors)
+
+    def _update_sector(self, sector: dict) -> None:
+        """Run updates on an individual sector."""
+        updated = SectorTemplateSerializer(
+            SectorTemplate.objects.filter(
+                name=sector["name"], dataset_id=self.transaction.id_
+            ).first(),
+            data=sector,
+            context={"dataset_id": self.transaction.id_},
+        )
+        if not updated.is_valid():
+            raise ValidationError(updated.errors)
+        updated.save()
 
 
 def collect_datasets(dataset_dir: pathlib.Path) -> list[DatasetTransaction]:
@@ -158,6 +178,14 @@ def register_datasets(dataset_dir: pathlib.Path) -> None:
 
 
 def update_datasets(dataset_dir: pathlib.Path) -> None:
+    """Collects datasets and updates the ones that exist in the DB.
+
+    New Datasets are not registered.
+
+    Args:
+        dataset_dir: The directory to collect datasets from.
+
+    """
     sets = collect_datasets(dataset_dir)
     for dataset in sets:
         RegisterDataset(dataset).update()

@@ -1,3 +1,5 @@
+import logging
+
 import pytest
 
 from x4companion.x4.management import (
@@ -8,6 +10,9 @@ from x4companion.x4.management import (
 )
 from x4companion.x4.management.exceptions import ValidationError
 from x4companion.x4.models import Dataset, SectorTemplate
+
+
+logger = logging.getLogger("x4companion.x4.management.register_datasets")
 
 
 def test_collect_datasets(create_good_data):
@@ -70,7 +75,7 @@ class TestRegisterDataset:
         with pytest.raises(ValidationError):
             RegisterDataset(create_transaction).create_sectors()
 
-    def test_register(self, create_good_data):
+    def test_register(self):
         dataset = DatasetTransaction(
             name="test", sectors=[{"name": "s1", "sunlight_percent": 1}]
         )
@@ -88,7 +93,7 @@ class TestRegisterDataset:
         ]
 
     def test_register_handles_already_registered(
-        self, create_good_data, create_dataset
+        self, create_dataset
     ):
         dataset = DatasetTransaction(name="StarTrekin", sectors=[])
         RegisterDataset(dataset).register()
@@ -99,5 +104,9 @@ class TestRegisterDataset:
         RegisterDataset(dataset).register()
         assert Dataset.objects.count() == 0
 
-    def test_update_sectors_continues_on_bad_sector:
-        pass
+    def test_update_sectors_handles_bad_sector(self, register_data, create_test_sectors, caplog):
+        sectors = create_test_sectors["sectors"]
+        del sectors[8]["sunlight_percent"]
+        dataset = DatasetTransaction(name="test_dataset_0", sectors=sectors)
+        RegisterDataset(dataset).update()
+        assert caplog.records[0].levelname == "ERROR"
