@@ -31,7 +31,8 @@ def test_update_datasets(update_old_data):
         .sunlight_percent
     )
     assert updated_sector_sunlight == 99
-
+    assert SectorTemplate.objects.get(name="new_sector")
+    assert SectorTemplate.objects.get(name="new_sector_2")
 
 @pytest.mark.django_db
 class TestDataset:
@@ -97,3 +98,6 @@ class TestRegisterDataset:
         dataset = DatasetTransaction(name="test", sectors=[{"name": "s1"}])
         RegisterDataset(dataset).register()
         assert Dataset.objects.count() == 0
+
+    def test_update_sectors_continues_on_bad_sector:
+        pass

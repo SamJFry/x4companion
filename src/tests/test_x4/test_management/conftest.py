@@ -43,6 +43,10 @@ def update_old_data(register_data):
     with pathlib.Path.open(register_data / "test_dataset_0.json", "r") as file:
         data = json.load(file)
     data["sectors"][9].update({"name": f"sector_9", "sunlight_percent": 99})
+    data["sectors"] += [
+        {"name": "new_sector", "sunlight_percent": 1},
+        {"name": "new_sector_2", "sunlight_percent": 2},
+    ]
     pathlib.Path.unlink(register_data / "test_dataset_0.json")
     with pathlib.Path.open(register_data / "test_dataset_0.json", "w") as file:
         json.dump(data, file)

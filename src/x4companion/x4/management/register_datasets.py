@@ -106,14 +106,17 @@ class RegisterDataset:
     def update_sectors(self) -> None:
         for sector in self.transaction.sectors:
             updated = SectorTemplateSerializer(
-                SectorTemplate.objects.get(
+                SectorTemplate.objects.filter(
                     name=sector["name"], dataset_id=self.transaction.id_
-                ),
+                ).first(),
                 data=sector,
+                context={"dataset_id": self.transaction.id_},
             )
             if not updated.is_valid():
                 raise ValidationError(updated.errors)
             updated.save()
+        logger.info("Registered %d sectors", len(self.transaction.sectors))
+
 
 def collect_datasets(dataset_dir: pathlib.Path) -> list[DatasetTransaction]:
     """Collects all available datasets from the given directory.
