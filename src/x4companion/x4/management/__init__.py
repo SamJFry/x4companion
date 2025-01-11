@@ -3,6 +3,7 @@ from .register_datasets import (
     RegisterDataset,
     collect_datasets,
     register_datasets,
+    update_datasets,
 )
 
 __all__ = [
@@ -10,4 +11,5 @@ __all__ = [
     "RegisterDataset",
     "collect_datasets",
     "register_datasets",
+    "update_datasets",
 ]

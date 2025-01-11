@@ -10,7 +10,7 @@ from x4companion.x4.management.exceptions import (
     ValidationError,
 )
 from x4companion.x4.management.logging import log_ok
-from x4companion.x4.models import Dataset
+from x4companion.x4.models import Dataset, SectorTemplate
 from x4companion.x4.serializers import (
     DatasetSerializer,
     SectorTemplateSerializer,
@@ -41,6 +41,18 @@ class DatasetTransaction:
         if not dataset.is_valid():
             raise ValidationError(dataset.errors)
         self.id_ = dataset.save().id
+
+    def get_existing_id(self) -> None:
+        """Set the ID to be that of the existing dataset.
+
+        This should only be used when updating an existing dataset.
+
+        Raises:
+            Dataset.DoesNotExist: The dataset you referenced does not exist in
+                the DB.
+
+        """
+        self.id_ = Dataset.objects.get(name=self.name).id
 
     def rollback(self) -> None:
         """Deletes the dataset."""
@@ -75,6 +87,10 @@ class RegisterDataset:
         except ObjectExistsError:
             logger.info("%s already registered", self.transaction.name)
 
+    def update(self) -> None:
+        self.transaction.get_existing_id()
+        self.update_sectors()
+
     def create_sectors(self) -> None:
         """Create the sectors in the SectorsTemplate model."""
         sectors = SectorTemplateSerializer(
@@ -87,6 +103,17 @@ class RegisterDataset:
         sectors.save()
         logger.info("Registered %d sectors", len(self.transaction.sectors))
 
+    def update_sectors(self) -> None:
+        for sector in self.transaction.sectors:
+            updated = SectorTemplateSerializer(
+                SectorTemplate.objects.get(
+                    name=sector["name"], dataset_id=self.transaction.id_
+                ),
+                data=sector,
+            )
+            if not updated.is_valid():
+                raise ValidationError(updated.errors)
+            updated.save()
 
 def collect_datasets(dataset_dir: pathlib.Path) -> list[DatasetTransaction]:
     """Collects all available datasets from the given directory.
@@ -125,3 +152,9 @@ def register_datasets(dataset_dir: pathlib.Path) -> None:
     sets = collect_datasets(dataset_dir)
     for dataset in sets:
         RegisterDataset(dataset).register()
+
+
+def update_datasets(dataset_dir: pathlib.Path) -> None:
+    sets = collect_datasets(dataset_dir)
+    for dataset in sets:
+        RegisterDataset(dataset).update()

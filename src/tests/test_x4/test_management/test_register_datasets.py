@@ -4,7 +4,7 @@ from x4companion.x4.management import (
     DatasetTransaction,
     RegisterDataset,
     collect_datasets,
-    register_datasets,
+    update_datasets,
 )
 from x4companion.x4.management.exceptions import ValidationError
 from x4companion.x4.models import Dataset, SectorTemplate
@@ -16,10 +16,22 @@ def test_collect_datasets(create_good_data):
         assert dataset.name == f"test_dataset_{index}"
         assert len(dataset.sectors) == 10
 
+
 @pytest.mark.django_db
-def test_register_datasets(create_good_data):
-    register_datasets(create_good_data)
+def test_register_datasets(register_data):
     assert Dataset.objects.count() == 1
+
+
+@pytest.mark.django_db
+def test_update_datasets(update_old_data):
+    update_datasets(update_old_data)
+    updated_sector_sunlight = (
+        Dataset.objects.get(id=1)
+        .sectortemplate_set.get(name="sector_9")
+        .sunlight_percent
+    )
+    assert updated_sector_sunlight == 99
+
 
 @pytest.mark.django_db
 class TestDataset:

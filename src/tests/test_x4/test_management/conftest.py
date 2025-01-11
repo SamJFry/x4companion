@@ -3,7 +3,7 @@ import pathlib
 
 import pytest
 
-from x4companion.x4.management import DatasetTransaction
+from x4companion.x4.management import DatasetTransaction, register_datasets
 
 
 @pytest.fixture
@@ -30,6 +30,23 @@ def create_good_data(create_test_dir):
         )
     yield create_test_dir
     pathlib.Path.unlink(create_test_dir / "test_dataset_0.json")
+
+
+@pytest.fixture
+def register_data(create_good_data):
+    register_datasets(create_good_data)
+    return create_good_data
+
+
+@pytest.fixture
+def update_old_data(register_data):
+    with pathlib.Path.open(register_data / "test_dataset_0.json", "r") as file:
+        data = json.load(file)
+    data["sectors"][9].update({"name": f"sector_9", "sunlight_percent": 99})
+    pathlib.Path.unlink(register_data / "test_dataset_0.json")
+    with pathlib.Path.open(register_data / "test_dataset_0.json", "w") as file:
+        json.dump(data, file)
+    return register_data
 
 
 @pytest.fixture
