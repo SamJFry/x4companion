@@ -4,12 +4,16 @@ from rest_framework.test import APIClient
 
 from x4companion.x4.models import (
     Dataset,
+    Factory,
+    FactoryModule,
     Habitat,
     HabitatModule,
     SaveGame,
     Sector,
     SectorTemplate,
     Station,
+    Ware,
+    WareOrder,
 )
 
 
@@ -205,3 +209,48 @@ def create_habitat(create_station, create_habitat_module):
     )
     habitat.save()
     return habitat
+
+
+@pytest.fixture
+def create_ware(create_dataset):
+    ware = Ware(
+        name="Stone",
+        storage="S",
+        dataset=create_dataset,
+    )
+    ware.save()
+    return ware
+
+
+@pytest.fixture
+def create_factory_module(create_dataset, create_ware):
+    module = FactoryModule.objects.create(
+        name="Stone Factory",
+        ware=create_ware,
+        hourly_production=1000,
+        hourly_energy=3600,
+        dataset=create_dataset,
+        workforce=1000,
+    )
+    module.save()
+    return module
+
+
+@pytest.fixture
+def create_factory(create_factory_module, create_station):
+    factory = Factory(
+        count=5,
+        module=create_factory_module,
+        station=create_station,
+    )
+    factory.save()
+    return factory
+
+
+@pytest.fixture
+def create_ware_order(create_ware, create_factory_module):
+    ware_order = WareOrder(
+        ware=create_ware, quantity=400, factory=create_factory_module
+    )
+    ware_order.save()
+    return ware_order

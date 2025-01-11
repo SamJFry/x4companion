@@ -185,3 +185,103 @@ class Habitat(models.Model):
     def clean(self) -> None:
         """Custom clean to calculate new station population."""
         self.station.calculate_population()
+
+
+class Ware(models.Model):
+    """Represents an in game ware such as hull parts.
+
+    Attributes:
+        name: The name of the ware.
+        storage: The type of storage the ware uses, either C, L or S.
+        dataset: The dataset the ware belongs to.
+
+    """
+
+    STORAGE_TYPES = [
+        ("C", "Container"),
+        ("L", "Liquid"),
+        ("S", "Solid"),
+    ]
+    name = models.CharField(
+        max_length=50, blank=False, null=False, unique=True
+    )
+    storage = models.CharField(
+        choices=STORAGE_TYPES, null=False, blank=False, max_length=1
+    )
+    dataset = models.ForeignKey(Dataset, on_delete=models.CASCADE)
+
+    def __str__(self) -> str:
+        return f"Ware {self.name}"
+
+
+class FactoryModule(models.Model):
+    """Represents a factory module that can be attached to stations.
+
+    Attributes:
+        name: The name of the template.
+        ware: The ware the factory produces.
+        hourly_production: The hourly production rate of the ware.
+        hourly_energy: The quantity of energy cells the factory consumes each
+            hour.
+        dataset: The dataset the factory belongs to.
+        workforce: The required workforce to operate the module.
+
+    """
+
+    name = models.CharField(
+        max_length=50, blank=False, null=False, unique=True
+    )
+    ware = models.ForeignKey(Ware, on_delete=models.CASCADE)
+    hourly_production = models.IntegerField(null=False)
+    hourly_energy = models.IntegerField(null=False)
+    dataset = models.ForeignKey(Dataset, on_delete=models.CASCADE)
+    workforce = models.IntegerField(null=False)
+
+    def __str__(self) -> str:
+        return f"Factory Module {self.ware.name}"
+
+
+class Factory(models.Model):
+    """Represents an instance of factory modules connected to a station.
+
+    Attributes:
+        count: The number of modules connected to the station.
+        module: The habitat module that contains the habitats attributes.
+        station: The station these modules are attached to.
+
+    """
+
+    count = models.IntegerField(null=False)
+    module = models.ForeignKey(FactoryModule, on_delete=models.CASCADE)
+    station = models.ForeignKey(Station, on_delete=models.CASCADE)
+
+    class Meta:
+        constraints = [
+            models.UniqueConstraint(
+                fields=["module", "station"], name="Unique Factory"
+            )
+        ]
+
+    def __str__(self) -> str:
+        return f"{self.module.ware.name} Factories {self.station.name}"
+
+
+class WareOrder(models.Model):
+    """A ware order requested from a factory.
+
+    A factory will have one or more orders attached to it. These define the
+    resources a factory needs to operate each hour.
+
+    Attributes:
+        ware: The ware being consumed.
+        quantity: The quantity of the order
+        factory: The factory module the order is attached to.
+
+    """
+
+    ware = models.ForeignKey(Ware, on_delete=models.CASCADE)
+    quantity = models.IntegerField(null=False)
+    factory = models.ForeignKey(FactoryModule, on_delete=models.CASCADE)
+
+    def __str__(self) -> str:
+        return f"Ware Order {self.ware.name}"

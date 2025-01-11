@@ -3,12 +3,16 @@ from django.db import IntegrityError
 
 from x4companion.x4.models import (
     Dataset,
+    Factory,
+    FactoryModule,
     Habitat,
     HabitatModule,
     SaveGame,
     Sector,
     SectorTemplate,
     Station,
+    Ware,
+    WareOrder,
 )
 
 
@@ -116,3 +120,39 @@ class TestHabitats:
 
     def test_clean_calculates_station_population(self, create_habitat):
         assert Station.objects.get(id=1).population == 1000
+
+
+@pytest.mark.django_db
+class TestFactoryModule:
+    def test_create_factory_module(self, create_factory_module):
+        assert FactoryModule.objects.count() == 1
+
+    def test_str(self, create_factory_module):
+        assert str(create_factory_module) == "Factory Module Stone"
+
+
+@pytest.mark.django_db
+class TestFactory:
+    def test_create_factory(self, create_factory):
+        assert Factory.objects.count() == 1
+
+    def test_str(self, create_factory):
+        assert str(create_factory) == "Stone Factories Hammersmith"
+
+
+@pytest.mark.django_db
+class TestWare:
+    def test_create_ware(self, create_ware):
+        assert Ware.objects.count() == 1
+
+    def test_str(self, create_ware):
+        assert str(create_ware) == "Ware Stone"
+
+
+@pytest.mark.django_db
+class TestWareOrder:
+    def test_create_ware_order(self, create_ware_order):
+        assert WareOrder.objects.count() == 1
+
+    def test_str(self, create_ware_order):
+        assert str(create_ware_order) == "Ware Order Stone"
