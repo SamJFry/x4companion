@@ -13,14 +13,15 @@ def create_test_dir():
     yield test_dir
     test_dir.rmdir()
 
+
 @pytest.fixture
 def create_test_sectors():
     return {
         "sectors": [
-            {"name": f"sector_{x}", "sunlight_percent": 100}
-            for x in range(10)
+            {"name": f"sector_{x}", "sunlight_percent": 100} for x in range(10)
         ]
     }
+
 
 @pytest.fixture
 def create_good_data(create_test_dir, create_test_sectors):
@@ -42,7 +43,7 @@ def register_data(create_good_data):
 def update_old_data(register_data):
     with pathlib.Path.open(register_data / "test_dataset_0.json", "r") as file:
         data = json.load(file)
-    data["sectors"][9].update({"name": f"sector_9", "sunlight_percent": 99})
+    data["sectors"][9].update({"name": "sector_9", "sunlight_percent": 99})
     data["sectors"] += [
         {"name": "new_sector", "sunlight_percent": 1},
         {"name": "new_sector_2", "sunlight_percent": 2},

@@ -5,6 +5,20 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.1.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [Unreleased]
+## Added
+- Sector Templates now have a Sunlight Percent field.
+- Added a management Command to register Datasets.
+- Added a django setting to set the Datasets directory with a default at `/x4companion/datasets`.
+
+### Changed
+- Sector Templates no longer give their Dataset ID in GET responses, since the user already has
+to give this detail in the URL.
+- Sector Templates no longer require the Dataset ID when creating them via POST requests.
+
+### Fixed
+- `/game/{id}/sectors/` now returns a 404 when you query for a save game that does not exist.
+
 [0.1.0]
 ### Added
 - Added Sector templates. These map to datasets, this table contains all sectors available in a dataset.
@@ -17,15 +31,6 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 ### Changed
 - Sectors now map to sector templates, previously each sector was unique within a save game.
 - Save games must be associated to a dataset.
-
-## [Unreleased]
-## Added
-- Sector Templates now have a Sunlight Percent field.
-
-### Changed
-- Sector Templates no longer give their Dataset ID in GET responses, since the user already has
-to give this detail in the URL.
-- Sector Templates no longer require the Dataset ID when creating them via POST requests.
 
 ## [0.0.1] - 2024-12-20
 

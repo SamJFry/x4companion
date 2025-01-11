@@ -11,7 +11,6 @@ from x4companion.x4.management import (
 from x4companion.x4.management.exceptions import ValidationError
 from x4companion.x4.models import Dataset, SectorTemplate
 
-
 logger = logging.getLogger("x4companion.x4.management.register_datasets")
 
 
@@ -38,6 +37,7 @@ def test_update_datasets(update_old_data):
     assert updated_sector_sunlight == 99
     assert SectorTemplate.objects.get(name="new_sector")
     assert SectorTemplate.objects.get(name="new_sector_2")
+
 
 @pytest.mark.django_db
 class TestDataset:
@@ -92,9 +92,7 @@ class TestRegisterDataset:
             }
         ]
 
-    def test_register_handles_already_registered(
-        self, create_dataset
-    ):
+    def test_register_handles_already_registered(self, create_dataset):
         dataset = DatasetTransaction(name="StarTrekin", sectors=[])
         RegisterDataset(dataset).register()
         assert Dataset.objects.count() == 1
@@ -104,7 +102,9 @@ class TestRegisterDataset:
         RegisterDataset(dataset).register()
         assert Dataset.objects.count() == 0
 
-    def test_update_sectors_handles_bad_sector(self, register_data, create_test_sectors, caplog):
+    def test_update_sectors_handles_bad_sector(
+        self, register_data, create_test_sectors, caplog
+    ):
         sectors = create_test_sectors["sectors"]
         del sectors[8]["sunlight_percent"]
         dataset = DatasetTransaction(name="test_dataset_0", sectors=sectors)

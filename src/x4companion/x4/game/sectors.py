@@ -2,6 +2,8 @@
 
 from http import HTTPMethod
 
+from django.core.exceptions import ObjectDoesNotExist
+from rest_framework import status
 from rest_framework.generics import GenericAPIView
 from rest_framework.request import Request
 from rest_framework.response import Response
@@ -41,11 +43,14 @@ class Sectors(GenericAPIView):
             A JSON response containing a list of sectors and their attributes.
 
         """
-        return get_bulk_response(
-            request,
-            self.get_serializer_class(),
-            SaveGame.objects.get(id=save_id).sector_set.all(),
-        )
+        try:
+            return get_bulk_response(
+                request,
+                self.get_serializer_class(),
+                SaveGame.objects.get(id=save_id).sector_set.all(),
+            )
+        except ObjectDoesNotExist:
+            return Response(status=status.HTTP_404_NOT_FOUND)
 
     def post(self, request: Request, save_id: int) -> Response:
         """Creates a new sector in the database.

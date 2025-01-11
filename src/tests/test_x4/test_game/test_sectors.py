@@ -20,6 +20,10 @@ class TestSectors:
             "data": [{"id": 1, "game_id": 1, "template_id": 1}],
         }
 
+    def test_get_on_bad_game_gives_404(self, authed_client):
+        response = authed_client.get("/game/100/sectors/")
+        assert response.status_code == status.HTTP_404_NOT_FOUND
+
     @pytest.mark.usefixtures("_create_multiple_sector_templates")
     def test_post(self, authed_client, create_save_game):
         response = authed_client.post(
