@@ -1,9 +1,9 @@
 """Contains the command to register Datasets."""
 
 from django.conf import settings
-from django.core.management.base import BaseCommand
+from django.core.management.base import BaseCommand, CommandParser
 
-from x4companion.x4.management import register_datasets
+from x4companion.x4.management import register_datasets, update_datasets
 
 
 class Command(BaseCommand):
@@ -16,6 +16,13 @@ class Command(BaseCommand):
 
     help = "Registers all dataset files in the datasets directory"
 
-    def handle(self, *args, **kwargs) -> None:
+    def add_arguments(self, parser: CommandParser) -> None:
+        """Additional command options."""
+        parser.add_argument("--update", action="store_true")
+
+    def handle(self, *args, **options) -> None:
         """Runs the command."""
+        if options["update"]:
+            update_datasets(settings.DATASETS_PATH)
+            return
         register_datasets(settings.DATASETS_PATH)

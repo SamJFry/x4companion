@@ -122,7 +122,8 @@ class RegisterDataset:
                 )
                 failed_sectors += 1
         logger.info("Registered %d sectors", len(self.transaction.sectors))
-        logger.info("Failed to register %d sectors", failed_sectors)
+        if failed_sectors > 0:
+            logger.info("Failed to register %d sectors", failed_sectors)
 
     def _update_sector(self, sector: dict) -> None:
         """Run updates on an individual sector."""
