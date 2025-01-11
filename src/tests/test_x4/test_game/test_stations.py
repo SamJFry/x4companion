@@ -84,6 +84,10 @@ class TestStations:
             ],
         }
 
+    def test_get_on_bad_game_gives_404(self, authed_client):
+        response = authed_client.get("/game/100/stations/")
+        assert response.status_code == status.HTTP_404_NOT_FOUND
+
 
 @pytest.mark.django_db
 class TestStationView:

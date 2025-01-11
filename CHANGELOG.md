@@ -18,6 +18,8 @@ to give this detail in the URL.
 
 ### Fixed
 - `/game/{id}/sectors/` now returns a 404 when you query for a save game that does not exist.
+- `/game/{id}/stations/` now returns a 404 when you query for a save game that does not exist.
+
 
 [0.1.0]
 ### Added
