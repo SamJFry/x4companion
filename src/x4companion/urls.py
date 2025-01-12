@@ -24,11 +24,10 @@ from x4companion import x4
 from x4companion.x4.dataset import (
     dataset,
     habitat_modules,
-    habitats,
     sector_templates,
     wares,
 )
-from x4companion.x4.game import saves, sectors, stations
+from x4companion.x4.game import saves, sectors, stations, habitats
 
 urlpatterns = [
     path("admin/", admin.site.urls),
