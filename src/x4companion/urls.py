@@ -28,7 +28,7 @@ from x4companion.x4.dataset import (
     wares,
     factory_modules,
 )
-from x4companion.x4.game import habitats, saves, sectors, stations
+from x4companion.x4.game import habitats, saves, sectors, stations, factory
 
 urlpatterns = [
     path("admin/", admin.site.urls),
@@ -57,6 +57,16 @@ urlpatterns = [
         "game/<int:save_id>/stations/<int:id_>/",
         stations.StationView.as_view(),
         name="station",
+    ),
+    path(
+        "game/<int:save_id>/stations/<int:station_id>/factories/",
+        factory.StationFactories.as_view(),
+        name="station_habitats",
+    ),
+    path(
+        "game/<int:save_id>/stations/<int:station_id>/factories/<int:id_>/",
+        factory.StationFactoriesView.as_view(),
+        name="station_habitat",
     ),
     path(
         "game/<int:save_id>/stations/<int:station_id>/habitats/",

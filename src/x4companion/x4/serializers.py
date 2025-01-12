@@ -13,6 +13,7 @@ from x4companion.x4.models import (
     SectorTemplate,
     Station,
     Ware,
+    Factory,
     FactoryModule,
 )
 
@@ -276,6 +277,36 @@ class FactoryModuleSerializer(serializers.ModelSerializer):
             **validated_data,
             dataset=Dataset.objects.get(id=self.context.get("dataset_id")),
         )
+
+
+class FactorySerializer(serializers.ModelSerializer):
+    """The serializer for station Factories."""
+
+    module_id = serializers.PrimaryKeyRelatedField(
+        queryset=FactoryModule.objects.all()
+    )
+    station_id = StationSerializerRead
+
+    class Meta:
+        model = Factory
+        fields = ["id", "count", "module_id", "station_id"]
+
+    def create(self, validated_data: dict) -> models.Model:
+        """Create a station Factory from validated serial data.
+
+        The ID of the station to create modules for is retrieved from the
+        context.
+
+        Args:
+            validated_data: The data to create a sector with.
+
+        """
+        return Factory.objects.create(
+            module=validated_data["module_id"],
+            station=Station.objects.get(id=self.context.get("station_id")),
+            count=validated_data["count"],
+        )
+
 
 
 class HabitatModuleSerializer(serializers.ModelSerializer):

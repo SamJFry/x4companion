@@ -184,6 +184,15 @@ def create_user_2_habitat(create_user_2_station, create_habitat_module):
 
 
 @pytest.fixture
+def create_user_2_factory(create_user_2_station, create_factory_module):
+    factory = Factory.objects.create(
+        count=1, module=create_factory_module, station=create_user_2_station
+    )
+    factory.save()
+    return factory
+
+
+@pytest.fixture
 def create_dataset():
     dataset = Dataset.objects.create(name="StarTrekin")
     dataset.save()
