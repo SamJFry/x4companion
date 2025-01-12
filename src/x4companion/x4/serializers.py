@@ -13,6 +13,7 @@ from x4companion.x4.models import (
     SectorTemplate,
     Station,
     Ware,
+    FactoryModule,
 )
 
 
@@ -246,6 +247,35 @@ class StationSerializerRead(serializers.ModelSerializer):
             "game_id",
             "population",
         ]
+
+
+class FactoryModuleSerializer(serializers.ModelSerializer):
+    """The serializer used for Factory Modules."""
+
+    ware_id = serializers.PrimaryKeyRelatedField(
+        queryset=Ware.objects.all()
+    )
+
+    class Meta:
+        model = FactoryModule
+        fields = ["id", "name", "ware_id", "hourly_production", "hourly_energy", "workforce"]
+
+    def create(self, validated_data: dict) -> models.Model:
+        """Create a Factory Module from the validated serializer data.
+
+        Since we don't allow creating modules on different Datasets, all
+        modules are created under a dataset gleaned from the serializers
+        context.
+
+        Args:
+            validated_data: The data to create a sector with.
+
+        """
+        validated_data["ware"] = validated_data.pop("ware_id")
+        return FactoryModule.objects.create(
+            **validated_data,
+            dataset=Dataset.objects.get(id=self.context.get("dataset_id")),
+        )
 
 
 class HabitatModuleSerializer(serializers.ModelSerializer):

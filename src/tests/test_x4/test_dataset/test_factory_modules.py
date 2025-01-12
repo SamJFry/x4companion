@@ -7,7 +7,7 @@ from x4companion.x4.models import FactoryModule
 
 
 @pytest.mark.django_db
-class TestHabitatModules:
+class TestFactoryModules:
     def test_post(self, authed_client, create_ware):
         response = authed_client.post(
             "/dataset/1/factory-modules/",
@@ -39,7 +39,7 @@ class TestHabitatModules:
             }
         ]
 
-    def test_get(self, authed_client, create_ware):
+    def test_get(self, authed_client, create_factory_module):
         response = authed_client.get("/dataset/1/factory-modules/")
         assert response.status_code == status.HTTP_200_OK
         assert response.json() == {
@@ -52,7 +52,6 @@ class TestHabitatModules:
                 {
                     "id": 1,
                     "name": "Stone Factory",
-                    "dataset_id": 1,
                     "ware_id": 1,
                     "hourly_production": 1000,
                     "hourly_energy": 3600,
@@ -63,21 +62,20 @@ class TestHabitatModules:
 
 
 @pytest.mark.django_db
-class TestHabitatModulesView:
-    def test_get(self, authed_client, create_habitat_module):
+class TestFactoryModulesView:
+    def test_get(self, authed_client, create_factory_module):
         response = authed_client.get("/dataset/1/factory-modules/1/")
         assert response.status_code == status.HTTP_200_OK
         assert response.json() == {
             "id": 1,
             "name": "Stone Factory",
-            "dataset_id": 1,
             "ware_id": 1,
             "hourly_production": 1000,
             "hourly_energy": 3600,
             "workforce": 1000,
         }
 
-    def test_delete(self, authed_client, create_habitat_module):
+    def test_delete(self, authed_client, create_factory_module):
         response = authed_client.delete("/dataset/1/factory-modules/1/")
         assert response.status_code == status.HTTP_204_NO_CONTENT
         assert list(FactoryModule.objects.all().values()) == []
