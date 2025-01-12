@@ -27,7 +27,7 @@ from x4companion.x4.dataset import (
     sector_templates,
     wares,
 )
-from x4companion.x4.game import saves, sectors, stations, habitats
+from x4companion.x4.game import habitats, saves, sectors, stations
 
 urlpatterns = [
     path("admin/", admin.site.urls),
@@ -92,6 +92,11 @@ urlpatterns = [
     path(
         "dataset/<int:dataset_id>/wares/",
         wares.Wares.as_view(),
-        name="habitat_module",
+        name="wares",
+    ),
+    path(
+        "dataset/<int:dataset_id>/wares/<int:id_>/",
+        wares.WareView.as_view(),
+        name="ware",
     ),
 ]

@@ -6,7 +6,9 @@ from rest_framework.response import Response
 
 from x4companion.x4.models import Ware
 from x4companion.x4.responses import (
+    delete_response,
     get_bulk_response,
+    get_response,
     post_response,
 )
 from x4companion.x4.serializers import WareSerializer
@@ -50,3 +52,40 @@ class Wares(GenericAPIView):
             self.serializer_class,
             Ware.objects.filter(dataset=dataset_id),
         )
+
+
+class WareView(GenericAPIView):
+    """Manage an individual sector template."""
+
+    serializer_class = WareSerializer
+
+    def get(self, request: Request, dataset_id: int, id_: int) -> Response:
+        """Get a single Ware.
+
+        Args:
+            request: The incoming GET request.
+            dataset_id: The ID of the dataset the ware belongs to.
+            id_: The ID of the ware.
+
+        Returns:
+            A JSON Response containing the requested ware.
+
+        """
+        return get_response(
+            self.serializer_class,
+            Ware.objects.filter(id=id_, dataset=dataset_id),
+        )
+
+    def delete(self, request: Request, dataset_id: int, id_: int) -> Response:
+        """Delete a Ware.
+
+        Args:
+            request: The incoming DELETE request.
+            dataset_id: The dataset the ware belongs to.
+            id_: The ID of the template.
+
+        Returns:
+            An empty response if the ware has been deleted.
+
+        """
+        return delete_response(Ware.objects.filter(id=id_, dataset=dataset_id))

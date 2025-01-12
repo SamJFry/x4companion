@@ -50,3 +50,20 @@ class TestWares:
                 }
             ],
         }
+
+
+@pytest.mark.django_db
+class TestSectorTemplatesView:
+    def test_get(self, authed_client, create_ware):
+        response = authed_client.get("/dataset/1/wares/1/")
+        assert response.status_code == status.HTTP_200_OK
+        assert response.json() == {
+            "id": 1,
+            "name": "Stone",
+            "storage": "Solid",
+        }
+
+    def test_delete(self, authed_client, create_ware):
+        response = authed_client.delete("/dataset/1/wares/1/")
+        assert response.status_code == status.HTTP_204_NO_CONTENT
+        assert list(Ware.objects.all().values()) == []
