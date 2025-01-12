@@ -12,6 +12,7 @@ from x4companion.x4.models import (
     Sector,
     SectorTemplate,
     Station,
+    Ware,
 )
 
 
@@ -89,6 +90,70 @@ class SectorTemplateSerializer(serializers.ModelSerializer):
             name=validated_data["name"],
             dataset_id=self.context["dataset_id"],
             sunlight_percent=validated_data["sunlight_percent"],
+        )
+
+
+class WareSerializer(serializers.Serializer):
+    """Serializer class used for Wares."""
+
+    id = serializers.ModelField(
+        model_field=Ware()._meta.get_field("id"),  # noqa: SLF001
+        required=False,
+    )
+    name = serializers.CharField(
+        max_length=50, allow_blank=False, allow_null=False
+    )
+    storage = serializers.CharField(allow_blank=False, allow_null=False)
+
+    def validate_storage(self, value: str) -> str:
+        """Validates that a proper storage type has been provided.
+
+        Valid storage types are defined by the `Ware` model and must be
+        provided as the human-readable form.
+
+        Args:
+            value: The storage vale to be verified.
+
+        Returns:
+            The single character version of the storage mode that can be
+            written to the DB.
+
+        """
+        if value not in (choices := Ware.STORAGE_TYPES.values()):
+            msg = f"{value} is not a valid storage type, Choices are {choices}"
+            raise serializers.ValidationError(msg)
+        return next(
+            key for key, val in Ware.STORAGE_TYPES.items() if val == value
+        )
+
+    def to_representation(self, instance: models.Model) -> dict:
+        """Converts the storage value to a human-readable form.
+
+        Args:
+            instance: The model instance to use.
+
+        Returns:
+            The serialized data to be returned in the API response.
+
+        """
+        data = super().to_representation(instance)
+        data["storage"] = Ware.STORAGE_TYPES[data["storage"]]
+        return data
+
+    def create(self, validated_data: dict) -> models.Model:
+        """Creates a ware from validated data.
+
+        Args:
+            validated_data: The data from the serializer.
+
+        Returns:
+            A new SectorTemplate instance.
+
+        """
+        return Ware.objects.create(
+            name=validated_data["name"],
+            dataset_id=self.context["dataset_id"],
+            storage=validated_data["storage"],
         )
 
 

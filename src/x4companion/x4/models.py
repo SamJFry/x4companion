@@ -197,11 +197,11 @@ class Ware(models.Model):
 
     """
 
-    STORAGE_TYPES = [
-        ("C", "Container"),
-        ("L", "Liquid"),
-        ("S", "Solid"),
-    ]
+    STORAGE_TYPES = {
+        "C": "Container",
+        "L": "Liquid",
+        "S": "Solid",
+    }
     name = models.CharField(
         max_length=50, blank=False, null=False, unique=True
     )

@@ -26,6 +26,7 @@ from x4companion.x4.dataset import (
     habitat_modules,
     habitats,
     sector_templates,
+    wares,
 )
 from x4companion.x4.game import saves, sectors, stations
 
@@ -87,6 +88,11 @@ urlpatterns = [
     path(
         "dataset/<int:dataset_id>/habitat-modules/<int:id_>/",
         habitat_modules.HabitatModuleView.as_view(),
+        name="habitat_module",
+    ),
+    path(
+        "dataset/<int:dataset_id>/wares/",
+        wares.Wares.as_view(),
         name="habitat_module",
     ),
 ]
