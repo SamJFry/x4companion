@@ -53,3 +53,20 @@ class TestWareOrders:
             ],
         }
 
+
+@pytest.mark.django_db
+class TestWareOrderView:
+    def test_get(self, authed_client, create_ware_order):
+        response = authed_client.get("/dataset/1/ware-orders/1/")
+        assert response.status_code == status.HTTP_200_OK
+        assert response.json() == {
+            "id": 1,
+            "ware_id": 1,
+            "factory_module_id": 1,
+            "quantity": 400,
+        }
+
+    def test_delete(self, authed_client, create_ware_order):
+        response = authed_client.delete("/dataset/1/ware-orders/1/")
+        assert response.status_code == status.HTTP_204_NO_CONTENT
+        assert list(WareOrder.objects.all().values()) == []

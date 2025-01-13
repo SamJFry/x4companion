@@ -53,7 +53,7 @@ class TestWares:
 
 
 @pytest.mark.django_db
-class TestSectorTemplatesView:
+class TestWareView:
     def test_get(self, authed_client, create_ware):
         response = authed_client.get("/dataset/1/wares/1/")
         assert response.status_code == status.HTTP_200_OK

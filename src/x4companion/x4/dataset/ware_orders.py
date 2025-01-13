@@ -53,3 +53,41 @@ class WareOrders(GenericAPIView):
             self.serializer_class,
             WareOrder.objects.filter(ware__dataset=dataset_id),
         )
+
+
+class WareOrderView(GenericAPIView):
+    """Manage an individual ware order."""
+    serializer_class = WareOrdersSerializer
+
+    def get(self, request: Request, dataset_id: int, id_: int) -> Response:
+        """Get a Ware Order.
+
+        Args:
+            request: The incoming GET request.
+            dataset_id: The ID of the dataset the ware order belongs to.
+            id_: The ID of the ware order.
+
+        Returns:
+            A JSON response containing the requested order.
+
+        """
+        return get_response(
+            self.serializer_class,
+            WareOrder.objects.filter(id=id_, ware__dataset=dataset_id),
+        )
+
+    def delete(self, request: Request, dataset_id: int, id_: int) -> Response:
+        """Delete a Ware Order.
+
+        Args:
+            request: The incoming DELETE request.
+            dataset_id: The dataset the ware order belongs to.
+            id_: The ID of the order.
+
+        Returns:
+            An empty response if the order has been deleted.
+
+        """
+        return delete_response(
+            WareOrder.objects.filter(id=id_, ware__dataset=dataset_id)
+        )

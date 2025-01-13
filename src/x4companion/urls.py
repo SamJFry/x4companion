@@ -124,6 +124,11 @@ urlpatterns = [
     path(
         "dataset/<int:dataset_id>/ware-orders/",
         ware_orders.WareOrders.as_view(),
-        name="wares",
+        name="ware_orders",
+    ),
+    path(
+        "dataset/<int:dataset_id>/ware-orders/<int:id_>/",
+        ware_orders.WareOrderView.as_view(),
+        name="ware_order",
     ),
 ]
