@@ -6,6 +6,8 @@ from rest_framework import serializers
 
 from x4companion.x4.models import (
     Dataset,
+    Factory,
+    FactoryModule,
     Habitat,
     HabitatModule,
     SaveGame,
@@ -14,8 +16,6 @@ from x4companion.x4.models import (
     Station,
     Ware,
     WareOrder,
-    Factory,
-    FactoryModule,
 )
 
 
@@ -254,13 +254,18 @@ class StationSerializerRead(serializers.ModelSerializer):
 class FactoryModuleSerializer(serializers.ModelSerializer):
     """The serializer used for Factory Modules."""
 
-    ware_id = serializers.PrimaryKeyRelatedField(
-        queryset=Ware.objects.all()
-    )
+    ware_id = serializers.PrimaryKeyRelatedField(queryset=Ware.objects.all())
 
     class Meta:
         model = FactoryModule
-        fields = ["id", "name", "ware_id", "hourly_production", "hourly_energy", "workforce"]
+        fields = [
+            "id",
+            "name",
+            "ware_id",
+            "hourly_production",
+            "hourly_energy",
+            "workforce",
+        ]
 
     def create(self, validated_data: dict) -> models.Model:
         """Create a Factory Module from the validated serializer data.
@@ -312,9 +317,7 @@ class FactorySerializer(serializers.ModelSerializer):
 class WareOrdersSerializer(serializers.ModelSerializer):
     """Serializer for Ware orders that are consumed by factories."""
 
-    ware_id = serializers.PrimaryKeyRelatedField(
-        queryset=Ware.objects.all()
-    )
+    ware_id = serializers.PrimaryKeyRelatedField(queryset=Ware.objects.all())
     factory_module_id = serializers.PrimaryKeyRelatedField(
         queryset=FactoryModule.objects.all()
     )

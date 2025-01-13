@@ -23,13 +23,13 @@ from rest_framework.authtoken import views
 from x4companion import x4
 from x4companion.x4.dataset import (
     dataset,
+    factory_modules,
     habitat_modules,
     sector_templates,
-    wares,
-    factory_modules,
     ware_orders,
+    wares,
 )
-from x4companion.x4.game import habitats, saves, sectors, stations, factory
+from x4companion.x4.game import factory, habitats, saves, sectors, stations
 
 urlpatterns = [
     path("admin/", admin.site.urls),
