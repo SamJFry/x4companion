@@ -259,7 +259,7 @@ def create_factory(create_factory_module, create_station):
 @pytest.fixture
 def create_ware_order(create_ware, create_factory_module):
     ware_order = WareOrder(
-        ware=create_ware, quantity=400, factory=create_factory_module
+        ware=create_ware, quantity=400, factory_module=create_factory_module
     )
     ware_order.save()
     return ware_order

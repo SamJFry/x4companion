@@ -13,6 +13,7 @@ from x4companion.x4.models import (
     SectorTemplate,
     Station,
     Ware,
+    WareOrder,
     Factory,
     FactoryModule,
 )
@@ -308,6 +309,36 @@ class FactorySerializer(serializers.ModelSerializer):
         )
 
 
+class WareOrdersSerializer(serializers.ModelSerializer):
+    """Serializer for Ware orders that are consumed by factories."""
+
+    ware_id = serializers.PrimaryKeyRelatedField(
+        queryset=Ware.objects.all()
+    )
+    factory_module_id = serializers.PrimaryKeyRelatedField(
+        queryset=FactoryModule.objects.all()
+    )
+
+    class Meta:
+        model = WareOrder
+        fields = ["id", "ware_id", "factory_module_id", "quantity"]
+
+    def create(self, validated_data: dict) -> models.Model:
+        """Create a Ware Order from the validated serializer data.
+
+        Args:
+            validated_data: The data to create an order with.
+
+        Returns:
+            A created model instance.
+
+        """
+        return WareOrder.objects.create(
+            ware=validated_data["ware_id"],
+            factory_module=validated_data["factory_module_id"],
+            quantity=validated_data["quantity"],
+        )
+
 
 class HabitatModuleSerializer(serializers.ModelSerializer):
     """The serializer used for Habitat Modules."""
@@ -325,6 +356,9 @@ class HabitatModuleSerializer(serializers.ModelSerializer):
 
         Args:
             validated_data: The data to create a sector with.
+
+        Returns:
+            A created model instance.
 
         """
         return HabitatModule.objects.create(

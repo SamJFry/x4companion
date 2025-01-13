@@ -281,7 +281,7 @@ class WareOrder(models.Model):
 
     ware = models.ForeignKey(Ware, on_delete=models.CASCADE)
     quantity = models.IntegerField(null=False)
-    factory = models.ForeignKey(FactoryModule, on_delete=models.CASCADE)
+    factory_module = models.ForeignKey(FactoryModule, on_delete=models.CASCADE)
 
     def __str__(self) -> str:
         return f"Ware Order {self.ware.name}"
