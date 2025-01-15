@@ -31,12 +31,12 @@ urlpatterns = [
     path("schema/", SpectacularAPIView.as_view(), name="schema"),
     path("docs/", SpectacularSwaggerView.as_view(), name="swagger"),
     path(
-        "game/<int:save_id>/sectors/",
+        "game/<int:game_id>/sectors/",
         sectors.Sectors.as_view(),
         name="sectors",
     ),
     path(
-        "game/<int:save_id>/sectors/<int:id_>/",
+        "game/<int:game__id>/sectors/<int:id>/",
         sectors.SectorView.as_view(),
         name="sector",
     ),
@@ -58,7 +58,7 @@ urlpatterns = [
         name="station_habitats",
     ),
     path(
-        "game/<int:save_id>/stations/<int:station_id>/factories/<int:id_>/",
+        "game/<int:station__game__id>/stations/<int:station__id>/factories/<int:id>/",
         factory.StationFactoriesView.as_view(),
         name="station_habitat",
     ),
@@ -68,7 +68,7 @@ urlpatterns = [
         name="station_habitats",
     ),
     path(
-        "game/<int:save_id>/stations/<int:station_id>/habitats/<int:id_>/",
+        "game/<int:station__game__id>/stations/<int:station_id>/habitats/<int:id>/",
         habitats.StationHabitatsView.as_view(),
         name="station_habitat",
     ),
