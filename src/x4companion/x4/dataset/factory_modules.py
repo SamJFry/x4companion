@@ -11,19 +11,11 @@ class FactoryModules(X4APIBulkView):
     """Manage all Factory Modules."""
 
     serializer_class = FactoryModuleSerializer
-
-    def get_queryset(self, **kwargs) -> QuerySet:
-        """Return a QuerySet for getting bulk data."""
-        return FactoryModule.objects.filter(dataset=kwargs["dataset_id"])
+    model_class = FactoryModule
 
 
 class FactoryModuleView(X4APISingleView):
     """Manage an individual Factory Module."""
 
     serializer_class = FactoryModuleSerializer
-
-    def get_queryset(self, **kwargs) -> QuerySet:
-        """Return a QuerySet for getting a single item."""
-        return FactoryModule.objects.filter(
-            id=kwargs["id_"], dataset=kwargs["dataset_id"]
-        )
+    model_class = FactoryModule

@@ -21,7 +21,4 @@ class DatasetView(X4APISingleView):
     """Manage an individual dataset."""
 
     serializer_class = DatasetSerializer
-
-    def get_queryset(self, **kwargs) -> QuerySet:
-        """Return a QuerySet for getting a single item."""
-        return Dataset.objects.filter(id=kwargs["id_"])
+    model_class = Dataset

@@ -11,19 +11,11 @@ class HabitatModules(X4APIBulkView):
     """Manage all Habitat Modules."""
 
     serializer_class = HabitatModuleSerializer
-
-    def get_queryset(self, **kwargs) -> QuerySet:
-        """Return a QuerySet for getting bulk data."""
-        return HabitatModule.objects.filter(dataset=kwargs["dataset_id"])
+    model_class = HabitatModule
 
 
 class HabitatModuleView(X4APISingleView):
     """Manage an individual Habitat Module."""
 
     serializer_class = HabitatModuleSerializer
-
-    def get_queryset(self, **kwargs) -> QuerySet:
-        """Return a QuerySet for getting a single item."""
-        return HabitatModule.objects.filter(
-            id=kwargs["id_"], dataset=kwargs["dataset_id"]
-        )
+    model_class = HabitatModule

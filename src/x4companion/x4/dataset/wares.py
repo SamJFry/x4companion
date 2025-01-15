@@ -11,19 +11,11 @@ class Wares(X4APIBulkView):
     """Manage wares for a dataset."""
 
     serializer_class = WareSerializer
-
-    def get_queryset(self, **kwargs) -> QuerySet:
-        """Return a QuerySet for getting bulk data."""
-        return Ware.objects.filter(dataset=kwargs["dataset_id"])
+    model_class = Ware
 
 
 class WareView(X4APISingleView):
     """Manage an individual ware."""
 
     serializer_class = WareSerializer
-
-    def get_queryset(self, **kwargs) -> QuerySet:
-        """Return a QuerySet for getting a single item."""
-        return Ware.objects.filter(
-            id=kwargs["id_"], dataset=kwargs["dataset_id"]
-        )
+    model_class = Ware

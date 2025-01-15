@@ -80,14 +80,14 @@ urlpatterns = [
         name="station_habitat",
     ),
     path("dataset/", dataset.Datasets.as_view(), name="datasets"),
-    path("dataset/<int:id_>/", dataset.DatasetView.as_view(), name="dataset"),
+    path("dataset/<int:id>/", dataset.DatasetView.as_view(), name="dataset"),
     path(
         "dataset/<int:dataset_id>/sector-templates/",
         sector_templates.SectorTemplates.as_view(),
         name="sector_templates",
     ),
     path(
-        "dataset/<int:dataset_id>/sector-templates/<int:id_>/",
+        "dataset/<int:dataset_id>/sector-templates/<int:id>/",
         sector_templates.SectorTemplatesView.as_view(),
         name="sector_template",
     ),
@@ -97,7 +97,7 @@ urlpatterns = [
         name="habitat_modules",
     ),
     path(
-        "dataset/<int:dataset_id>/habitat-modules/<int:id_>/",
+        "dataset/<int:dataset_id>/habitat-modules/<int:id>/",
         habitat_modules.HabitatModuleView.as_view(),
         name="habitat_module",
     ),
@@ -107,7 +107,7 @@ urlpatterns = [
         name="habitat_modules",
     ),
     path(
-        "dataset/<int:dataset_id>/factory-modules/<int:id_>/",
+        "dataset/<int:dataset_id>/factory-modules/<int:id>/",
         factory_modules.FactoryModuleView.as_view(),
         name="habitat_module",
     ),
@@ -117,17 +117,17 @@ urlpatterns = [
         name="wares",
     ),
     path(
-        "dataset/<int:dataset_id>/wares/<int:id_>/",
+        "dataset/<int:dataset_id>/wares/<int:id>/",
         wares.WareView.as_view(),
         name="ware",
     ),
     path(
-        "dataset/<int:dataset_id>/ware-orders/",
+        "dataset/<int:ware__dataset>/ware-orders/",
         ware_orders.WareOrders.as_view(),
         name="ware_orders",
     ),
     path(
-        "dataset/<int:dataset_id>/ware-orders/<int:id_>/",
+        "dataset/<int:ware__dataset>/ware-orders/<int:id>/",
         ware_orders.WareOrderView.as_view(),
         name="ware_order",
     ),

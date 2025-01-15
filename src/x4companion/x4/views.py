@@ -1,8 +1,11 @@
 """Contains templates for the Apps API views."""
+from typing import Type
 
-from rest_framework.generics import GenericAPIView
+from django.db.models import QuerySet, Model
+from rest_framework.views import APIView
 from rest_framework.request import Request
 from rest_framework.response import Response
+from rest_framework.serializers import BaseSerializer
 
 from x4companion.x4.responses import (
     delete_response,
@@ -12,15 +15,15 @@ from x4companion.x4.responses import (
 )
 
 
-class X4APIBulkView(GenericAPIView):
+class X4APIBulkView(APIView):
     """API View for managing bulk data."""
 
-    write_context: dict
+    serializer_class: Type[BaseSerializer]
+    model_class: Type[Model]
 
-    def get_queryset(self, **kwargs) -> None:
+    def get_queryset(self, **kwargs) -> QuerySet:
         """Return a QuerySet for getting bulk data."""
-        msg = "Subclass should implement this method."
-        raise NotImplementedError(msg)
+        return self.model_class.objects.filter(**kwargs)
 
     def post(self, request: Request, **kwargs) -> Response:
         """Create an API resource.
@@ -57,13 +60,15 @@ class X4APIBulkView(GenericAPIView):
         )
 
 
-class X4APISingleView(GenericAPIView):
+class X4APISingleView(APIView):
     """API view for managing singular data."""
 
-    def get_queryset(self, **kwargs) -> None:
+    serializer_class: Type[BaseSerializer]
+    model_class: Type[Model]
+
+    def get_queryset(self, **kwargs) -> QuerySet:
         """Return a QuerySet for getting a single item."""
-        msg = "Subclass should implement this method."
-        raise NotImplementedError(msg)
+        return self.model_class.objects.filter(**kwargs)
 
     def get(self, request: Request, **kwargs) -> Response:
         """Get a single API object by its ID.
