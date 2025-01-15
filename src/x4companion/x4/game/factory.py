@@ -12,7 +12,7 @@ from x4companion.x4.responses import (
     get_response,
 )
 from x4companion.x4.serializers import FactorySerializer
-from x4companion.x4.views import X4APIBulkView, X4APISingleView
+from x4companion.x4.api_bases import X4APIBulkView, X4APISingleView
 
 class StationFactories(X4APIBulkView):
     """Manage all Factories."""

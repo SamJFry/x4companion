@@ -21,14 +21,7 @@ from drf_spectacular.views import SpectacularAPIView, SpectacularSwaggerView
 from rest_framework.authtoken import views
 
 from x4companion import x4
-from x4companion.x4.dataset import (
-    dataset,
-    factory_modules,
-    habitat_modules,
-    sector_templates,
-    ware_orders,
-    wares,
-)
+from x4companion.x4.views import dataset
 from x4companion.x4.game import factory, habitats, saves, sectors, stations
 
 urlpatterns = [
@@ -83,52 +76,52 @@ urlpatterns = [
     path("dataset/<int:id>/", dataset.DatasetView.as_view(), name="dataset"),
     path(
         "dataset/<int:dataset_id>/sector-templates/",
-        sector_templates.SectorTemplates.as_view(),
+        dataset.SectorTemplates.as_view(),
         name="sector_templates",
     ),
     path(
         "dataset/<int:dataset_id>/sector-templates/<int:id>/",
-        sector_templates.SectorTemplatesView.as_view(),
+        dataset.SectorTemplatesView.as_view(),
         name="sector_template",
     ),
     path(
         "dataset/<int:dataset_id>/habitat-modules/",
-        habitat_modules.HabitatModules.as_view(),
+        dataset.HabitatModules.as_view(),
         name="habitat_modules",
     ),
     path(
         "dataset/<int:dataset_id>/habitat-modules/<int:id>/",
-        habitat_modules.HabitatModuleView.as_view(),
+        dataset.HabitatModuleView.as_view(),
         name="habitat_module",
     ),
     path(
         "dataset/<int:dataset_id>/factory-modules/",
-        factory_modules.FactoryModules.as_view(),
+        dataset.FactoryModules.as_view(),
         name="habitat_modules",
     ),
     path(
         "dataset/<int:dataset_id>/factory-modules/<int:id>/",
-        factory_modules.FactoryModuleView.as_view(),
+        dataset.FactoryModuleView.as_view(),
         name="habitat_module",
     ),
     path(
         "dataset/<int:dataset_id>/wares/",
-        wares.Wares.as_view(),
+        dataset.Wares.as_view(),
         name="wares",
     ),
     path(
         "dataset/<int:dataset_id>/wares/<int:id>/",
-        wares.WareView.as_view(),
+        dataset.WareView.as_view(),
         name="ware",
     ),
     path(
         "dataset/<int:ware__dataset>/ware-orders/",
-        ware_orders.WareOrders.as_view(),
+        dataset.WareOrders.as_view(),
         name="ware_orders",
     ),
     path(
         "dataset/<int:ware__dataset>/ware-orders/<int:id>/",
-        ware_orders.WareOrderView.as_view(),
+        dataset.WareOrderView.as_view(),
         name="ware_order",
     ),
 ]
