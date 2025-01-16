@@ -1,7 +1,21 @@
-"""Contains the API views for the Data sets portion of the app."""
+"""Contains the API views for the Data sets portion of the app.
+
+These views allow management of data within a Dataset. Datasets contain the
+data that all 'game' views reference.
+
+"""
+
 from django.db.models import QuerySet
 
-from x4companion.x4.models import Dataset, FactoryModule, HabitatModule, SectorTemplate, WareOrder, Ware
+from x4companion.x4.api_bases import X4APIBulkView, X4APISingleView
+from x4companion.x4.models import (
+    Dataset,
+    FactoryModule,
+    HabitatModule,
+    SectorTemplate,
+    Ware,
+    WareOrder,
+)
 from x4companion.x4.serializers import (
     DatasetSerializer,
     FactoryModuleSerializer,
@@ -10,7 +24,6 @@ from x4companion.x4.serializers import (
     WareOrdersSerializer,
     WareSerializer,
 )
-from x4companion.x4.api_bases import X4APIBulkView, X4APISingleView
 
 
 class Datasets(X4APIBulkView):

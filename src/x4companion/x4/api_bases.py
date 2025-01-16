@@ -1,15 +1,13 @@
 """Contains templates for the Apps API views."""
-from typing import Type
 
-from django.core.exceptions import ObjectDoesNotExist
 from django.contrib.auth.models import User
-from django.db.models import QuerySet, Model
-from rest_framework.views import APIView
+from django.core.exceptions import ObjectDoesNotExist
+from django.db.models import Model, QuerySet
+from rest_framework import status
 from rest_framework.request import Request
 from rest_framework.response import Response
 from rest_framework.serializers import BaseSerializer
-from rest_framework import status
-
+from rest_framework.views import APIView
 
 from x4companion.x4.responses import (
     delete_response,
@@ -22,10 +20,11 @@ from x4companion.x4.responses import (
 class X4APIBulkView(APIView):
     """API View for managing bulk data."""
 
-    serializer_class: Type[BaseSerializer]
-    model_class: Type[Model]
+    serializer_class: type[BaseSerializer]
+    model_class: type[Model]
 
     def get_serializer_class(self) -> type[BaseSerializer]:
+        """Default method to return a serializer class."""
         return self.serializer_class
 
     def get_queryset(self, **kwargs) -> QuerySet:
@@ -73,8 +72,8 @@ class X4APIBulkView(APIView):
 class X4APISingleView(APIView):
     """API view for managing singular data."""
 
-    serializer_class: Type[BaseSerializer]
-    model_class: Type[Model]
+    serializer_class: type[BaseSerializer]
+    model_class: type[Model]
 
     def get_queryset(self, **kwargs) -> QuerySet:
         """Return a QuerySet for getting a single item."""
@@ -131,7 +130,9 @@ class X4SingleAPIViewUser(X4APISingleView):
             A JSON response with the matching object.
 
         """
-        return get_response(self.serializer_class, self.get_queryset(request.user, **kwargs))
+        return get_response(
+            self.serializer_class, self.get_queryset(request.user, **kwargs)
+        )
 
     def delete(self, request: Request, **kwargs) -> Response:
         """Delete an API object by its ID.

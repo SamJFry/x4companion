@@ -21,8 +21,7 @@ from drf_spectacular.views import SpectacularAPIView, SpectacularSwaggerView
 from rest_framework.authtoken import views
 
 from x4companion import x4
-from x4companion.x4.views import dataset
-from x4companion.x4.game import factory, habitats, saves, sectors, stations
+from x4companion.x4.views import dataset, game
 
 urlpatterns = [
     path("admin/", admin.site.urls),
@@ -32,44 +31,44 @@ urlpatterns = [
     path("docs/", SpectacularSwaggerView.as_view(), name="swagger"),
     path(
         "game/<int:game_id>/sectors/",
-        sectors.Sectors.as_view(),
+        game.Sectors.as_view(),
         name="sectors",
     ),
     path(
         "game/<int:game__id>/sectors/<int:id>/",
-        sectors.SectorView.as_view(),
+        game.SectorView.as_view(),
         name="sector",
     ),
-    path("game/", saves.SaveGames.as_view(), name="create_game"),
-    path("game/<int:id_>/", saves.SaveGameView.as_view(), name="game"),
+    path("game/", game.SaveGames.as_view(), name="create_game"),
+    path("game/<int:id>/", game.SaveGameView.as_view(), name="game"),
     path(
         "game/<int:save_id>/stations/",
-        stations.Stations.as_view(),
+        game.Stations.as_view(),
         name="stations",
     ),
     path(
         "game/<int:game__id>/stations/<int:id>/",
-        stations.StationView.as_view(),
+        game.StationView.as_view(),
         name="station",
     ),
     path(
         "game/<int:save_id>/stations/<int:station_id>/factories/",
-        factory.StationFactories.as_view(),
+        game.StationFactories.as_view(),
         name="station_habitats",
     ),
     path(
         "game/<int:station__game__id>/stations/<int:station__id>/factories/<int:id>/",
-        factory.StationFactoriesView.as_view(),
+        game.StationFactoriesView.as_view(),
         name="station_habitat",
     ),
     path(
         "game/<int:save_id>/stations/<int:station_id>/habitats/",
-        habitats.StationHabitats.as_view(),
+        game.StationHabitats.as_view(),
         name="station_habitats",
     ),
     path(
         "game/<int:station__game__id>/stations/<int:station_id>/habitats/<int:id>/",
-        habitats.StationHabitatsView.as_view(),
+        game.StationHabitatsView.as_view(),
         name="station_habitat",
     ),
     path("dataset/", dataset.Datasets.as_view(), name="datasets"),
