@@ -21,15 +21,7 @@ from drf_spectacular.views import SpectacularAPIView, SpectacularSwaggerView
 from rest_framework.authtoken import views
 
 from x4companion import x4
-from x4companion.x4.dataset import (
-    dataset,
-    habitat_modules,
-    sector_templates,
-    wares,
-    factory_modules,
-    ware_orders,
-)
-from x4companion.x4.game import habitats, saves, sectors, stations, factory
+from x4companion.x4.views import dataset, game
 
 urlpatterns = [
     path("admin/", admin.site.urls),
@@ -38,97 +30,97 @@ urlpatterns = [
     path("schema/", SpectacularAPIView.as_view(), name="schema"),
     path("docs/", SpectacularSwaggerView.as_view(), name="swagger"),
     path(
-        "game/<int:save_id>/sectors/",
-        sectors.Sectors.as_view(),
+        "game/<int:game_id>/sectors/",
+        game.Sectors.as_view(),
         name="sectors",
     ),
     path(
-        "game/<int:save_id>/sectors/<int:id_>/",
-        sectors.SectorView.as_view(),
+        "game/<int:game__id>/sectors/<int:id>/",
+        game.SectorView.as_view(),
         name="sector",
     ),
-    path("game/", saves.SaveGames.as_view(), name="create_game"),
-    path("game/<int:id_>/", saves.SaveGameView.as_view(), name="game"),
+    path("game/", game.SaveGames.as_view(), name="create_game"),
+    path("game/<int:id>/", game.SaveGameView.as_view(), name="game"),
     path(
         "game/<int:save_id>/stations/",
-        stations.Stations.as_view(),
+        game.Stations.as_view(),
         name="stations",
     ),
     path(
-        "game/<int:save_id>/stations/<int:id_>/",
-        stations.StationView.as_view(),
+        "game/<int:game__id>/stations/<int:id>/",
+        game.StationView.as_view(),
         name="station",
     ),
     path(
         "game/<int:save_id>/stations/<int:station_id>/factories/",
-        factory.StationFactories.as_view(),
+        game.StationFactories.as_view(),
         name="station_habitats",
     ),
     path(
-        "game/<int:save_id>/stations/<int:station_id>/factories/<int:id_>/",
-        factory.StationFactoriesView.as_view(),
+        "game/<int:station__game__id>/stations/<int:station__id>/factories/<int:id>/",
+        game.StationFactoriesView.as_view(),
         name="station_habitat",
     ),
     path(
         "game/<int:save_id>/stations/<int:station_id>/habitats/",
-        habitats.StationHabitats.as_view(),
+        game.StationHabitats.as_view(),
         name="station_habitats",
     ),
     path(
-        "game/<int:save_id>/stations/<int:station_id>/habitats/<int:id_>/",
-        habitats.StationHabitatsView.as_view(),
+        "game/<int:station__game__id>/stations/<int:station_id>/habitats/<int:id>/",
+        game.StationHabitatsView.as_view(),
         name="station_habitat",
     ),
     path("dataset/", dataset.Datasets.as_view(), name="datasets"),
-    path("dataset/<int:id_>/", dataset.DatasetView.as_view(), name="dataset"),
+    path("dataset/<int:id>/", dataset.DatasetView.as_view(), name="dataset"),
     path(
         "dataset/<int:dataset_id>/sector-templates/",
-        sector_templates.SectorTemplates.as_view(),
+        dataset.SectorTemplates.as_view(),
         name="sector_templates",
     ),
     path(
-        "dataset/<int:dataset_id>/sector-templates/<int:id_>/",
-        sector_templates.SectorTemplatesView.as_view(),
+        "dataset/<int:dataset_id>/sector-templates/<int:id>/",
+        dataset.SectorTemplatesView.as_view(),
         name="sector_template",
     ),
     path(
         "dataset/<int:dataset_id>/habitat-modules/",
-        habitat_modules.HabitatModules.as_view(),
+        dataset.HabitatModules.as_view(),
         name="habitat_modules",
     ),
     path(
-        "dataset/<int:dataset_id>/habitat-modules/<int:id_>/",
-        habitat_modules.HabitatModuleView.as_view(),
+        "dataset/<int:dataset_id>/habitat-modules/<int:id>/",
+        dataset.HabitatModuleView.as_view(),
         name="habitat_module",
     ),
     path(
         "dataset/<int:dataset_id>/factory-modules/",
-        factory_modules.FactoryModules.as_view(),
+        dataset.FactoryModules.as_view(),
         name="habitat_modules",
     ),
     path(
-        "dataset/<int:dataset_id>/factory-modules/<int:id_>/",
-        factory_modules.FactoryModuleView.as_view(),
+        "dataset/<int:dataset_id>/factory-modules/<int:id>/",
+        dataset.FactoryModuleView.as_view(),
         name="habitat_module",
     ),
     path(
         "dataset/<int:dataset_id>/wares/",
-        wares.Wares.as_view(),
+        dataset.Wares.as_view(),
         name="wares",
     ),
     path(
-        "dataset/<int:dataset_id>/wares/<int:id_>/",
-        wares.WareView.as_view(),
+        "dataset/<int:dataset_id>/wares/<int:id>/",
+        dataset.WareView.as_view(),
         name="ware",
     ),
     path(
-        "dataset/<int:dataset_id>/ware-orders/",
-        ware_orders.WareOrders.as_view(),
+        "dataset/<int:ware__dataset>/ware-orders/",
+        dataset.WareOrders.as_view(),
         name="ware_orders",
     ),
     path(
-        "dataset/<int:dataset_id>/ware-orders/<int:id_>/",
-        ware_orders.WareOrderView.as_view(),
+        "dataset/<int:ware__dataset>/ware-orders/<int:id>/",
+        dataset.WareOrderView.as_view(),
         name="ware_order",
     ),
 ]
