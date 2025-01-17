@@ -15,20 +15,24 @@ def create_test_dir():
 
 
 @pytest.fixture
-def create_test_sectors():
+def create_test_data():
     return {
         "sectors": [
             {"name": f"sector_{x}", "sunlight_percent": 100} for x in range(10)
-        ]
+        ],
+        "wares": [
+            {"name": f"ware_{x}", "storage": "Solid", "volume": x}
+            for x in range(5)
+        ],
     }
 
 
 @pytest.fixture
-def create_good_data(create_test_dir, create_test_sectors):
+def create_good_data(create_test_dir, create_test_data):
     with pathlib.Path.open(
         create_test_dir / "test_dataset_0.json", "w"
     ) as file:
-        json.dump(create_test_sectors, file)
+        json.dump(create_test_data, file)
     yield create_test_dir
     pathlib.Path.unlink(create_test_dir / "test_dataset_0.json")
 
@@ -59,6 +63,7 @@ def create_transaction():
     transaction = DatasetTransaction(
         name="test",
         sectors=[{"name": "good_sector", "sunlight_percent": 100}],
+        wares=[{"name": "Stem Bolts", "storage": "Container", "volume": 1}],
     )
     transaction.create_root()
     return transaction

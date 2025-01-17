@@ -107,6 +107,7 @@ class WareSerializer(serializers.Serializer):
         max_length=50, allow_blank=False, allow_null=False
     )
     storage = serializers.CharField(allow_blank=False, allow_null=False)
+    volume = serializers.IntegerField(allow_null=False)
 
     def validate_storage(self, value: str) -> str:
         """Validates that a proper storage type has been provided.
@@ -157,6 +158,7 @@ class WareSerializer(serializers.Serializer):
             name=validated_data["name"],
             dataset_id=self.context["dataset_id"],
             storage=validated_data["storage"],
+            volume=validated_data["volume"],
         )
 
 

@@ -193,6 +193,7 @@ class Ware(models.Model):
     Attributes:
         name: The name of the ware.
         storage: The type of storage the ware uses, either C, L or S.
+        volume: The cargo space in metres cubed each unit of ware occupies.
         dataset: The dataset the ware belongs to.
 
     """
@@ -208,6 +209,7 @@ class Ware(models.Model):
     storage = models.CharField(
         choices=STORAGE_TYPES, null=False, blank=False, max_length=1
     )
+    volume = models.IntegerField(null=False)
     dataset = models.ForeignKey(Dataset, on_delete=models.CASCADE)
 
     def __str__(self) -> str:

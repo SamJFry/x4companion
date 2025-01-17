@@ -14,6 +14,7 @@ from x4companion.x4.models import Dataset, SectorTemplate
 from x4companion.x4.serializers import (
     DatasetSerializer,
     SectorTemplateSerializer,
+    WareSerializer,
 )
 
 logger = logging.getLogger(__name__)
@@ -26,6 +27,7 @@ class DatasetTransaction:
     Attributes:
         name: The name of the Dataset.
         sectors: The sectors in the dataset.
+        wares: The wares in the dataset.
         id_: Defaults to 0, but is replaced by the ID of the dataset once it
             has been created.
 
@@ -33,6 +35,7 @@ class DatasetTransaction:
 
     name: str
     sectors: list[dict]
+    wares: list[dict]
     id_: int = 0
 
     def create_root(self) -> None:
@@ -76,6 +79,7 @@ class RegisterDataset:
             logger.info("Registering dataset: %s", self.transaction.name)
             self.transaction.create_root()
             self.create_sectors()
+            self.create_wares()
             logger.info(
                 "%s Registered dataset %s", log_ok(), self.transaction.name
             )
@@ -103,6 +107,17 @@ class RegisterDataset:
             raise ValidationError(sectors.errors)
         sectors.save()
         logger.info("Registered %d sectors", len(self.transaction.sectors))
+
+    def create_wares(self) -> None:
+        wares = WareSerializer(
+            data=self.transaction.wares,
+            many=True,
+            context={"dataset_id": self.transaction.id_},
+        )
+        if not wares.is_valid():
+            raise ValidationError(wares.errors)
+        wares.save()
+        logger.info("Registered %d wares", len(self.transaction.wares))
 
     def update_sectors(self) -> None:
         """Updates fields on existing sectors.
@@ -160,6 +175,7 @@ def collect_datasets(dataset_dir: pathlib.Path) -> list[DatasetTransaction]:
         dataset = DatasetTransaction(
             name=dset.parts[-1].replace(".json", ""),
             sectors=data.get("sectors"),
+            wares=data.get("wares"),
         )
         loaded_sets.append(dataset)
     logger.info("Collected %d datasets", len(loaded_sets))

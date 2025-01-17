@@ -17,6 +17,7 @@ class TestWares:
                         {
                             "name": "Self Sealing Stem Bolts",
                             "storage": "Container",
+                            "volume": 1,
                         }
                     ]
                 }
@@ -30,6 +31,7 @@ class TestWares:
                 "dataset_id": 1,
                 "name": "Self Sealing Stem Bolts",
                 "storage": "C",
+                "volume": 1,
             }
         ]
 
@@ -47,6 +49,7 @@ class TestWares:
                     "id": 1,
                     "name": "Stone",
                     "storage": "Solid",
+                    "volume": 1,
                 }
             ],
         }
@@ -61,6 +64,7 @@ class TestWareView:
             "id": 1,
             "name": "Stone",
             "storage": "Solid",
+            "volume": 1,
         }
 
     def test_delete(self, authed_client, create_ware):

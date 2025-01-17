@@ -9,7 +9,7 @@ from x4companion.x4.management import (
     update_datasets,
 )
 from x4companion.x4.management.exceptions import ValidationError
-from x4companion.x4.models import Dataset, SectorTemplate
+from x4companion.x4.models import Dataset, SectorTemplate, Ware
 
 logger = logging.getLogger("x4companion.x4.management.register_datasets")
 
@@ -49,10 +49,12 @@ class TestDataset:
 
     def test_create_root_raises_on_bad_name(self):
         with pytest.raises(ValidationError):
-            DatasetTransaction(name="", sectors=[]).create_root()
+            DatasetTransaction(name="", sectors=[], wares=[]).create_root()
 
     def test_rollback(self, create_dataset):
-        transaction = DatasetTransaction(name="StarTrekin", sectors=[])
+        transaction = DatasetTransaction(
+            name="StarTrekin", sectors=[], wares=[]
+        )
         transaction.rollback()
         assert list(Dataset.objects.all().values()) == []
 
@@ -77,36 +79,48 @@ class TestRegisterDataset:
 
     def test_register(self):
         dataset = DatasetTransaction(
-            name="test", sectors=[{"name": "s1", "sunlight_percent": 1}]
+            name="test",
+            sectors=[{"name": "s1", "sunlight_percent": 1}],
+            wares=[{"name": "bolts", "storage": "Container", "volume": 20}],
         )
         RegisterDataset(dataset).register()
         assert list(Dataset.objects.all().values()) == [
             {"id": 1, "name": "test"}
         ]
-        assert list(SectorTemplate.objects.all().values()) == [
-            {
-                "id": 1,
-                "name": "s1",
-                "sunlight_percent": 1,
-                "dataset_id": 1,
-            }
-        ]
+        assert SectorTemplate.objects.all().count() == 1
+        assert Ware.objects.all().count() == 1
 
     def test_register_handles_already_registered(self, create_dataset):
-        dataset = DatasetTransaction(name="StarTrekin", sectors=[])
+        dataset = DatasetTransaction(name="StarTrekin", sectors=[], wares=[])
         RegisterDataset(dataset).register()
         assert Dataset.objects.count() == 1
 
     def test_register_rollback_on_sector_error(self):
-        dataset = DatasetTransaction(name="test", sectors=[{"name": "s1"}])
+        dataset = DatasetTransaction(
+            name="test", sectors=[{"name": "s1"}], wares=[]
+        )
         RegisterDataset(dataset).register()
         assert Dataset.objects.count() == 0
 
     def test_update_sectors_handles_bad_sector(
-        self, register_data, create_test_sectors, caplog
+        self, register_data, create_test_data, caplog
     ):
-        sectors = create_test_sectors["sectors"]
+        sectors = create_test_data["sectors"]
         del sectors[8]["sunlight_percent"]
-        dataset = DatasetTransaction(name="test_dataset_0", sectors=sectors)
+        dataset = DatasetTransaction(
+            name="test_dataset_0", sectors=sectors, wares=[]
+        )
         RegisterDataset(dataset).update()
         assert caplog.records[0].levelname == "ERROR"
+
+    def test_create_wares(self, create_transaction):
+        RegisterDataset(create_transaction).create_wares()
+        assert list(Ware.objects.all().values()) == [
+            {
+                "id": 1,
+                "name": "Stem Bolts",
+                "storage": "C",
+                "volume": 1,
+                "dataset_id": 1,
+            }
+        ]

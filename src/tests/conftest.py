@@ -225,6 +225,7 @@ def create_ware(create_dataset):
     ware = Ware(
         name="Stone",
         storage="S",
+        volume=1,
         dataset=create_dataset,
     )
     ware.save()
