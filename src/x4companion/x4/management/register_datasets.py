@@ -5,6 +5,8 @@ import json
 import logging
 import pathlib
 
+from rest_framework.serializers import BaseSerializer
+
 from x4companion.x4.management.exceptions import (
     ObjectExistsError,
     ValidationError,
@@ -96,27 +98,25 @@ class RegisterDataset:
         self.transaction.get_existing_id()
         self.update_sectors()
 
+    def _register_key(
+        self, serializer: type[BaseSerializer], data: list[dict]
+    ) -> None:
+        """Register a key from the dataset."""
+        serialized_data = serializer(
+            data=data, many=True, context={"dataset_id": self.transaction.id_}
+        )
+        if not serialized_data.is_valid():
+            raise ValidationError(serialized_data.errors)
+        serialized_data.save()
+
     def create_sectors(self) -> None:
         """Create the sectors in the SectorsTemplate model."""
-        sectors = SectorTemplateSerializer(
-            data=self.transaction.sectors,
-            many=True,
-            context={"dataset_id": self.transaction.id_},
-        )
-        if not sectors.is_valid():
-            raise ValidationError(sectors.errors)
-        sectors.save()
+        self._register_key(SectorTemplateSerializer, self.transaction.sectors)
         logger.info("Registered %d sectors", len(self.transaction.sectors))
 
     def create_wares(self) -> None:
-        wares = WareSerializer(
-            data=self.transaction.wares,
-            many=True,
-            context={"dataset_id": self.transaction.id_},
-        )
-        if not wares.is_valid():
-            raise ValidationError(wares.errors)
-        wares.save()
+        """Create the wares in the Ware model."""
+        self._register_key(WareSerializer, self.transaction.wares)
         logger.info("Registered %d wares", len(self.transaction.wares))
 
     def update_sectors(self) -> None:
