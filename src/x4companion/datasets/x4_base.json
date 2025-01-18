@@ -146,9 +146,9 @@
   ],
   "wares": [
     {"name": "Advanced Composites", "storage": "Container", "volume": 32},
-    {"name": "Advanced Electronics ", "storage": "Container", "volume": 30},
-    {"name": "Advanced Cells", "storage": "Container", "volume": 18},
-    {"name": "Advanced Converters", "storage": "Container", "volume": 10},
+    {"name": "Advanced Electronics", "storage": "Container", "volume": 30},
+    {"name": "Antimatter Cells", "storage": "Container", "volume": 18},
+    {"name": "Antimatter Converters", "storage": "Container", "volume": 10},
     {"name": "BoFu", "storage": "Container", "volume": 4},
     {"name": "BoGas", "storage": "Container", "volume": 4},
     {"name": "Chelt Meat ", "storage": "Container", "volume": 7},
@@ -203,5 +203,101 @@
     {"name": "Water", "storage": "Container", "volume": 6},
     {"name": "Weapon Components", "storage": "Container", "volume": 20},
     {"name": "Wheat", "storage": "Container", "volume": 4}
+  ],
+  "factory_modules": [
+    {
+      "name": "Advanced Composites Production",
+      "ware": "Advanced Composites",
+      "hourly_production": 648,
+      "hourly_energy": 600,
+      "workforce": 315
+    },
+    {
+      "name": "Advanced Electronics Production",
+      "ware": "Advanced Electronics",
+      "hourly_production": 270,
+      "hourly_energy": 300,
+      "workforce": 540
+    },
+    {
+      "name": "Antimatter Cells Production",
+      "ware": "Antimatter Cells",
+      "hourly_production": 2970,
+      "hourly_energy": 3000,
+      "workforce": 180
+    },
+    {
+      "name": "Antimatter Converters Production",
+      "ware": "Antimatter Converters",
+      "hourly_production": 1596,
+      "hourly_energy": 960,
+      "workforce": 1080
+    },
+    {
+      "name": "BoFu Production",
+      "ware": "BoFu",
+      "hourly_production": 1230,
+      "hourly_energy": 600,
+      "workforce": 125
+    },
+    {
+      "name": "BoGas Production",
+      "ware": "BoGas",
+      "hourly_production": 2640,
+      "hourly_energy": 960,
+      "workforce": 100
+    }
+  ],
+  "ware_orders": [
+    {
+      "factory_module": "Advanced Composites Production",
+      "ware": "Refined Metal",
+      "quantity": 960
+    },
+    {
+      "factory_module": "Advanced Composites Production",
+      "ware": "Graphene",
+      "quantity": 960
+    },
+    {
+      "factory_module": "Advanced Electronics Production",
+      "ware": "Microchips",
+      "quantity": 220
+    },
+    {
+      "factory_module": "Advanced Electronics Production",
+      "ware": "Quantum Tubes",
+      "quantity": 100
+    },
+    {
+      "factory_module": "Antimatter Cells Production",
+      "ware": "Hydrogen",
+      "quantity": 9600
+    },
+    {
+      "factory_module": "Antimatter Converters Production",
+      "ware": "Microchips",
+      "quantity": 360
+    },
+    {
+      "factory_module": "Antimatter Converters Production",
+      "ware": "Advanced Composites",
+      "quantity": 240
+    },
+    {
+      "factory_module": "BoFu Production",
+      "ware": "BoGas",
+      "quantity": 600
+    },
+    {
+      "factory_module": "BoFu Production",
+      "ware": "Plankton",
+      "quantity": 1800
+    },
+    {
+      "factory_module": "BoGas Production",
+      "ware": "water",
+      "quantity": 2400
+    }
   ]
 }
