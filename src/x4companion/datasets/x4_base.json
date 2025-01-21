@@ -246,6 +246,104 @@
       "hourly_production": 2640,
       "hourly_energy": 960,
       "workforce": 100
+    },
+    {
+      "name": "Chelt Production",
+      "ware": "Chelt Meat",
+      "hourly_production": 1672,
+      "hourly_energy": 400,
+      "workforce": 90
+    },
+    {
+      "name": "Claytronics Production",
+      "ware": "Claytronics",
+      "hourly_production": 432,
+      "hourly_energy": 560,
+      "workforce": 1215
+    },
+    {
+      "name": "Computronic Substrate Production",
+      "ware": "Computronic Substrate",
+      "hourly_production": 588,
+      "hourly_energy": 24000,
+      "workforce": 1500
+    },
+    {
+      "name": "Drone Component Production",
+      "ware": "Drone Components",
+      "hourly_production": 315,
+      "hourly_energy": 180,
+      "workforce": "675"
+    },
+    {
+      "name": "Energy Cell Production",
+      "ware": "Energy Cell",
+      "hourly_production": 10500,
+      "hourly_energy": 0,
+      "workforce": "90"
+    },
+    {
+      "name": "Engine Part Production",
+      "ware": "Engine Parts",
+      "hourly_production": 832,
+      "hourly_energy": 240,
+      "workforce": 225
+    },
+    {
+      "name": "Field Coil Production",
+      "ware": "Field Coil",
+      "hourly_production": 1050,
+      "hourly_energy": 360,
+      "workforce": 810
+    },
+    {
+      "name": "Food Ration Production",
+      "ware": "Food Rations",
+      "hourly_production": 6900,
+      "hourly_energy": 1500,
+      "workforce": 90
+    },
+    {
+      "name": "Graphene Production",
+      "ware": "Graphene",
+      "hourly_production": 1440,
+      "hourly_energy": 1200,
+      "workforce": 180
+    },
+    {
+      "name": "Hull Part Production",
+      "ware": "Hull Parts",
+      "hourly_production": 1176,
+      "hourly_energy": 1280,
+      "workforce": 270
+    },
+    {
+      "name": "Maja Dust Production",
+      "ware": "Maja Dust",
+      "hourly_production": 384,
+      "hourly_energy": 240,
+      "workforce": 123
+    },
+    {
+      "name": "Maja Snail Production",
+      "ware": "Maja Snails",
+      "hourly_production": 1168,
+      "hourly_energy": 320,
+      "workforce": 175
+    },
+    {
+      "name": "Meat Production",
+      "ware": "Meat",
+      "hourly_production": 2320,
+      "hourly_energy": 640,
+      "workforce": 75
+    },
+    {
+      "name": "Metallic Microlattice Production",
+      "ware": "Metallic Microlattice",
+      "hourly_production": 3800,
+      "hourly_energy": 1000,
+      "workforce": 120
     }
   ],
   "ware_orders": [
@@ -298,6 +396,141 @@
       "factory_module": "BoGas Production",
       "ware": "water",
       "quantity": 2400
+    },
+    {
+      "factory_module": "Chelt Production",
+      "ware": "water",
+      "quantity": 960
+    },
+    {
+      "factory_module": "Claytronics Production",
+      "ware": "Microchips",
+      "quantity": 640
+    },
+    {
+      "factory_module": "Claytronics Production",
+      "ware": "Quantum Tubes",
+      "quantity": 400
+    },
+    {
+      "factory_module": "Claytronics Production",
+      "ware": "Antimatter Cells",
+      "quantity": 400
+    },
+    {
+      "factory_module": "Computronic Substrate Production",
+      "ware": "Hydrogen",
+      "quantity": 12000
+    },
+    {
+      "factory_module": "Computronic Substrate Production",
+      "ware": "Ore",
+      "quantity": 18000
+    },
+    {
+      "factory_module": "Computronic Substrate Production",
+      "ware": "Silicon",
+      "quantity": 18000
+    },
+    {
+      "factory_module": "Drone Components Production",
+      "ware": "Engine Parts",
+      "quantity": 60
+    },
+    {
+      "factory_module": "Drone Components Production",
+      "ware": "Hull Parts",
+      "quantity": 60
+    },
+    {
+      "factory_module": "Drone Components Production",
+      "ware": "Microchips",
+      "quantity": 60
+    },
+    {
+      "factory_module": "Drone Components Production",
+      "ware": "Scanning Arrays",
+      "quantity": 120
+    },
+    {
+      "factory_module": "Engine Parts Production",
+      "ware": "Antimatter Cells",
+      "quantity": 240
+    },
+    {
+      "factory_module": "Engine Parts Production",
+      "ware": "Refined Metals",
+      "quantity": 384
+    },
+    {
+      "factory_module": "Field Coil Production",
+      "ware": "Plasma Conductors",
+      "quantity": 240
+    },
+    {
+      "factory_module": "Field Coil Production",
+      "ware": "Quantum Tubes",
+      "quantity": 258
+    },
+    {
+      "factory_module": "Food Ration Production",
+      "ware": "Meat",
+      "quantity": 600
+    },
+    {
+      "factory_module": "Food Ration Production",
+      "ware": "Spices",
+      "quantity": 600
+    },
+    {
+      "factory_module": "Food Ration Production",
+      "ware": "Wheat",
+      "quantity": 600
+    },
+    {
+      "factory_module": "Graphene Production",
+      "ware": "Methane",
+      "quantity": 4800
+    },
+    {
+      "factory_module": "Hull Part Production",
+      "ware": "Graphene",
+      "quantity": 160
+    },
+    {
+      "factory_module": "Hull Part Production",
+      "ware": "Refined Metals",
+      "quantity": 1120
+    },
+    {
+      "factory_module": "Maja Dust Production",
+      "ware": "Maja Snails",
+      "quantity": 720
+    },
+    {
+      "factory_module": "Maja Dust Production",
+      "ware": "Spices",
+      "quantity": 360
+    },
+    {
+      "factory_module": "Maja Snail Production",
+      "ware": "Water",
+      "quantity": 800
+    },
+    {
+      "factory_module": "Meat Production",
+      "ware": "Water",
+      "quantity": 800
+    },
+    {
+      "factory_module": "Metallic Microlattice Production",
+      "ware": "Helium",
+      "quantity": 2600
+    },
+    {
+      "factory_module": "Metallic Microlattice Production",
+      "ware": "Ore",
+      "quantity": 1000
     }
   ]
 }
