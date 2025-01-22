@@ -502,9 +502,44 @@
     {
       "name": "Split Medical Supplies Production",
       "ware": "Medical Supplies",
-      "hourly_production": 2496,
       "hourly_energy": 1200,
+      "hourly_production": 2496,
       "workforce": 90
+    },
+    {
+      "name": "Stimulant Production",
+      "ware": "Stimulants",
+      "hourly_energy": 960,
+      "hourly_production": 1176,
+      "workforce": 300
+    },
+    {
+      "name": "Sunrise Flower Production",
+      "ware": "Sunrise Flowers",
+      "hourly_energy": 360,
+      "hourly_production": 1200,
+      "workforce": 50
+    },
+    {
+      "name": "Superfluid Coolant Production",
+      "ware": "Superfluid Coolant",
+      "hourly_energy": 900,
+      "hourly_production": 1425,
+      "workforce": 180
+    },
+    {
+      "name": "Swamp Plant Production",
+      "ware": "Swamp Plant",
+      "hourly_energy": 320,
+      "hourly_production": 960,
+      "workforce": 50
+    },
+    {
+      "name": "Teladi Advanced Composite Production",
+      "ware": "Advanced Composites",
+      "hourly_energy": 600,
+      "hourly_production": 648,
+      "workforce": 315
     }
   ],
   "ware_orders": [
@@ -912,6 +947,41 @@
       "factory_module": "Split Medical Supplies Production",
       "ware": "Scruffin Fruit",
       "quantity": 360
+    },
+    {
+      "factory_module": "Stimulant Production",
+      "ware": "Helium",
+      "quantity": 4800
+    },
+    {
+      "factory_module": "Stimulant Production",
+      "ware": "Silicon",
+      "quantity": 240
+    },
+    {
+      "factory_module": "Sunrise Flower Production",
+      "ware": "water",
+      "quantity": 960
+    },
+    {
+      "factory_module": "Superfluid Coolant Production",
+      "ware": "Helium",
+      "quantity": 4800
+    },
+    {
+      "factory_module": "Swamp Plant Production",
+      "ware": "Water",
+      "quantity": 800
+    },
+    {
+      "factory_module": "Teladi Advanced Composite Production",
+      "ware": "Graphene",
+      "quantity": 960
+    },
+    {
+      "factory_module": "Teladi Advanced Composite Production",
+      "ware": "Teladianium",
+      "quantity": 696
     }
   ]
 }
