@@ -234,6 +234,13 @@
       "workforce": 1080
     },
     {
+      "name": "Argon Medical Supplies Production",
+      "ware": "Medical Supplies",
+      "hourly_production": 2496,
+      "hourly_energy": 1200,
+      "workforce": 90
+    },
+    {
       "name": "BoFu Production",
       "ware": "BoFu",
       "hourly_production": 1230,
@@ -246,6 +253,13 @@
       "hourly_production": 2640,
       "hourly_energy": 960,
       "workforce": 100
+    },
+    {
+      "name": "Boron Medical Supplies Production",
+      "ware": "Medical Supplies",
+      "hourly_production": 2496,
+      "hourly_energy": 1200,
+      "workforce": 90
     },
     {
       "name": "Chelt Production",
@@ -344,6 +358,153 @@
       "hourly_production": 3800,
       "hourly_energy": 1000,
       "workforce": 120
+    },
+    {
+      "name": "Microchip Production",
+      "ware": "Microchips",
+      "hourly_production": 432,
+      "hourly_energy": 300,
+      "workforce": 450
+    },
+    {
+      "name": "Missile Component Production",
+      "ware": "Missile Components",
+      "hourly_production": 1124,
+      "hourly_energy": 80,
+      "workforce": 22
+    },
+    {
+      "name": "Nostrop Oil Production",
+      "ware": "Nostrop Oil",
+      "hourly_production": 6000,
+      "hourly_energy": 1200,
+      "workforce": 120
+    },
+    {
+      "name": "Paranid Medical Supplies Production",
+      "ware": "Medical Supplies",
+      "hourly_production": 2496,
+      "hourly_energy": 1200,
+      "workforce": 90
+    },
+    {
+      "name": "Plankton Production",
+      "ware": "Plankton",
+      "hourly_energy": 180,
+      "hourly_production": 2475,
+      "workforce": 40
+    },
+    {
+      "name": "Plasma Conductor Production",
+      "ware": "Plasma Conductors",
+      "hourly_energy": 240,
+      "hourly_production": 176,
+      "workforce": 225
+    },
+    {
+      "name": "Protein Paste Production",
+      "ware": "Protein Paste",
+      "hourly_energy": 960,
+      "hourly_production": 2628,
+      "workforce": 180
+    },
+    {
+      "name": "Quantum Tube Production",
+      "ware": "Quantum Tubes",
+      "hourly_energy": 200,
+      "hourly_production": 470,
+      "workforce": 225
+    },
+    {
+      "name": "Refined Metal Production",
+      "ware": "Refined Metals",
+      "hourly_energy": 2160,
+      "hourly_production": 2112,
+      "workforce": 225
+    },
+    {
+      "name": "Scanning Array Production",
+      "ware": "Scanning Arrays",
+      "hourly_energy": 360,
+      "hourly_production": 216,
+      "workforce": 315
+    },
+    {
+      "name": "Scruffin Production",
+      "ware": "Scruffin Fruit",
+      "hourly_energy": 360,
+      "hourly_production": 3060,
+      "workforce": 90
+    },
+    {
+      "name": "Shield Component Production",
+      "ware": "Shield Components",
+      "hourly_energy": 210,
+      "hourly_production": 579,
+      "workforce": 225
+    },
+    {
+      "name": "Silicon Carbide Production",
+      "ware": "Silicon Carbide",
+      "hourly_energy": 2400,
+      "hourly_production": 576,
+      "workforce": 750
+    },
+    {
+      "name": "Silicon Wafer Production",
+      "ware": "Silicon Wafers",
+      "hourly_energy": 1800,
+      "hourly_production": 2140,
+      "workforce": 225
+    },
+    {
+      "name": "Smart Chip Production",
+      "ware": "Smart Chips",
+      "hourly_energy": 300,
+      "hourly_production": 858,
+      "workforce": 60
+    },
+    {
+      "name": "Soja Bean Production",
+      "ware": "Soja Beans",
+      "hourly_energy": 360,
+      "hourly_production": 1248,
+      "workforce": 175
+    },
+    {
+      "name": "Soja Husk Production",
+      "ware": "Soja Husk",
+      "hourly_energy": 960,
+      "hourly_production": 4200,
+      "workforce": 99
+    },
+    {
+      "name": "Spacefuel Production",
+      "ware": "Spacefuel",
+      "hourly_energy": 3000,
+      "hourly_production": 735,
+      "workforce": 225
+    },
+    {
+      "name": "Spaceweed Production",
+      "ware": "Spaceweed",
+      "hourly_energy": 840,
+      "hourly_production": 1098,
+      "workforce": 90
+    },
+    {
+      "name": "Spice Production",
+      "ware": "Spices",
+      "hourly_energy": 240,
+      "hourly_production": 3000,
+      "workforce": 60
+    },
+    {
+      "name": "Split Medical Supplies Production",
+      "ware": "Medical Supplies",
+      "hourly_production": 2496,
+      "hourly_energy": 1200,
+      "workforce": 90
     }
   ],
   "ware_orders": [
@@ -383,6 +544,21 @@
       "quantity": 240
     },
     {
+      "factory_module": "Argon Medical Supplies Production",
+      "ware": "Water",
+      "quantity": 720
+    },
+    {
+      "factory_module": "Argon Medical Supplies Production",
+      "ware": "Spices",
+      "quantity": 480
+    },
+    {
+      "factory_module": "Argon Medical Supplies Production",
+      "ware": "Wheat",
+      "quantity": 360
+    },
+    {
       "factory_module": "BoFu Production",
       "ware": "BoGas",
       "quantity": 600
@@ -396,6 +572,16 @@
       "factory_module": "BoGas Production",
       "ware": "water",
       "quantity": 2400
+    },
+    {
+      "factory_module": "Boron Medical Supplies Production",
+      "ware": "Water",
+      "quantity": 720
+    },
+    {
+      "factory_module": "Boron Medical Supplies Production",
+      "ware": "Plankton",
+      "quantity": 1140
     },
     {
       "factory_module": "Chelt Production",
@@ -531,6 +717,201 @@
       "factory_module": "Metallic Microlattice Production",
       "ware": "Ore",
       "quantity": 1000
+    },
+    {
+      "factory_module": "Microchip Production",
+      "ware": "Silicon Wafers",
+      "quantity": 1200
+    },
+    {
+      "factory_module": "Missile Component Production",
+      "ware": "Advanced Composites",
+      "quantity": 8
+    },
+    {
+      "factory_module": "Missile Component Production",
+      "ware": "Hull Parts",
+      "quantity": 8
+    },
+    {
+      "factory_module": "Nostrop Oil Production",
+      "ware": "Spices",
+      "quantity": 480
+    },
+    {
+      "factory_module": "Nostrop Oil Production",
+      "ware": "Sunrise Flowers",
+      "quantity": 480
+    },
+    {
+      "factory_module": "Nostrop Oil Production",
+      "ware": "Water",
+      "quantity": 720
+    },
+        {
+      "factory_module": "Paranid Medical Supplies Production",
+      "ware": "Water",
+      "quantity": 720
+    },
+    {
+      "factory_module": "Paranid Medical Supplies Production",
+      "ware": "Spices",
+      "quantity": 480
+    },
+    {
+      "factory_module": "Paranid Medical Supplies Production",
+      "ware": "Soja Beans",
+      "quantity": 120
+    },
+    {
+      "factory_module": "Plankton Production",
+      "ware": "Water",
+      "quantity": 450
+    },
+    {
+      "factory_module": "Plasma Conductor Production",
+      "ware": "Graphene",
+      "quantity": 384
+    },
+    {
+      "factory_module": "Plasma Conductor Production",
+      "ware": "Superfluid Coolant",
+      "quantity": 560
+    },
+    {
+      "factory_module": "Protein Paste Production",
+      "ware": "Ice",
+      "quantity": 960
+    },
+    {
+      "factory_module": "Protein Paste Production",
+      "ware": "Methane",
+      "quantity": 2400
+    },
+    {
+      "factory_module": "Quantum Tube Production",
+      "ware": "Graphene",
+      "quantity": 580
+    },
+    {
+      "factory_module": "Quantum Tube Production",
+      "ware": "Superfluid Coolant",
+      "quantity": 150
+    },
+    {
+      "factory_module": "Refined Metal Production",
+      "ware": "Ore",
+      "quantity": 5760
+    },
+    {
+      "factory_module": "Scanning Array Production",
+      "ware": "Refined Metals",
+      "quantity": 600
+    },
+    {
+      "factory_module": "Scanning Array Production",
+      "ware": "Silicon Wafers",
+      "quantity": 360
+    },
+    {
+      "factory_module": "Scruffin Production",
+      "ware": "Water",
+      "quantity": 960
+    },
+    {
+      "factory_module": "Shield Component Production",
+      "ware": "Plasma Conductors",
+      "quantity": 60
+    },
+    {
+      "factory_module": "Shield Component Production",
+      "ware": "Quantum Tubes",
+      "quantity": 60
+    },
+    {
+      "factory_module": "Silicon Carbide Production",
+      "ware": "Metallic Microlattice",
+      "quantity": 24
+    },
+    {
+      "factory_module": "Silicon Carbide Production",
+      "ware": "Methane",
+      "quantity": 4800
+    },
+    {
+      "factory_module": "Silicon Carbide Production",
+      "ware": "Silicon",
+      "quantity": 3600
+    },
+    {
+      "factory_module": "Silicon Wafer Production",
+      "ware": "Silicon",
+      "quantity": 4800
+    },
+    {
+      "factory_module": "Smart Chip Production",
+      "ware": "Silicon Wafers",
+      "quantity": 120
+    },
+    {
+      "factory_module": "Soja Bean Production",
+      "ware": "Water",
+      "quantity": 960
+    },
+    {
+      "factory_module": "Soja Husk Production",
+      "ware": "Maja Snails",
+      "quantity": 600
+    },
+    {
+      "factory_module": "Soja Husk Production",
+      "ware": "Soja Beans",
+      "quantity": 480
+    },
+    {
+      "factory_module": "Soja Husk Production",
+      "ware": "Spices",
+      "quantity": 240
+    },
+    {
+      "factory_module": "Spacefuel Production",
+      "ware": "Water",
+      "quantity": 750
+    },
+    {
+      "factory_module": "Spacefuel Production",
+      "ware": "Wheat",
+      "quantity": 600
+    },
+    {
+      "factory_module": "Spaceweed Production",
+      "ware": "Spices",
+      "quantity": 240
+    },
+    {
+      "factory_module": "Spaceweed Production",
+      "ware": "Swamp Plant",
+      "quantity": 720
+    },
+    {
+      "factory_module": "Spice Production",
+      "ware": "Water",
+      "quantity": 480
+    },
+    {
+      "factory_module": "Split Medical Supplies Production",
+      "ware": "Water",
+      "quantity": 720
+    },
+    {
+      "factory_module": "Split Medical Supplies Production",
+      "ware": "Spices",
+      "quantity": 720
+    },
+    {
+      "factory_module": "Split Medical Supplies Production",
+      "ware": "Scruffin Fruit",
+      "quantity": 360
     }
   ]
 }
