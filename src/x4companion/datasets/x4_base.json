@@ -540,6 +540,90 @@
       "hourly_energy": 600,
       "hourly_production": 648,
       "workforce": 315
+    },
+    {
+      "name": "Teladi Engine Part Production",
+      "ware": "Advanced Composites",
+      "hourly_production": 832,
+      "hourly_energy": 240,
+      "workforce": 225
+    },
+    {
+      "name": "Teladi Hull Part Production",
+      "ware": "Hull Parts",
+      "hourly_production": 1176,
+      "hourly_energy": 1280,
+      "workforce": 270
+    },
+    {
+      "name": "Teladi Medical Supplies Production",
+      "ware": "Medical Supplies",
+      "hourly_production": 2496,
+      "hourly_energy": 1200,
+      "workforce": 90
+    },
+    {
+      "name": "Teladi Scanning Array Production",
+      "ware": "Scanning Arrays",
+      "hourly_energy": 360,
+      "hourly_production": 216,
+      "workforce": 315
+    },
+    {
+      "name": "Teladianium Production",
+      "ware": "Teladianium",
+      "hourly_energy": 1350,
+      "hourly_production": 2100,
+      "workforce": 225
+    },
+    {
+      "name": "Terran Energy Cell Production",
+      "ware": "Energy Cell",
+      "hourly_production": 3000,
+      "hourly_energy": 0,
+      "workforce": "90"
+    },
+    {
+      "name": "Terran Medical Supplies Production",
+      "ware": "Medical Supplies",
+      "hourly_production": 1680,
+      "hourly_energy": 1200,
+      "workforce": 90
+    },
+    {
+      "name": "Terran MRE Production",
+      "ware": "Terran MRE",
+      "hourly_production": 2625,
+      "hourly_energy": 900,
+      "workforce": 135
+    },
+    {
+      "name": "Turret Component Production",
+      "ware": "Turret Components",
+      "hourly_production": 340,
+      "hourly_energy": 120,
+      "workforce": 225
+    },
+    {
+      "name": "Water Production",
+      "ware": "Water",
+      "hourly_production": 5790,
+      "hourly_energy": 1800,
+      "workforce": 180
+    },
+    {
+      "name": "Weapon Component Production",
+      "ware": "Weapon Component",
+      "hourly_production": 340,
+      "hourly_energy": 1290,
+      "workforce": 225
+    },
+    {
+      "name": "Wheat Production",
+      "ware": "Wheat",
+      "hourly_production": 3720,
+      "hourly_energy": 720,
+      "workforce": 75
     }
   ],
   "ware_orders": [
@@ -982,6 +1066,106 @@
       "factory_module": "Teladi Advanced Composite Production",
       "ware": "Teladianium",
       "quantity": 696
+    },
+    {
+      "factory_module": "Teladi Engine Parts Production",
+      "ware": "Antimatter Cells",
+      "quantity": 240
+    },
+    {
+      "factory_module": "Teladi Engine Parts Production",
+      "ware": "Teladianium",
+      "quantity": 280
+    },
+    {
+      "factory_module": "Teladi Hull Part Production",
+      "ware": "Graphene",
+      "quantity": 160
+    },
+    {
+      "factory_module": "Teladi Hull Part Production",
+      "ware": "Teladianium",
+      "quantity": 816
+    },
+    {
+      "factory_module": "Teladi Medical Supplies Production",
+      "ware": "Water",
+      "quantity": 720
+    },
+    {
+      "factory_module": "Teladi Medical Supplies Production",
+      "ware": "Spices",
+      "quantity": 480
+    },
+    {
+      "factory_module": "Teladi Medical Supplies Production",
+      "ware": "Sunrise Flowers",
+      "quantity": 144
+    },
+    {
+      "factory_module": "Teladi Scanning Array Production",
+      "ware": "Teladianium",
+      "quantity": 438
+    },
+    {
+      "factory_module": "Teladi Scanning Array Production",
+      "ware": "Silicon Wafers",
+      "quantity": 360
+    },
+    {
+      "factory_module": "Teladianium Production",
+      "ware": "Ore",
+      "quantity": 8400
+    },
+    {
+      "factory_module": "Terran Medical Supplies Production",
+      "ware": "Ice",
+      "quantity": 600
+    },
+    {
+      "factory_module": "Terran Medical Supplies Production",
+      "ware": "Protein Paste",
+      "quantity": 288
+    },
+    {
+      "factory_module": "Terran MRE Production",
+      "ware": "Protein Paste",
+      "quantity": 900
+    },
+    {
+      "factory_module": "Turret Components Production",
+      "ware": "Microchips",
+      "quantity": 40
+    },
+    {
+      "factory_module": "Turret Components Production",
+      "ware": "Quantum Tubes",
+      "quantity": 40
+    },
+    {
+      "factory_module": "Turret Components Production",
+      "ware": "Scanning Arrays",
+      "quantity": 20
+    },
+    {
+      "factory_module": "Water Production",
+      "ware": "Ice",
+      "quantity": 9600
+    },
+    {
+      "factory_module": "Weapon Component Production",
+      "ware": "Hull Parts",
+      "quantity": 40
+    },
+    {
+      "factory_module": "Weapon Component Production",
+      "ware": "Plasma Conductors",
+      "quantity": 60
+    },
+    {
+      "factory_module": "Wheat Production",
+      "ware": "Water",
+      "quantity": 96
     }
   ]
 }
