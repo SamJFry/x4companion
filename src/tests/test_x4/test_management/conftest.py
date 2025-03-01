@@ -59,11 +59,24 @@ def update_old_data(register_data):
 
 
 @pytest.fixture
-def create_transaction():
-    transaction = DatasetTransaction(
-        name="test",
-        sectors=[{"name": "good_sector", "sunlight_percent": 100}],
-        wares=[{"name": "Stem Bolts", "storage": "Container", "volume": 1}],
-    )
+def transaction_kwargs():
+    return {
+        "sectors": [{"name": "good_sector", "sunlight_percent": 100}],
+        "wares": [{"name": "Stem Bolts", "storage": "Container", "volume": 1}],
+        "factories": [
+            {
+                "name": "Stem Bolt Factory",
+                "ware": "Stem Bolts",
+                "hourly_production": 5000,
+                "hourly_energy": 1000,
+                "workforce": 225,
+            }
+        ],
+    }
+
+
+@pytest.fixture
+def create_transaction(transaction_kwargs):
+    transaction = DatasetTransaction(name="test", **transaction_kwargs)
     transaction.create_root()
     return transaction

@@ -5,6 +5,10 @@ import json
 import logging
 import pathlib
 
+from django.db import models
+from django.db.models.fields.related_descriptors import (
+    ForwardManyToOneDescriptor,
+)
 from rest_framework.serializers import BaseSerializer
 
 from x4companion.x4.management.exceptions import (
@@ -15,6 +19,7 @@ from x4companion.x4.management.logging import log_ok, log_warning
 from x4companion.x4.models import Dataset, SectorTemplate
 from x4companion.x4.serializers import (
     DatasetSerializer,
+    FactoryModuleSerializer,
     SectorTemplateSerializer,
     WareSerializer,
 )
@@ -38,6 +43,7 @@ class DatasetTransaction:
     name: str
     sectors: list[dict]
     wares: list[dict]
+    factories: list[dict]
     id_: int = 0
 
     def create_root(self) -> None:
@@ -98,10 +104,33 @@ class RegisterDataset:
         self.transaction.get_existing_id()
         self.update_sectors()
 
+    def _resolve_foreign_keys(
+        self, model: models.Model, data: list[dict]
+    ) -> list[dict]:
+        foreign_keys = [
+            attribute
+            for attribute in dir(model)
+            if isinstance(
+                getattr(model, attribute), ForwardManyToOneDescriptor
+            )
+            and attribute != "dataset"
+        ]
+        if not foreign_keys:
+            return data
+        for item in data:
+            for key in foreign_keys:
+                related_model = getattr(model, key).field.related_model
+                item[f"{key}_id"] = related_model.objects.get(
+                    name=item[key]
+                ).id
+                item.pop(key)
+        return data
+
     def _register_key(
         self, serializer: type[BaseSerializer], data: list[dict]
     ) -> None:
         """Register a key from the dataset."""
+        data = self._resolve_foreign_keys(serializer.Meta.model, data)
         serialized_data = serializer(
             data=data, many=True, context={"dataset_id": self.transaction.id_}
         )
@@ -118,6 +147,11 @@ class RegisterDataset:
         """Create the wares in the Ware model."""
         self._register_key(WareSerializer, self.transaction.wares)
         logger.info("Registered %d wares", len(self.transaction.wares))
+
+    def create_factories(self) -> None:
+        """Create the factories in the FactorModule model."""
+        self._register_key(FactoryModuleSerializer, self.transaction.factories)
+        logger.info("Registered %d wares", len(self.transaction.factories))
 
     def update_sectors(self) -> None:
         """Updates fields on existing sectors.
@@ -176,6 +210,7 @@ def collect_datasets(dataset_dir: pathlib.Path) -> list[DatasetTransaction]:
             name=dset.parts[-1].replace(".json", ""),
             sectors=data.get("sectors"),
             wares=data.get("wares"),
+            factories=data.get("factories"),
         )
         loaded_sets.append(dataset)
     logger.info("Collected %d datasets", len(loaded_sets))

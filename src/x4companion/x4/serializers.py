@@ -109,6 +109,9 @@ class WareSerializer(serializers.Serializer):
     storage = serializers.CharField(allow_blank=False, allow_null=False)
     volume = serializers.IntegerField(allow_null=False)
 
+    class Meta:
+        model = Ware
+
     def validate_storage(self, value: str) -> str:
         """Validates that a proper storage type has been provided.
 
@@ -154,7 +157,7 @@ class WareSerializer(serializers.Serializer):
             A new SectorTemplate instance.
 
         """
-        return Ware.objects.create(
+        return self.Meta.model.objects.create(
             name=validated_data["name"],
             dataset_id=self.context["dataset_id"],
             storage=validated_data["storage"],
