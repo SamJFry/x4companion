@@ -80,7 +80,7 @@ class TestRegisterDataset:
             RegisterDataset(create_transaction).create_sectors()
 
     def test_register(self, transaction_kwargs):
-        dataset = DatasetTransaction(name="test", **transaction_kwargs)
+        dataset = DatasetTransaction(table_data=transaction_kwargs, name="test")
         RegisterDataset(dataset).register()
         assert list(Dataset.objects.all().values()) == [
             {"id": 1, "name": "test"}
