@@ -59,7 +59,7 @@ def update_old_data(register_data):
 
 
 @pytest.fixture
-def transaction_kwargs():
+def transaction_data():
     return {
         "sectors": [{"name": "good_sector", "sunlight_percent": 100}],
         "wares": [{"name": "Stem Bolts", "storage": "Container", "volume": 1}],
@@ -76,7 +76,7 @@ def transaction_kwargs():
 
 
 @pytest.fixture
-def create_transaction(transaction_kwargs):
-    transaction = DatasetTransaction(name="test", **transaction_kwargs)
+def create_transaction(transaction_data):
+    transaction = DatasetTransaction(name="test", table_data=transaction_data)
     transaction.create_root()
     return transaction

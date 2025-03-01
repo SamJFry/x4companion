@@ -63,58 +63,17 @@ class TestDataset:
 
 @pytest.mark.django_db
 class TestRegisterDataset:
-    def test_create_sectors(self, create_transaction):
-        RegisterDataset(create_transaction).create_sectors()
-        assert list(SectorTemplate.objects.all().values()) == [
-            {
-                "id": 1,
-                "name": "good_sector",
-                "sunlight_percent": 100,
-                "dataset_id": 1,
-            }
-        ]
-
     def test_create_sectors_raises_on_bad_data(self, create_transaction):
         create_transaction.sectors = [{"name": "just a name"}]
         with pytest.raises(ValidationError):
             RegisterDataset(create_transaction).create_sectors()
 
-    def test_register(self, transaction_kwargs):
-        dataset = DatasetTransaction(table_data=transaction_kwargs, name="test")
+    def test_register(self, transaction_data):
+        dataset = DatasetTransaction(table_data=transaction_data, name="test")
         RegisterDataset(dataset).register()
         assert list(Dataset.objects.all().values()) == [
             {"id": 1, "name": "test"}
         ]
-        assert SectorTemplate.objects.all().count() == 1
-        assert Ware.objects.all().count() == 1
-
-    def test_register_handles_already_registered(self, create_dataset):
-        dataset = DatasetTransaction(
-            name="StarTrekin", sectors=[], wares=[], factories=[]
-        )
-        RegisterDataset(dataset).register()
-        assert Dataset.objects.count() == 1
-
-    def test_register_rollback_on_sector_error(self):
-        dataset = DatasetTransaction(
-            name="test", sectors=[{"name": "s1"}], wares=[], factories=[]
-        )
-        RegisterDataset(dataset).register()
-        assert Dataset.objects.count() == 0
-
-    def test_update_sectors_handles_bad_sector(
-        self, register_data, create_test_data, caplog
-    ):
-        sectors = create_test_data["sectors"]
-        del sectors[8]["sunlight_percent"]
-        dataset = DatasetTransaction(
-            name="test_dataset_0", sectors=sectors, wares=[], factories=[]
-        )
-        RegisterDataset(dataset).update()
-        assert caplog.records[0].levelname == "ERROR"
-
-    def test_create_wares(self, create_transaction):
-        RegisterDataset(create_transaction).create_wares()
         assert list(Ware.objects.all().values()) == [
             {
                 "id": 1,
@@ -124,11 +83,6 @@ class TestRegisterDataset:
                 "dataset_id": 1,
             }
         ]
-
-    def test_create_factory_modules(self, create_transaction):
-        register = RegisterDataset(create_transaction)
-        register.create_wares()
-        register.create_factories()
         assert list(FactoryModule.objects.all().values()) == [
             {
                 "id": 1,
@@ -140,3 +94,34 @@ class TestRegisterDataset:
                 "dataset_id": 1,
             }
         ]
+        assert list(SectorTemplate.objects.all().values()) == [
+            {
+                "id": 1,
+                "name": "good_sector",
+                "sunlight_percent": 100,
+                "dataset_id": 1,
+            }
+        ]
+
+    def test_register_handles_already_registered(self, create_dataset):
+        dataset = DatasetTransaction(name="StarTrekin", table_data={})
+        RegisterDataset(dataset).register()
+        assert Dataset.objects.count() == 1
+
+    def test_register_rollback_on_sector_error(self):
+        dataset = DatasetTransaction(
+            name="test", table_data={"sectors": [{"name": "s1"}]}
+        )
+        RegisterDataset(dataset).register()
+        assert Dataset.objects.count() == 0
+
+    def test_update_sectors_handles_bad_sector(
+        self, register_data, create_test_data, caplog
+    ):
+        sectors = create_test_data["sectors"]
+        del sectors[8]["sunlight_percent"]
+        dataset = DatasetTransaction(
+            name="test_dataset_0", table_data={"sectors": sectors}
+        )
+        RegisterDataset(dataset).update()
+        assert caplog.records[0].levelname == "ERROR"

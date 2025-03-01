@@ -5,7 +5,6 @@ import json
 import logging
 import pathlib
 
-from django.db import models
 from django.db.models.fields.related_descriptors import (
     ForwardManyToOneDescriptor,
 )
@@ -32,6 +31,7 @@ class SerializerToTableMappings:
     sectors = SectorTemplateSerializer
     wares = WareSerializer
 
+
 @dataclasses.dataclass
 class DatasetTransaction:
     """Holds details of a dataset that is not yet in the DB.
@@ -46,7 +46,7 @@ class DatasetTransaction:
     """
 
     name: str
-    table_data: dict[list[dict]]
+    table_data: dict[str, list[dict]]
     id_: int = 0
 
     def create_root(self) -> None:
@@ -92,7 +92,7 @@ class RegisterDataset:
             for key in self.transaction.table_data:
                 RegisterTable(
                     serializer=getattr(SerializerToTableMappings, key),
-                    data={key: self.transaction.table_data[key]},
+                    table=key,
                     transaction=self.transaction,
                 ).register_key()
             logger.info(
@@ -110,55 +110,6 @@ class RegisterDataset:
         """Updates a dataset that exists in the DB already."""
         self.transaction.get_existing_id()
         self.update_sectors()
-
-    def _resolve_foreign_keys(
-        self, model: models.Model, data: list[dict]
-    ) -> list[dict]:
-        foreign_keys = [
-            attribute
-            for attribute in dir(model)
-            if isinstance(
-                getattr(model, attribute), ForwardManyToOneDescriptor
-            )
-            and attribute != "dataset"
-        ]
-        if not foreign_keys:
-            return data
-        for item in data:
-            for key in foreign_keys:
-                related_model = getattr(model, key).field.related_model
-                item[f"{key}_id"] = related_model.objects.get(
-                    name=item[key]
-                ).id
-                item.pop(key)
-        return data
-
-    def _register_key(
-        self, serializer: type[BaseSerializer], data: list[dict]
-    ) -> None:
-        """Register a key from the dataset."""
-        data = self._resolve_foreign_keys(serializer.Meta.model, data)
-        serialized_data = serializer(
-            data=data, many=True, context={"dataset_id": self.transaction.id_}
-        )
-        if not serialized_data.is_valid():
-            raise ValidationError(serialized_data.errors)
-        serialized_data.save()
-
-    def create_sectors(self) -> None:
-        """Create the sectors in the SectorsTemplate model."""
-        self._register_key(SectorTemplateSerializer, self.transaction.sectors)
-        logger.info("Registered %d sectors", len(self.transaction.sectors))
-
-    def create_wares(self) -> None:
-        """Create the wares in the Ware model."""
-        self._register_key(WareSerializer, self.transaction.wares)
-        logger.info("Registered %d wares", len(self.transaction.wares))
-
-    def create_factories(self) -> None:
-        """Create the factories in the FactorModule model."""
-        self._register_key(FactoryModuleSerializer, self.transaction.factories)
-        logger.info("Registered %d wares", len(self.transaction.factories))
 
     def update_sectors(self) -> None:
         """Updates fields on existing sectors.
@@ -196,14 +147,17 @@ class RegisterDataset:
 
 
 class RegisterTable:
-
-    def __init__(self, serializer: type[BaseSerializer], data: dict[list[dict]], transaction: DatasetTransaction):
+    def __init__(
+        self,
+        serializer: type[BaseSerializer],
+        table: str,
+        transaction: DatasetTransaction,
+    ):
         self.serializer = serializer
         self.model = serializer.Meta.model
         self.transaction = transaction
-        for k, v in data.items():
-            self.table = k
-            self.data = v
+        self.data = transaction.table_data[table]
+        self.table = table
 
     def _resolve_foreign_keys(self) -> list[dict]:
         foreign_keys = [
@@ -212,7 +166,7 @@ class RegisterTable:
             if isinstance(
                 getattr(self.model, attribute), ForwardManyToOneDescriptor
             )
-               and attribute != "dataset"
+            and attribute != "dataset"
         ]
         if not foreign_keys:
             return self.data
@@ -233,7 +187,9 @@ class RegisterTable:
         if not serialized_data.is_valid():
             raise ValidationError(serialized_data.errors)
         serialized_data.save()
-        logger.info("Registered %d items in table %s", len(self.data), self.table)
+        logger.info(
+            "Registered %d items in table %s", len(self.data), self.table
+        )
 
 
 def collect_datasets(dataset_dir: pathlib.Path) -> list[DatasetTransaction]:
