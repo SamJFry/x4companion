@@ -8,7 +8,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 ## [Unreleased]
 ## Added
 - Sector Templates now have a Sunlight Percent field.
-- Added a management Command to register Datasets.
+- Added a management Command to register/update Datasets.
 - Added a django setting to set the Datasets directory with a default at `/x4companion/datasets`.
 - Added database models and API endpoints for:
   - Factories
