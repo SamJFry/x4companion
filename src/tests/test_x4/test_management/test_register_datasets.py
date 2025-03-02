@@ -5,11 +5,13 @@ import pytest
 from x4companion.x4.management import (
     DatasetTransaction,
     RegisterDataset,
+    RegisterTable,
     collect_datasets,
     update_datasets,
 )
 from x4companion.x4.management.exceptions import ValidationError
 from x4companion.x4.models import Dataset, FactoryModule, SectorTemplate, Ware
+from x4companion.x4.serializers import SectorTemplateSerializer
 
 logger = logging.getLogger("x4companion.x4.management.register_datasets")
 
@@ -18,7 +20,8 @@ def test_collect_datasets(create_good_data):
     test_dataset = collect_datasets(create_good_data)
     for index, dataset in enumerate(test_dataset):
         assert dataset.name == f"test_dataset_{index}"
-        assert len(dataset.sectors) == 10
+        assert len(dataset.table_data["sectors"]) == 10
+        assert len(dataset.table_data["wares"]) == 5
 
 
 @pytest.mark.django_db
@@ -49,25 +52,16 @@ class TestDataset:
 
     def test_create_root_raises_on_bad_name(self):
         with pytest.raises(ValidationError):
-            DatasetTransaction(
-                name="", sectors=[], wares=[], factories=[]
-            ).create_root()
+            DatasetTransaction(name="", table_data={}).create_root()
 
     def test_rollback(self, create_dataset):
-        transaction = DatasetTransaction(
-            name="StarTrekin", sectors=[], wares=[], factories=[]
-        )
+        transaction = DatasetTransaction(name="StarTrekin", table_data={})
         transaction.rollback()
         assert list(Dataset.objects.all().values()) == []
 
 
 @pytest.mark.django_db
 class TestRegisterDataset:
-    def test_create_sectors_raises_on_bad_data(self, create_transaction):
-        create_transaction.sectors = [{"name": "just a name"}]
-        with pytest.raises(ValidationError):
-            RegisterDataset(create_transaction).create_sectors()
-
     def test_register(self, transaction_data):
         dataset = DatasetTransaction(table_data=transaction_data, name="test")
         RegisterDataset(dataset).register()
@@ -125,3 +119,13 @@ class TestRegisterDataset:
         )
         RegisterDataset(dataset).update()
         assert caplog.records[0].levelname == "ERROR"
+
+
+@pytest.mark.django_db
+class TestRegisterTable:
+    def test_register_key_raises_on_bad_data(self, create_transaction):
+        create_transaction.table_data = {"sectors": [{"name": "just a name"}]}
+        with pytest.raises(ValidationError):
+            RegisterTable(
+                SectorTemplateSerializer, "sectors", create_transaction
+            ).register_table()

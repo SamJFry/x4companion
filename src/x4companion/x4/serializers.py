@@ -154,7 +154,7 @@ class WareSerializer(serializers.Serializer):
             validated_data: The data from the serializer.
 
         Returns:
-            A new SectorTemplate instance.
+            A new instance.
 
         """
         return self.Meta.model.objects.create(
@@ -163,6 +163,22 @@ class WareSerializer(serializers.Serializer):
             storage=validated_data["storage"],
             volume=validated_data["volume"],
         )
+
+    def update(self, instance: Ware, validated_data: dict) -> models.Model:
+        """Updates a ware from validated data.
+
+        Args:
+            instance: The instance to update.
+            validated_data: The data from the serializer.
+
+        returns:
+            The updated instance.
+
+        """
+        for attribute, value in validated_data.items():
+            setattr(instance, attribute, value)
+        instance.save()
+        return instance
 
 
 class SectorSerializerWrite(serializers.Serializer):

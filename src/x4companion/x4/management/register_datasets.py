@@ -15,7 +15,7 @@ from x4companion.x4.management.exceptions import (
     ValidationError,
 )
 from x4companion.x4.management.logging import log_ok, log_warning
-from x4companion.x4.models import Dataset, SectorTemplate
+from x4companion.x4.models import Dataset
 from x4companion.x4.serializers import (
     DatasetSerializer,
     FactoryModuleSerializer,
@@ -27,9 +27,19 @@ logger = logging.getLogger(__name__)
 
 
 class SerializerToTableMappings:
+    """Maps keys in dataset files to the serializers for their data."""
+
     factories = FactoryModuleSerializer
     sectors = SectorTemplateSerializer
     wares = WareSerializer
+
+
+class DatasetPrimaryKeys:
+    """The primary key for each item type in dataset files."""
+
+    factories = "name"
+    sectors = "name"
+    wares = "name"
 
 
 @dataclasses.dataclass
@@ -94,7 +104,7 @@ class RegisterDataset:
                     serializer=getattr(SerializerToTableMappings, key),
                     table=key,
                     transaction=self.transaction,
-                ).register_key()
+                ).register_table()
             logger.info(
                 "%s Registered dataset %s", log_ok(), self.transaction.name
             )
@@ -109,50 +119,32 @@ class RegisterDataset:
     def update(self) -> None:
         """Updates a dataset that exists in the DB already."""
         self.transaction.get_existing_id()
-        self.update_sectors()
-
-    def update_sectors(self) -> None:
-        """Updates fields on existing sectors.
-
-        If a sector does not exist, it is created.
-
-        """
-        failed_sectors = 0
-        for sector in self.transaction.sectors:
-            try:
-                self._update_sector(sector)
-            except ValidationError:
-                logger.exception(
-                    "%s Could not update/create sector, fix the error then "
-                    "re-run the command.",
-                    log_warning(),
-                )
-                failed_sectors += 1
-        logger.info("Registered %d sectors", len(self.transaction.sectors))
-        if failed_sectors > 0:
-            logger.info("Failed to register %d sectors", failed_sectors)
-
-    def _update_sector(self, sector: dict) -> None:
-        """Run updates on an individual sector."""
-        updated = SectorTemplateSerializer(
-            SectorTemplate.objects.filter(
-                name=sector["name"], dataset_id=self.transaction.id_
-            ).first(),
-            data=sector,
-            context={"dataset_id": self.transaction.id_},
-        )
-        if not updated.is_valid():
-            raise ValidationError(updated.errors)
-        updated.save()
+        for key in self.transaction.table_data:
+            RegisterTable(
+                serializer=getattr(SerializerToTableMappings, key),
+                table=key,
+                transaction=self.transaction,
+            ).update_table()
 
 
 class RegisterTable:
+    """A class to register/update a dataset table.
+
+    Attributes:
+        serializer: The serializer for the table.
+        model: The django model the registration relates to.
+        transaction: The transaction that is being completed.
+        data: The incoming table data.
+        table: The table name in the dataset file we are processing.
+
+    """
+
     def __init__(
         self,
         serializer: type[BaseSerializer],
         table: str,
         transaction: DatasetTransaction,
-    ):
+    ) -> None:
         self.serializer = serializer
         self.model = serializer.Meta.model
         self.transaction = transaction
@@ -160,6 +152,7 @@ class RegisterTable:
         self.table = table
 
     def _resolve_foreign_keys(self) -> list[dict]:
+        """Resolve text relations in dataset dicts to usable foreign keys."""
         foreign_keys = [
             attribute
             for attribute in dir(self.model)
@@ -179,7 +172,8 @@ class RegisterTable:
                 item.pop(key)
         return self.data
 
-    def register_key(self) -> None:
+    def register_table(self) -> None:
+        """Register a new table of data in a dataset."""
         data = self._resolve_foreign_keys()
         serialized_data = self.serializer(
             data=data, many=True, context={"dataset_id": self.transaction.id_}
@@ -190,6 +184,46 @@ class RegisterTable:
         logger.info(
             "Registered %d items in table %s", len(self.data), self.table
         )
+
+    def _update_item(self, item: dict) -> None:
+        """Update individual DB items."""
+        pk = getattr(DatasetPrimaryKeys, self.table)
+        updated = self.serializer(
+            self.model.objects.filter(
+                **{pk: item[pk]}, dataset_id=self.transaction.id_
+            ).first(),
+            data=item,
+            context={"dataset_id": self.transaction.id_},
+        )
+        if not updated.is_valid():
+            raise ValidationError(updated.errors)
+        updated.save()
+
+    def update_table(self) -> None:
+        """Updates existing tables with new data."""
+        failed_count = 0
+        data = self._resolve_foreign_keys()
+        for item in data:
+            try:
+                self._update_item(item)
+            except ValidationError:
+                logger.exception(
+                    "%s Could not update/create entry in table '%s', fix the "
+                    "error then re-run the command.",
+                    log_warning(),
+                    self.table,
+                )
+                failed_count += 1
+        success_count = len(self.data) - failed_count
+        logger.info(
+            "Registered %d items in %s table", success_count, self.table
+        )
+        if failed_count > 0:
+            logger.info(
+                "Failed to register %d items in %s table",
+                failed_count,
+                self.table,
+            )
 
 
 def collect_datasets(dataset_dir: pathlib.Path) -> list[DatasetTransaction]:
