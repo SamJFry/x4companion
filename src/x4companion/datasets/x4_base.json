@@ -185,18 +185,18 @@
     {"name": "Scruffin Fruit", "storage": "Container", "volume": 6},
     {"name": "Shield Components", "storage": "Container", "volume": 10},
     {"name": "Silicon", "storage": "Solid", "volume": 10},
-    {"name": "Silicon Carbide", "Container": "Container", "volume": 20},
-    {"name": "Silicon Wafers", "Container": "Container", "volume": 18},
-    {"name": "Smart Chips", "Container": "Container", "volume": 2},
-    {"name": "Soja Beans", "Container": "Container", "volume": 5},
-    {"name": "Soja Husk", "Container": "Container", "volume": 1},
-    {"name": "Spacefuel", "Container": "Container", "volume": 2},
-    {"name": "Spaceweed", "Container": "Container", "volume": 3},
-    {"name": "Spices", "Container": "Container", "volume": 3},
-    {"name": "Stimulants", "Container": "Container", "volume": 12},
-    {"name": "Sunrise Flowers", "Container": "Container", "volume": 5},
-    {"name": "Superfluid Coolant", "Container": "Container", "volume": 16},
-    {"name": "Swap Plant", "storage": "Container", "volume": 6},
+    {"name": "Silicon Carbide", "storage": "Container", "volume": 20},
+    {"name": "Silicon Wafers", "storage": "Container", "volume": 18},
+    {"name": "Smart Chips", "storage": "Container", "volume": 2},
+    {"name": "Soja Beans", "storage": "Container", "volume": 5},
+    {"name": "Soja Husk", "storage": "Container", "volume": 1},
+    {"name": "Spacefuel", "storage": "Container", "volume": 2},
+    {"name": "Spaceweed", "storage": "Container", "volume": 3},
+    {"name": "Spices", "storage": "Container", "volume": 3},
+    {"name": "Stimulants", "storage": "Container", "volume": 12},
+    {"name": "Sunrise Flowers", "storage": "Container", "volume": 5},
+    {"name": "Superfluid Coolant", "storage": "Container", "volume": 16},
+    {"name": "Swamp Plant", "storage": "Container", "volume": 6},
     {"name": "Teladianium", "storage": "Container", "volume": 16},
     {"name": "Terran MRE", "storage": "Container", "volume": 2},
     {"name": "Turret Components", "storage": "Container", "volume": 20},
@@ -291,7 +291,7 @@
     },
     {
       "name": "Energy Cell Production",
-      "ware": "Energy Cell",
+      "ware": "Energy Cells",
       "hourly_production": 10500,
       "hourly_energy": 0,
       "workforce": "90"
@@ -305,7 +305,7 @@
     },
     {
       "name": "Field Coil Production",
-      "ware": "Field Coil",
+      "ware": "Field Coils",
       "hourly_production": 1050,
       "hourly_energy": 360,
       "workforce": 810
@@ -578,7 +578,7 @@
     },
     {
       "name": "Terran Energy Cell Production",
-      "ware": "Energy Cell",
+      "ware": "Energy Cells",
       "hourly_production": 3000,
       "hourly_energy": 0,
       "workforce": "90"
@@ -613,7 +613,7 @@
     },
     {
       "name": "Weapon Component Production",
-      "ware": "Weapon Component",
+      "ware": "Weapon Components",
       "hourly_production": 340,
       "hourly_energy": 1290,
       "workforce": 225
@@ -629,7 +629,7 @@
   "ware_orders": [
     {
       "factory_module": "Advanced Composites Production",
-      "ware": "Refined Metal",
+      "ware": "Refined Metals",
       "quantity": 960
     },
     {
@@ -689,7 +689,7 @@
     },
     {
       "factory_module": "BoGas Production",
-      "ware": "water",
+      "ware": "Water",
       "quantity": 2400
     },
     {
@@ -704,7 +704,7 @@
     },
     {
       "factory_module": "Chelt Production",
-      "ware": "water",
+      "ware": "Water",
       "quantity": 960
     },
     {
@@ -738,32 +738,32 @@
       "quantity": 18000
     },
     {
-      "factory_module": "Drone Components Production",
+      "factory_module": "Drone Component Production",
       "ware": "Engine Parts",
       "quantity": 60
     },
     {
-      "factory_module": "Drone Components Production",
+      "factory_module": "Drone Component Production",
       "ware": "Hull Parts",
       "quantity": 60
     },
     {
-      "factory_module": "Drone Components Production",
+      "factory_module": "Drone Component Production",
       "ware": "Microchips",
       "quantity": 60
     },
     {
-      "factory_module": "Drone Components Production",
+      "factory_module": "Drone Component Production",
       "ware": "Scanning Arrays",
       "quantity": 120
     },
     {
-      "factory_module": "Engine Parts Production",
+      "factory_module": "Engine Part Production",
       "ware": "Antimatter Cells",
       "quantity": 240
     },
     {
-      "factory_module": "Engine Parts Production",
+      "factory_module": "Engine Part Production",
       "ware": "Refined Metals",
       "quantity": 384
     },
@@ -1044,7 +1044,7 @@
     },
     {
       "factory_module": "Sunrise Flower Production",
-      "ware": "water",
+      "ware": "Water",
       "quantity": 960
     },
     {
@@ -1068,12 +1068,12 @@
       "quantity": 696
     },
     {
-      "factory_module": "Teladi Engine Parts Production",
+      "factory_module": "Teladi Engine Part Production",
       "ware": "Antimatter Cells",
       "quantity": 240
     },
     {
-      "factory_module": "Teladi Engine Parts Production",
+      "factory_module": "Teladi Engine Part Production",
       "ware": "Teladianium",
       "quantity": 280
     },
@@ -1133,17 +1133,17 @@
       "quantity": 900
     },
     {
-      "factory_module": "Turret Components Production",
+      "factory_module": "Turret Component Production",
       "ware": "Microchips",
       "quantity": 40
     },
     {
-      "factory_module": "Turret Components Production",
+      "factory_module": "Turret Component Production",
       "ware": "Quantum Tubes",
       "quantity": 40
     },
     {
-      "factory_module": "Turret Components Production",
+      "factory_module": "Turret Component Production",
       "ware": "Scanning Arrays",
       "quantity": 20
     },

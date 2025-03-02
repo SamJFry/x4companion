@@ -119,7 +119,7 @@ class WareSerializer(serializers.Serializer):
         provided as the human-readable form.
 
         Args:
-            value: The storage vale to be verified.
+            value: The storage value to be verified.
 
         Returns:
             The single character version of the storage mode that can be

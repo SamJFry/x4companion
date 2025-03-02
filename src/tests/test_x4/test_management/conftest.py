@@ -63,7 +63,7 @@ def transaction_data():
     return {
         "sectors": [{"name": "good_sector", "sunlight_percent": 100}],
         "wares": [{"name": "Stem Bolts", "storage": "Container", "volume": 1}],
-        "factories": [
+        "factory_modules": [
             {
                 "name": "Stem Bolt Factory",
                 "ware": "Stem Bolts",

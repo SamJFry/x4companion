@@ -20,6 +20,7 @@ from x4companion.x4.serializers import (
     DatasetSerializer,
     FactoryModuleSerializer,
     SectorTemplateSerializer,
+    WareOrdersSerializer,
     WareSerializer,
 )
 
@@ -29,15 +30,16 @@ logger = logging.getLogger(__name__)
 class SerializerToTableMappings:
     """Maps keys in dataset files to the serializers for their data."""
 
-    factories = FactoryModuleSerializer
+    factory_modules = FactoryModuleSerializer
     sectors = SectorTemplateSerializer
     wares = WareSerializer
+    ware_orders = WareOrdersSerializer
 
 
 class DatasetPrimaryKeys:
     """The primary key for each item type in dataset files."""
 
-    factories = "name"
+    factory_modules = "name"
     sectors = "name"
     wares = "name"
 
@@ -48,8 +50,7 @@ class DatasetTransaction:
 
     Attributes:
         name: The name of the Dataset.
-        sectors: The sectors in the dataset.
-        wares: The wares in the dataset.
+        table_data: The data from the dataset we are writing.
         id_: Defaults to 0, but is replaced by the ID of the dataset once it
             has been created.
 
@@ -165,6 +166,7 @@ class RegisterTable:
             return self.data
         for item in self.data:
             for key in foreign_keys:
+                logger.debug("resolving foreign key '%s' for %s", key, item)
                 related_model = getattr(self.model, key).field.related_model
                 item[f"{key}_id"] = related_model.objects.get(
                     name=item[key]
