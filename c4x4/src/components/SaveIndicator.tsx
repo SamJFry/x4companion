@@ -1,5 +1,4 @@
 import Typography from '@mui/material/Typography'
-import * as React from "react";
 import getCookie, {setCookie} from "../functions/cookies.ts";
 
 interface SaveIndicatorProps {

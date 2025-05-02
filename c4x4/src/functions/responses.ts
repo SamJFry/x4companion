@@ -64,3 +64,19 @@ export async function createSaveGame(name: String, dataset: number) {
     })
   })
 }
+
+export async function getSectorTemplates(dataset: number) {
+ const params = new URLSearchParams({page_size: '1000'})
+  const response = await fetch(`${backend}/dataset/${dataset}/sector-templates?${params}`, {
+    method: 'GET',
+
+    headers: {
+      "Authorization": `${getCookie('token')}`,
+    },
+  })
+  if (response.status !== 200) {
+    return "ERROR: Could not get datasets."
+  }
+  const data = await response.json()
+  return data.data
+}

@@ -80,6 +80,12 @@ const NAVIGATION: Navigation = [
   {kind: 'divider'},
 ]
 
+interface SaveGame {
+  id: string
+  name: string
+  dataset_id: string
+}
+
 function TopBarActions() {
   const [saves, setSaves] = useState<Array<object>>([])
   const getSaves = async () => {
@@ -87,7 +93,7 @@ function TopBarActions() {
     setSaves(fetchedSaves)
   }
   useEffect(() => {
-    getSaves()
+    getSaveGames().then((data) => setSaves(data))
   }, [])
   const handleClickDelete = async (id: Number) => {
     const cookie = Number(getCookie('saveId'))
@@ -107,8 +113,9 @@ function TopBarActions() {
     setAnchorEl(null);
   };
 
-  const handleSwitchSave = (saveId: Number) => {
-    setCookie('saveId', saveId)
+  const handleSwitchSave = (save: SaveGame) => {
+    setCookie('saveId', save.id)
+    setCookie('datasetId', save.dataset_id)
     handleClose()
   }
   const open = Boolean(anchorEl);
@@ -131,7 +138,7 @@ function TopBarActions() {
             <ListItemIcon>
               <OnHoverDelete size="small" onClick={() => handleClickDelete(save["id"])}/>
             </ListItemIcon>
-            <Box onClick={() => handleSwitchSave(save["id"])}>
+            <Box onClick={() => handleSwitchSave(save)}>
               <ListItemText>{save["name"]}</ListItemText>
             </Box>
           </MenuItem>
