@@ -41,18 +41,19 @@ function SectorsTable({ getFunction, sectorCookie }: SectorTableProps) {
       {loading ? (
         <Skeleton variant="rectangular" height={100} />
       ) : (
-        <DataGrid
-          height={100}
-          rows={sectors}
-          columns={sectorColumns}
-          initialState={{
-            pagination: {
-              paginationModel: {
-                pageSize: 5
+        <Box sx={{ height: 400, width: '100%', mb: 2}}>
+          <DataGrid
+            rows={sectors}
+            columns={sectorColumns}
+            initialState={{
+              pagination: {
+                paginationModel: {
+                  pageSize: 5
+                }
               }
-            }
-          }}
-        />
+            }}
+          />
+        </Box>
       )}
     </>
   )
