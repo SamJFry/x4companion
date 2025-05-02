@@ -1,7 +1,7 @@
 import Typography from '@mui/material/Typography'
 import Box from '@mui/material/Box'
 import { DataGrid, GridColDef } from "@mui/x-data-grid"
-import { getSectorTemplates } from "../functions/responses.ts";
+import {getSaveGameSectors, getSectorTemplates} from "../functions/responses.ts";
 import {useState, useEffect} from "react";
 import {Skeleton} from "@mui/material";
 import getCookie from "../functions/cookies.ts";
@@ -19,24 +19,18 @@ const sectorColumns: GridColDef<(typeof rows)[number]>[] = [
   },
 ]
 
-function SectorsTable({ endpoint, sectorCookie }) {
-  const [sectors, setSectors] = useState()
-  const [loading, setLoading] = useState(true)
-
-  return <DataGrid
-    rows={sectors}
-    columns={sectorColumns}
-  />
+interface SectorTableProps {
+  getFunction: (id: number) => Promise<Array<{}>>
+  sectorCookie: string
 }
 
-export default function Sectors() {
-  const [sectors, setSectors] = useState()
+function SectorsTable({ getFunction, sectorCookie }: SectorTableProps) {
+  const [sectors, setSectors] = useState<any>()
   const [loading, setLoading] = useState(true)
 
   useEffect(() => {
     setLoading(true)
-    console.log(getCookie('datasetId'))
-    getSectorTemplates(Number(getCookie('datasetId'))).then((response) => {
+    getFunction(Number(getCookie(sectorCookie))).then((response: object) => {
       setSectors(response)
       setLoading(false)
     })
@@ -44,19 +38,36 @@ export default function Sectors() {
 
   return (
     <>
+      {loading ? (
+        <Skeleton variant="rectangular" height={100} />
+      ) : (
+        <DataGrid
+          height={100}
+          rows={sectors}
+          columns={sectorColumns}
+          initialState={{
+            pagination: {
+              paginationModel: {
+                pageSize: 5
+              }
+            }
+          }}
+        />
+      )}
+    </>
+  )
+}
+
+export default function Sectors() {
+  return (
+    <>
       <Box sx={{ flexGrow: 1, m: '5%', }}>
         <Typography variant="h3">Sectors</Typography>
         <Typography variant="subtitle1">
           Manage the sectors that your empire has a presence in.
         </Typography>
-        {loading ? (
-          <Skeleton variant="rectangular" height={400} />
-        ) : (
-          <DataGrid
-            rows={sectors}
-            columns={sectorColumns}
-          />
-        )}
+        <SectorsTable getFunction={getSaveGameSectors} sectorCookie="saveId" />
+        <SectorsTable getFunction={getSectorTemplates} sectorCookie="datasetId" />
       </Box>
     </>
   )

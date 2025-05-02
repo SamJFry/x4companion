@@ -69,13 +69,27 @@ export async function getSectorTemplates(dataset: number) {
  const params = new URLSearchParams({page_size: '1000'})
   const response = await fetch(`${backend}/dataset/${dataset}/sector-templates?${params}`, {
     method: 'GET',
-
     headers: {
       "Authorization": `${getCookie('token')}`,
     },
   })
   if (response.status !== 200) {
-    return "ERROR: Could not get datasets."
+    return "ERROR: Could not get sectors."
+  }
+  const data = await response.json()
+  return data.data
+}
+
+export async function getSaveGameSectors(save: number) {
+  const params = new URLSearchParams({page_size: '1000'})
+  const response = await fetch(`${backend}/game/${save}/sectors?${params}`, {
+    method: 'GET',
+    headers: {
+      "Authorization": `${getCookie('token')}`,
+    },
+  })
+  if (response.status !== 200) {
+    return "ERROR: Could not get sectors."
   }
   const data = await response.json()
   return data.data
