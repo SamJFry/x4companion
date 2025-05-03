@@ -3,12 +3,13 @@ import Box from '@mui/material/Box'
 import { getSaveGameSectors, getSectorTemplates } from "../functions/responses.ts";
 import SectorsTable from "./SectorTable.tsx"
 import AddSectorModal from "./AddSectorModal.tsx";
+import OwnedSectorsProvider from "./OwnedSectorsProvider.tsx";
 import {Grid} from "@mui/material";
-
+import { createContext, useState } from "react";
 
 export default function Sectors() {
   return (
-    <>
+    <OwnedSectorsProvider>
       <Box sx={{ flexGrow: 1, m: '5%', }}>
         <Typography variant="h3">Sectors</Typography>
           <Grid container spacing={2}>
@@ -24,6 +25,6 @@ export default function Sectors() {
         <Typography variant="h5">My Sectors</Typography>
         <SectorsTable getFunction={getSaveGameSectors} sectorCookie="saveId" />
       </Box>
-    </>
+    </OwnedSectorsProvider>
   )
 }

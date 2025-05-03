@@ -45,7 +45,7 @@ export default function SectorsTable({ getFunction, sectorCookie, ...dataGridPro
   return (
     <>
       {loading ? (
-        <Skeleton variant="rectangular" height={100} />
+        <Skeleton variant="rectangular" height={400} />
       ) : (
         <Box sx={{ height: 400, width: '100%', mb: 2}}>
           <DataGrid
