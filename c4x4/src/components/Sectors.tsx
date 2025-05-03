@@ -1,12 +1,12 @@
 import Typography from '@mui/material/Typography'
 import Box from '@mui/material/Box'
-import { DataGrid, GridColDef } from "@mui/x-data-grid"
-import {getSaveGameSectors, getSectorTemplates} from "../functions/responses.ts";
-import {useState, useEffect} from "react";
+import { DataGrid, GridColDef, DataGridProps } from "@mui/x-data-grid"
+import { getSaveGameSectors, getSectorTemplates } from "../functions/responses.ts";
+import { useState, useEffect } from "react";
 import {Skeleton} from "@mui/material";
 import getCookie from "../functions/cookies.ts";
 
-const sectorColumns: GridColDef<(typeof rows)[number]>[] = [
+const sectorColumns: GridColDef<SectorRow>[] = [
   {
     field: 'name',
     headerName: 'Sector Name',
@@ -19,12 +19,20 @@ const sectorColumns: GridColDef<(typeof rows)[number]>[] = [
   },
 ]
 
-interface SectorTableProps {
-  getFunction: (id: number) => Promise<Array<{}>>
-  sectorCookie: string
+type SectorRow = {
+  id: number
+  name: string
+  sunlight_percent: number
 }
 
-function SectorsTable({ getFunction, sectorCookie }: SectorTableProps) {
+type SectorDataGridProps = Omit<DataGridProps<SectorRow>, 'columns'>;
+
+type SectorTableProps = {
+  getFunction: (id: number) => Promise<Array<{}>>
+  sectorCookie: string
+} & SectorDataGridProps
+
+function SectorsTable({ getFunction, sectorCookie, ...dataGridProps }: SectorTableProps) {
   const [sectors, setSectors] = useState<any>()
   const [loading, setLoading] = useState(true)
 
@@ -43,12 +51,13 @@ function SectorsTable({ getFunction, sectorCookie }: SectorTableProps) {
       ) : (
         <Box sx={{ height: 400, width: '100%', mb: 2}}>
           <DataGrid
+            {...dataGridProps}
             rows={sectors}
             columns={sectorColumns}
             initialState={{
               pagination: {
                 paginationModel: {
-                  pageSize: 5
+                  pageSize: 10
                 }
               }
             }}
@@ -68,7 +77,7 @@ export default function Sectors() {
           Manage the sectors that your empire has a presence in.
         </Typography>
         <SectorsTable getFunction={getSaveGameSectors} sectorCookie="saveId" />
-        <SectorsTable getFunction={getSectorTemplates} sectorCookie="datasetId" />
+        <SectorsTable getFunction={getSectorTemplates} sectorCookie="datasetId" checkboxSelection/>
       </Box>
     </>
   )
