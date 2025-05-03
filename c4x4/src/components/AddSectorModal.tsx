@@ -7,6 +7,7 @@ import AddCancelButtonPanel from "./Buttons/AddCancelButtonPanel.tsx"
 import { OwnedSectorsContext } from "./OwnedSectorsProvider.tsx"
 import { Typography } from "@mui/material"
 import { addOwnedSectors } from "../functions/responses.ts"
+import {SelectedSectorsContext} from "./SelectedSectorsProvider.tsx";
 import getCookie from "../functions/cookies.ts"
 import {useContext, useState} from "react";
 
@@ -28,9 +29,10 @@ export default function AddSectorModal() {
   const handleOpen = () => setOpen(true)
   const handleClose = () => setOpen(false)
   const ownedSectorsContext = useContext(OwnedSectorsContext)
+  const selectedSectors = useContext(SelectedSectorsContext)
 
   const addSectors = () => {
-    addOwnedSectors(getCookie('saveId'), [1]).then(() => {
+    addOwnedSectors(Number(getCookie('saveId')), selectedSectors.selectedSectors).then(() => {
       ownedSectorsContext.setChanged(true)
       handleClose()
     })

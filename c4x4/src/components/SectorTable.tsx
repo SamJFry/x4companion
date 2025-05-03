@@ -1,7 +1,8 @@
-import {DataGrid, DataGridProps, GridColDef} from "@mui/x-data-grid";
+import {DataGrid, DataGridProps, GridColDef, GridRowSelectionModel} from "@mui/x-data-grid";
 import {useEffect, useState, useContext} from "react";
 import getCookie from "../functions/cookies.ts";
 import { OwnedSectorsContext } from "./OwnedSectorsProvider.tsx";
+import { SelectedSectorsContext } from "./SelectedSectorsProvider.tsx";
 import { getSaveGameSectors } from "../functions/responses.ts";
 import {Skeleton} from "@mui/material";
 import Box from "@mui/material/Box";
@@ -73,6 +74,7 @@ export function OwnedSectorsTable({ ...dataGridProps }: SectorDataGridProps) {
 export default function SectorsTable({ getFunction, sectorCookie, ...dataGridProps }: SectorTableProps) {
   const [sectors, setSectors] = useState<any>()
   const [loading, setLoading] = useState(true)
+  const selectedSectorsContext = useContext(SelectedSectorsContext)
 
   useEffect(() => {
     setLoading(true)
@@ -81,6 +83,10 @@ export default function SectorsTable({ getFunction, sectorCookie, ...dataGridPro
       setLoading(false)
     })
   }, [])
+
+  const handleSelectionChange = (rowSelectionModel: GridRowSelectionModel) => {
+    selectedSectorsContext.setSelected(rowSelectionModel)
+  }
 
   return (
     <>
@@ -92,6 +98,7 @@ export default function SectorsTable({ getFunction, sectorCookie, ...dataGridPro
             {...dataGridProps}
             rows={sectors}
             columns={sectorColumns}
+            onRowSelectionModelChange={handleSelectionChange}
             initialState={{
               pagination: {
                 paginationModel: {

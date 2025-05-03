@@ -3,6 +3,7 @@ import Box from '@mui/material/Box'
 import { OwnedSectorsTable} from "./SectorTable.tsx"
 import AddSectorModal from "./AddSectorModal.tsx";
 import OwnedSectorsProvider from "./OwnedSectorsProvider.tsx";
+import SelectedSectorsProvider from "./SelectedSectorsProvider.tsx";
 import {Grid} from "@mui/material";
 
 export default function Sectors() {
@@ -17,7 +18,9 @@ export default function Sectors() {
               </Typography>
             </Grid>
             <Grid size={{ lg: 4, xs: 12, sm: 4 }}>
-              <AddSectorModal />
+              <SelectedSectorsProvider>
+                <AddSectorModal />
+              </SelectedSectorsProvider>
             </Grid>
           </Grid>
         <Typography variant="h5">My Sectors</Typography>
