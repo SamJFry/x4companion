@@ -60,16 +60,30 @@ class SaveGameSerializer(serializers.ModelSerializer):
 class SectorSerializerRead(serializers.ModelSerializer):
     """Validates Sectors values."""
 
-    template_id = serializers.PrimaryKeyRelatedField(
-        queryset=SectorTemplate.objects.all()
-    )
-    game_id = serializers.PrimaryKeyRelatedField(
-        queryset=SaveGame.objects.all()
-    )
-
     class Meta:
         model = Sector
-        fields = ["id", "template_id", "game_id"]
+        depth = 1
+        fields = ["id", "template"]
+
+    def to_representation(self, instance: models.Model) -> dict:
+        """Return information about the related sector template.
+
+        Since the `Sector` is just a reference to a `SectorTemplate` that
+        we're actually interested in, this method reduces the data so that we
+        return the data from the related sector rather then the mappings that
+        exist in the sector table entry.
+
+        Args:
+            instance: The Sector instance that is being serialized.
+
+        Returns:
+            The data representation to be given to the requestor.
+
+        """
+        data = super().to_representation(instance)
+        del data["template"]["id"]
+        del data["template"]["dataset"]
+        return {"id": data["id"], **data["template"]}
 
 
 class SectorTemplateSerializer(serializers.ModelSerializer):
@@ -186,7 +200,7 @@ class SectorSerializerWrite(serializers.Serializer):
 
     template_id = serializers.PrimaryKeyRelatedField(
         queryset=SectorTemplate.objects.all()
-    )
+    )  # TODO Fix 500 error when user tries to create a sector that exists
 
     def create(self, validated_data: dict) -> models.Model:
         """Create a sector from the validated serializer data.

@@ -17,7 +17,7 @@ class TestSectors:
             "page_size": 100,
             "previous": None,
             "next": None,
-            "data": [{"id": 1, "game_id": 1, "template_id": 1}],
+            "data": [{"id": 1, "name": "sector 001", "sunlight_percent": 100}],
         }
 
     def test_get_on_bad_game_gives_404(self, authed_client):
@@ -55,7 +55,11 @@ class TestSectorView:
     def test_get(self, create_basic_sector, authed_client):
         response = authed_client.get("/game/1/sectors/1/")
         assert response.status_code == status.HTTP_200_OK
-        assert response.json() == {"id": 1, "game_id": 1, "template_id": 1}
+        assert response.json() == {
+            "id": 1,
+            "name": "sector 001",
+            "sunlight_percent": 100,
+        }
 
     def test_get_does_not_give_others_sectors(
         self, create_basic_sector, create_user_2_save_game, authed_client_2

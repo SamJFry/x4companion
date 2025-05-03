@@ -94,3 +94,21 @@ export async function getSaveGameSectors(save: number) {
   const data = await response.json()
   return data.data
 }
+
+
+export async function addOwnedSectors(save: number, sectors: Array<number>) {
+  console.log(sectors)
+  const response = await fetch(`${backend}/game/${save}/sectors/`, {
+    method: 'POST',
+    headers: {
+      "Authorization": `${getCookie('token')}`,
+      "Content-Type": "application/json",
+    },
+    body: JSON.stringify({
+      data: sectors.map(id => ({template_id: id}))
+    })
+  })
+  if (response.status !== 200) {
+    return "ERROR: Could not add sectors."
+  }
+}
