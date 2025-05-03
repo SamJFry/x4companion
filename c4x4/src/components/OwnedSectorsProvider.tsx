@@ -2,7 +2,7 @@ import {createContext, useState} from "react";
 
 type OwnedSectorsProviderProps = {
   sectorsChanged: boolean
-  setChanged: () => void
+  setChanged: (b: boolean) => void
 }
 
 export const OwnedSectorsContext = createContext<OwnedSectorsProviderProps>({
@@ -13,8 +13,8 @@ export const OwnedSectorsContext = createContext<OwnedSectorsProviderProps>({
 export default function OwnedSectorsProvider({ children }: any) {
   const [sectorsChanged, setSectorsChanged] = useState(false)
 
-  const setChanged = (update: boolean) => {
-    setSectorsChanged(update)
+  const setChanged = (updated: boolean) => {
+    setSectorsChanged(updated)
   }
 
   return (
