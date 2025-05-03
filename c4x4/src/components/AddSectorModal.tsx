@@ -4,8 +4,9 @@ import Button from "@mui/material/Button";
 import SectorsTable from "./SectorTable.tsx";
 import {getSectorTemplates} from "../functions/responses.ts";
 import AddCancelButtonPanel from "./Buttons/AddCancelButtonPanel.tsx";
+import { OwnedSectorsContext } from "./OwnedSectorsProvider.tsx";
 import { Typography } from "@mui/material";
-import { useState } from "react";
+import {useContext, useState} from "react";
 
 
 const style = {
@@ -24,9 +25,10 @@ export default function AddSectorModal() {
   const [isOpen, setOpen] = useState(false)
   const handleOpen = () => setOpen(true)
   const handleClose = () => setOpen(false)
-
+  const ownedSectorsContext = useContext(OwnedSectorsContext)
 
   const addSectors = () => {
+    ownedSectorsContext.setChanged(true)
     handleClose()
   }
 

@@ -1,14 +1,20 @@
 import {createContext, useState} from "react";
 
-const OwnedSectorsContext = createContext()
+type OwnedSectorsProviderProps = {
+  sectorsChanged: boolean
+  setChanged: () => void
+}
+
+export const OwnedSectorsContext = createContext<OwnedSectorsProviderProps>({
+  sectorsChanged: false,
+  setChanged: () => {}
+})
 
 export default function OwnedSectorsProvider({ children }: any) {
   const [sectorsChanged, setSectorsChanged] = useState(false)
 
-  const setChanged = () => {
-    setSectorsChanged(true)
-    console.log("detected change")
-    setSectorsChanged(false)
+  const setChanged = (update: boolean) => {
+    setSectorsChanged(update)
   }
 
   return (

@@ -1,11 +1,9 @@
 import Typography from '@mui/material/Typography'
 import Box from '@mui/material/Box'
-import { getSaveGameSectors, getSectorTemplates } from "../functions/responses.ts";
-import SectorsTable from "./SectorTable.tsx"
+import { OwnedSectorsTable} from "./SectorTable.tsx"
 import AddSectorModal from "./AddSectorModal.tsx";
 import OwnedSectorsProvider from "./OwnedSectorsProvider.tsx";
 import {Grid} from "@mui/material";
-import { createContext, useState } from "react";
 
 export default function Sectors() {
   return (
@@ -23,7 +21,7 @@ export default function Sectors() {
             </Grid>
           </Grid>
         <Typography variant="h5">My Sectors</Typography>
-        <SectorsTable getFunction={getSaveGameSectors} sectorCookie="saveId" />
+        <OwnedSectorsTable />
       </Box>
     </OwnedSectorsProvider>
   )
