@@ -1,12 +1,4 @@
-import {AppProvider, Navigation} from "@toolpad/core/AppProvider";
 import {DashboardLayout, ThemeSwitcher} from '@toolpad/core/DashboardLayout';
-import FlagOutlinedIcon from '@mui/icons-material/FlagOutlined';
-import PlaceOutlinedIcon from "@mui/icons-material/PlaceOutlined";
-import PrecisionManufacturingOutlinedIcon from '@mui/icons-material/PrecisionManufacturingOutlined';
-import FactoryOutlinedIcon from '@mui/icons-material/FactoryOutlined';
-import ApartmentOutlinedIcon from '@mui/icons-material/ApartmentOutlined';
-import HouseOutlinedIcon from '@mui/icons-material/HouseOutlined';
-import LandslideOutlinedIcon from '@mui/icons-material/LandslideOutlined';
 import ListItemText from '@mui/material/ListItemText';
 import ListIcon from '@mui/icons-material/List';
 import Popover from '@mui/material/Popover';
@@ -17,69 +9,14 @@ import {OnHoverDelete} from "./DeleteButton.tsx";
 import {useEffect, useState, useContext} from "react";
 import {getSaveGames, deleteSaveGame} from "../functions/responses.ts";
 import getCookie, {deleteCookie} from "../functions/cookies.ts";
-import ActiveSaveProvider, {ActiveSaveContext} from "../providers/ActiveSaveProvider.tsx";
+import {ActiveSaveContext} from "../providers/ActiveSaveProvider.tsx";
 import {NewSaveModal} from "./SaveModal.tsx"
 import LogOut from "./Logout.tsx";
 import {SaveIndicator} from "./SaveIndicator.tsx";
 import {Divider, Box} from "@mui/material";
 import ListItemIcon from "@mui/material/ListItemIcon";
 
-const NAVIGATION: Navigation = [
-  {kind: 'divider'},
 
-  {
-    kind: 'header',
-    title: 'Empire',
-  },
-  {
-    segment: 'sectors',
-    title: 'Sectors',
-    icon: <FlagOutlinedIcon />
-  },
-  {
-    segment: 'stations',
-    title: 'Stations',
-    icon: <PlaceOutlinedIcon />
-  },
-  {
-    segment: 'factories',
-    title: 'Factories',
-    icon: <PrecisionManufacturingOutlinedIcon />
-  },
-  {
-    segment: 'habitats',
-    title: 'Habitats',
-    icon: <HouseOutlinedIcon />,
-  },
-  {kind: 'divider'},
-
-  {
-    kind: 'header',
-    title: 'Available Modules',
-  },
-
-  {
-    segment: 'factory-modules',
-    title: 'Factory Modules',
-    icon: <FactoryOutlinedIcon />,
-  },
-  {
-    segment: 'habitat-modules',
-    title: 'Habitat Modules',
-    icon: <ApartmentOutlinedIcon />
-  },
-  {kind: 'divider'},
-  {
-    kind: 'header',
-    title: 'Other',
-  },
-  {
-    segment: 'resources',
-    title: 'Resources',
-    icon: <LandslideOutlinedIcon />
-  },
-  {kind: 'divider'},
-]
 
 interface SaveGame {
   id: string
@@ -87,7 +24,7 @@ interface SaveGame {
   dataset_id: string
 }
 
-function TopBarActions() {
+export default function TopBarActions() {
   const [saves, setSaves] = useState<Array<object>>([])
   const activeSaveContext = useContext(ActiveSaveContext)
   const getSaves = async () => {
@@ -152,21 +89,4 @@ function TopBarActions() {
       <LogOut />
     </>
   );
-}
-
-export default function X4Base({ children }: any) {
-  return (
-    <AppProvider
-      navigation={NAVIGATION}
-      branding={{
-        logo: <img src="/src/assets/X4.svg" alt="x4 logo"/>,
-        title: 'Companion',
-        homeUrl: 'app',
-      }}
-    >
-      <ActiveSaveProvider>
-        <DashboardLayout slots={{toolbarActions: TopBarActions}} children={children} />
-      </ActiveSaveProvider>
-    </AppProvider>
-  )
 }
