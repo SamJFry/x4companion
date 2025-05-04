@@ -2,13 +2,13 @@ import Modal from "@mui/material/Modal"
 import Box from "@mui/material/Box"
 import Button from "@mui/material/Button"
 import SectorsTable from "./SectorTable.tsx"
-import {getSectorTemplates} from "../functions/responses.ts"
-import AddCancelButtonPanel from "./Buttons/AddCancelButtonPanel.tsx"
+import {getSectorTemplates} from "../../functions/responses.ts"
+import AddCancelButtonPanel from "../Buttons/AddCancelButtonPanel.tsx"
 import { OwnedSectorsContext } from "./OwnedSectorsProvider.tsx"
 import { Typography } from "@mui/material"
-import { addOwnedSectors } from "../functions/responses.ts"
+import { addOwnedSectors } from "../../functions/responses.ts"
 import {SelectedSectorsContext} from "./SelectedSectorsProvider.tsx";
-import getCookie from "../functions/cookies.ts"
+import getCookie from "../../functions/cookies.ts"
 import {useContext, useState} from "react";
 
 

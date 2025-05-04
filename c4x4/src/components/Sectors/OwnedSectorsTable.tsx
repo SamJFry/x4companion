@@ -1,11 +1,11 @@
 import {useContext, useEffect, useState} from "react";
 import {OwnedSectorsContext} from "./OwnedSectorsProvider.tsx";
-import {getSaveGameSectors, deleteOwnedSectors} from "../functions/responses.ts";
-import getCookie from "../functions/cookies.ts";
+import {getSaveGameSectors, deleteOwnedSectors} from "../../functions/responses.ts";
+import getCookie from "../../functions/cookies.ts";
 import {Skeleton} from "@mui/material";
 import Box from "@mui/material/Box";
 import {DataGrid, GridColDef} from "@mui/x-data-grid";
-import {OnHoverDelete} from "./DeleteButton.tsx";
+import {OnHoverDelete} from "../DeleteButton.tsx";
 
 type SectorRow = {
   id: number

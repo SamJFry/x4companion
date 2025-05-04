@@ -2,7 +2,7 @@ import { StrictMode } from 'react';
 import { createRoot } from 'react-dom/client';
 import { BrowserRouter, Routes, Route } from 'react-router';
 import X4Base from "./components/Sidebar.tsx";
-import Sectors from "./components/Sectors.tsx";
+import Sectors from "./components/Sectors/Sectors.tsx";
 import CredentialsSignInPage from "./components/SignIn.tsx";
 import './x4.css'
 

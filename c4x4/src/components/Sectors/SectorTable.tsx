@@ -1,6 +1,6 @@
 import {DataGrid, DataGridProps, GridColDef, GridRowSelectionModel} from "@mui/x-data-grid";
 import {useEffect, useState, useContext} from "react";
-import getCookie from "../functions/cookies.ts";
+import getCookie from "../../functions/cookies.ts";
 import { SelectedSectorsContext } from "./SelectedSectorsProvider.tsx";
 import {Skeleton} from "@mui/material";
 import Box from "@mui/material/Box";
