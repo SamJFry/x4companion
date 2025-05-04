@@ -3,6 +3,7 @@ import { createRoot } from 'react-dom/client';
 import { BrowserRouter, Routes, Route } from 'react-router';
 import X4Base from "./components/Sidebar.tsx";
 import Sectors from "./components/Sectors/Sectors.tsx";
+import FactoryModules from "./components/FactoryModules/FactoryModules.tsx";
 import CredentialsSignInPage from "./components/SignIn.tsx";
 import './x4.css'
 
@@ -16,7 +17,7 @@ createRoot(document.getElementById('root')!).render(
         <Route path="stations" element={<X4Base />} />
         <Route path="factories" element={<X4Base />} />
         <Route path="habitats" element={<X4Base />} />
-        <Route path="factory-modules" element={<X4Base />} />
+        <Route path="factory-modules" element={<X4Base children={<FactoryModules />}/>} />
         <Route path="habitat-modules" element={<X4Base />} />
         <Route path="resources" element={<X4Base />} />
       </Routes>

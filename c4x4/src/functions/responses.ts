@@ -124,3 +124,18 @@ export async function deleteOwnedSectors(save: number, sectorId: number) {
   }
   return response.status
 }
+
+export async function getFactoryModules(dataset: number) {
+  const params = new URLSearchParams({page_size: '1000'})
+  const response = await fetch(`${backend}/dataset/${dataset}/factory-modules?${params}`, {
+    method: 'GET',
+    headers: {
+      "Authorization": `${getCookie('token')}`,
+    }
+  })
+  if (response.status !== 200) {
+    return "ERROR: Could not get sectors."
+  }
+  const data = await response.json()
+  return data.data
+}

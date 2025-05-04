@@ -11,7 +11,7 @@ export default function Sectors() {
     <OwnedSectorsProvider>
       <Box sx={{ flexGrow: 1, m: '5%', }}>
         <Typography variant="h3">Sectors</Typography>
-          <Grid container spacing={2}>
+          <Grid container spacing={2} sx={{mb: 2}}>
             <Grid size={{ lg: 8, xs: 12, sm: 8 }}>
               <Typography variant="subtitle1">
                 Manage the sectors that your empire has a presence in.
@@ -23,7 +23,6 @@ export default function Sectors() {
               </SelectedSectorsProvider>
             </Grid>
           </Grid>
-        <Typography variant="h5">My Sectors</Typography>
         <OwnedSectorsTable />
       </Box>
     </OwnedSectorsProvider>

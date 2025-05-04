@@ -22,17 +22,17 @@ export default function OwnedSectorsTable({ ...dataGridProps }) {
     {
       field: 'name',
       headerName: 'Sector Name',
-      width: 150,
+      flex: 5,
     },
     {
       field: 'sunlight_percent',
       headerName: 'Sunlight Percent (%)',
-      width: 150,
+      flex: 2,
     },
     {
       field: 'action',
       headerName: 'Action',
-      width: 150,
+      flex: 1,
       sortable: false,
       filterable: false,
       renderCell: (params) => (
@@ -60,7 +60,7 @@ export default function OwnedSectorsTable({ ...dataGridProps }) {
       {loading ? (
         <Skeleton variant="rectangular" height={400} />
       ) : (
-        <Box sx={{ height: 400, width: '100%', mb: 2}}>
+        <Box sx={{ height: 400, width: '100%' }}>
           <DataGrid
             {...dataGridProps}
             disableRowSelectionOnClick
