@@ -58,8 +58,8 @@ const NAVIGATION: Navigation = [
     title: 'Other',
   },
   {
-    segment: 'x4/resources',
-    title: 'Resources',
+    segment: 'x4/wares',
+    title: 'Wares',
     icon: <LandslideOutlinedIcon />
   },
   {kind: 'divider'},
