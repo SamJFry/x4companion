@@ -14,9 +14,10 @@ import * as React from "react";
 import Button from "@mui/material/Button";
 import MenuItem from "@mui/material/MenuItem";
 import {OnHoverDelete} from "./DeleteButton.tsx";
-import {useEffect, useState} from "react";
+import {useEffect, useState, useContext} from "react";
 import {getSaveGames, deleteSaveGame} from "../functions/responses.ts";
-import getCookie, {deleteCookie, setCookie} from "../functions/cookies.ts";
+import getCookie, {deleteCookie} from "../functions/cookies.ts";
+import ActiveSaveProvider, {ActiveSaveContext} from "../providers/ActiveSaveProvider.tsx";
 import {NewSaveModal} from "./SaveModal.tsx"
 import LogOut from "./Logout.tsx";
 import {SaveIndicator} from "./SaveIndicator.tsx";
@@ -88,6 +89,7 @@ interface SaveGame {
 
 function TopBarActions() {
   const [saves, setSaves] = useState<Array<object>>([])
+  const activeSaveContext = useContext(ActiveSaveContext)
   const getSaves = async () => {
     const fetchedSaves = await getSaveGames()
     setSaves(fetchedSaves)
@@ -114,8 +116,7 @@ function TopBarActions() {
   };
 
   const handleSwitchSave = (save: SaveGame) => {
-    setCookie('saveId', save.id)
-    setCookie('datasetId', save.dataset_id)
+    activeSaveContext.setNewSave(save);
     handleClose()
   }
   const open = Boolean(anchorEl);
@@ -153,7 +154,7 @@ function TopBarActions() {
   );
 }
 
-export default function X4Base({ children }) {
+export default function X4Base({ children }: any) {
   return (
     <AppProvider
       navigation={NAVIGATION}
@@ -163,12 +164,9 @@ export default function X4Base({ children }) {
         homeUrl: 'app',
       }}
     >
-      <DashboardLayout
-        slots={{
-          toolbarActions: TopBarActions
-        }}
-        children={children}
-      />
+      <ActiveSaveProvider>
+        <DashboardLayout slots={{toolbarActions: TopBarActions}} children={children} />
+      </ActiveSaveProvider>
     </AppProvider>
   )
 }

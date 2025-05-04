@@ -1,9 +1,9 @@
 import Box from '@mui/material/Box'
 import {Skeleton, Typography} from '@mui/material'
 import {DataGrid, GridColDef} from '@mui/x-data-grid'
-import getCookie from "../../functions/cookies.ts";
+import { ActiveSaveContext } from "../../providers/ActiveSaveProvider.tsx"
 import {getFactoryModules} from "../../functions/responses.ts";
-import {useState, useEffect} from "react";
+import {useState, useEffect, useContext} from "react";
 
 type FactoryModuleRow = {
   id: number,
@@ -40,15 +40,18 @@ const FactoryModuleColumns: GridColDef<FactoryModuleRow>[] = [
 export default function FactoryModules() {
   const [modules, setModules] = useState<any>()
   const [loading, setLoading] = useState(true)
-  const datasetId = Number(getCookie('saveId'));
+  const activeSaveContext = useContext(ActiveSaveContext)
 
   useEffect(() => {
     setLoading(true)
-    getFactoryModules(datasetId).then((response: object) => {
-      setModules(response)
-      setLoading(false)
-    })
-  }, [])
+    let activeDataset = activeSaveContext.activeSave.dataset_id
+    if (activeDataset) {
+      getFactoryModules(activeDataset).then((response: object) => {
+        setModules(response)
+        setLoading(false)
+      })
+    }
+  }, [activeSaveContext.activeSave.dataset_id])
 
   return (
     <Box sx={{ flexGrow: 1, m: '5%'}}>

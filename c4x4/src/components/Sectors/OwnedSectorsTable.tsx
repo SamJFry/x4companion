@@ -1,5 +1,6 @@
 import {useContext, useEffect, useState} from "react";
-import {OwnedSectorsContext} from "./OwnedSectorsProvider.tsx";
+import { OwnedSectorsContext } from "./OwnedSectorsProvider.tsx";
+import { ActiveSaveContext } from "../../providers/ActiveSaveProvider.tsx"
 import {getSaveGameSectors, deleteOwnedSectors} from "../../functions/responses.ts";
 import getCookie from "../../functions/cookies.ts";
 import {Skeleton} from "@mui/material";
@@ -17,6 +18,7 @@ export default function OwnedSectorsTable({ ...dataGridProps }) {
   const [sectors, setSectors] = useState<any>()
   const [loading, setLoading] = useState(true)
   const ownedSectorsContext = useContext(OwnedSectorsContext)
+  const activeSaveContext = useContext(ActiveSaveContext)
   const saveId = Number(getCookie('saveId'));
   const sectorColumns: GridColDef<SectorRow>[] = [
     {
@@ -53,7 +55,7 @@ export default function OwnedSectorsTable({ ...dataGridProps }) {
       setLoading(false)
     })
     ownedSectorsContext.setChanged(false)
-  }, [ownedSectorsContext.sectorsChanged])
+  }, [ownedSectorsContext.sectorsChanged, activeSaveContext.activeSave])
 
   return (
     <>

@@ -1,11 +1,11 @@
 import {createContext, useState} from "react"
 
-type OwnedSectorsProviderProps = {
+type OwnedSectorsContextProps = {
   sectorsChanged: boolean
   setChanged: (b: boolean) => void
 }
 
-export const OwnedSectorsContext = createContext<OwnedSectorsProviderProps>({
+export const OwnedSectorsContext = createContext<OwnedSectorsContextProps>({
   sectorsChanged: false,
   setChanged: () => {}
 })
