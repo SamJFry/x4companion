@@ -1,6 +1,6 @@
 import Typography from '@mui/material/Typography'
 import Box from '@mui/material/Box'
-import { OwnedSectorsTable} from "./SectorTable.tsx"
+import OwnedSectorsTable from "./OwnedSectorsTable.tsx"
 import AddSectorModal from "./AddSectorModal.tsx";
 import OwnedSectorsProvider from "./OwnedSectorsProvider.tsx";
 import SelectedSectorsProvider from "./SelectedSectorsProvider.tsx";

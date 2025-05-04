@@ -1,19 +1,20 @@
 import {createContext, useState} from "react"
+import {GridRowSelectionModel} from "@mui/x-data-grid";
 
 type SelectedSectorsProviderProps = {
-  selectedSectors: Array<number>
-  setSelected: (sectors: Array<number>) => void
+  selectedSectors: GridRowSelectionModel
+  setSelected: (sectors: GridRowSelectionModel) => void
 }
 
 export const SelectedSectorsContext = createContext<SelectedSectorsProviderProps>({
   selectedSectors: [],
-  setSelected: () => {}
+  setSelected: (_: GridRowSelectionModel) => {}
 })
 
 export default function SelectedSectorsProvider({ children }: any) {
-  const [selectedSectors, setSelectedSectors] = useState<Array<number>>([])
+  const [selectedSectors, setSelectedSectors] = useState<GridRowSelectionModel>([])
 
-  const setSelected = (sectors: Array<number>) => {
+  const setSelected = (sectors: GridRowSelectionModel) => {
     setSelectedSectors(sectors)
   }
 

@@ -97,7 +97,6 @@ export async function getSaveGameSectors(save: number) {
 
 
 export async function addOwnedSectors(save: number, sectors: Array<number>) {
-  console.log(sectors)
   const response = await fetch(`${backend}/game/${save}/sectors/`, {
     method: 'POST',
     headers: {
@@ -111,4 +110,17 @@ export async function addOwnedSectors(save: number, sectors: Array<number>) {
   if (response.status !== 200) {
     return "ERROR: Could not add sectors."
   }
+}
+
+export async function deleteOwnedSectors(save: number, sectorId: number) {
+  const response = await fetch(`${backend}/game/${save}/sectors/${sectorId}/`, {
+    method: 'DELETE',
+    headers: {
+      "Authorization": `${getCookie('token')}`,
+    }
+  })
+  if (response.status !== 204) {
+    return "ERROR: Could not process delete."
+  }
+  return response.status
 }

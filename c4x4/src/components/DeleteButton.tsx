@@ -4,7 +4,7 @@ import IconButton from "@mui/material/IconButton";
 import DeleteOutlinedIcon from "@mui/icons-material/DeleteOutlined";
 
 interface OnHoverDeleteProps {
-  size: 'small' | 'large'
+  size?: 'small' | 'large'
   onClick: () => void
 }
 
