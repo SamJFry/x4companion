@@ -3,7 +3,7 @@ import Box from "@mui/material/Box";
 import Button from "@mui/material/Button";
 import Modal from "@mui/material/Modal";
 import {Typography} from "@mui/material";
-import SectorsTable from "../Sectors/SectorTable.tsx";
+import AddStationForm from "./AddStationForm.tsx";
 import { ActiveSaveContext } from "../../providers/ActiveSaveProvider.tsx";
 import AddCancelButtonPanel from "../Buttons/AddCancelButtonPanel.tsx";
 
@@ -32,7 +32,8 @@ export default function AddStationsModal() {
       </Box>
       <Modal open={isOpen} onClose={handleClose}>
         <Box sx={style}>
-          <Typography variant="h6">Create Station</Typography>
+          <Typography variant="h6" sx={{mb: 2}}>Create Station</Typography>
+          <AddStationForm />
           <AddCancelButtonPanel addAction={handleClose} cancelAction={handleClose} />
         </Box>
       </Modal>
