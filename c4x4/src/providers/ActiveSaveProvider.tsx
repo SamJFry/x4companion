@@ -1,6 +1,8 @@
 import { SaveGame } from '../types.ts'
-import { createContext, useState } from "react";
-import {setCookie} from "../functions/cookies.ts";
+import { createContext, useState, useEffect } from "react";
+import getCookie, {setCookie} from "../functions/cookies.ts";
+import {getSaveGames, deleteSaveGame} from "../functions/responses.ts";
+
 
 type ActiveSaveContextProps = {
   activeSave: SaveGame
@@ -16,6 +18,16 @@ export default function ActiveSaveProvider({ children }: any) {
   const [activeSave, setActiveSave] = useState<SaveGame>(
     {id: null, name: null, dataset_id: 1}
   )
+
+  useEffect(() => {
+    getSaveGames().then((response) => {
+      const saveCookie = Number(getCookie('saveId'))
+      const save = response.find((element: SaveGame) => element.id === saveCookie)
+      if (save) {
+        setActiveSave(save)
+      }
+    })
+  }, []);
 
   const setNewSave = (newSave: SaveGame) => {
     setActiveSave(newSave)

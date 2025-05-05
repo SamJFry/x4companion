@@ -8,8 +8,8 @@ import { OwnedSectorsContext } from "./OwnedSectorsProvider.tsx"
 import { Typography } from "@mui/material"
 import { addOwnedSectors } from "../../functions/responses.ts"
 import {SelectedSectorsContext} from "./SelectedSectorsProvider.tsx";
-import getCookie from "../../functions/cookies.ts"
-import {useContext, useState} from "react";
+import { ActiveSaveContext } from "../../providers/ActiveSaveProvider.tsx";
+import {useContext, useState } from "react";
 
 
 const style = {
@@ -30,10 +30,16 @@ export default function AddSectorModal() {
   const handleClose = () => setOpen(false)
   const ownedSectorsContext = useContext(OwnedSectorsContext)
   const selectedSectors = useContext(SelectedSectorsContext)
+  const activeSave = useContext(ActiveSaveContext)
 
   const addSectors = () => {
-    let sectors = Array(selectedSectors.selectedSectors.ids)
-    addOwnedSectors(Number(getCookie('saveId')), sectors).then(() => {
+    const sectors = Array.from(selectedSectors.selectedSectors.ids)
+    if (!activeSave.activeSave.id) {
+      handleClose()
+      return
+    }
+    console.log(sectors)
+    addOwnedSectors(activeSave.activeSave.id, sectors).then(() => {
       ownedSectorsContext.setChanged(true)
       handleClose()
     })
