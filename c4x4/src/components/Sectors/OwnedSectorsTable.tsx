@@ -39,10 +39,12 @@ export default function OwnedSectorsTable({ ...dataGridProps }) {
       filterable: false,
       renderCell: (params) => (
         <OnHoverDelete onClick={() => {
-          console.log(params)
-          deleteOwnedSectors(saveId, Number(params.id)).then(
+          if (!activeSave.activeSave.id) {
+            return
+          }
+          deleteOwnedSectors(activeSave.activeSave.id, Number(params.id)).then(() => {
             ownedSectorsContext.setChanged(true)
-          )
+          })
         }}></OnHoverDelete>
       )
     }
@@ -51,6 +53,7 @@ export default function OwnedSectorsTable({ ...dataGridProps }) {
   useEffect(() => {
     setLoading(true)
     if (!activeSave.activeSave.id) {
+      setLoading(false)
       return
     }
     getSaveGameSectors(activeSave.activeSave.id).then((response: object) => {

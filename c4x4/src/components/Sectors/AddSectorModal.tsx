@@ -38,7 +38,6 @@ export default function AddSectorModal() {
       handleClose()
       return
     }
-    console.log(sectors)
     addOwnedSectors(activeSave.activeSave.id, sectors).then(() => {
       ownedSectorsContext.setChanged(true)
       handleClose()
@@ -48,12 +47,12 @@ export default function AddSectorModal() {
   return (
     <>
       <Box display='flex' justifyContent='flex-end'>
-        <Button variant="contained" onClick={handleOpen}>Add Sector</Button>
+        <Button variant="contained" onClick={handleOpen} disabled={Boolean(!activeSave.activeSave.id)}>Add Sector</Button>
       </Box>
       <Modal open={isOpen} onClose={handleClose}>
         <Box sx={style}>
           <Typography variant="h6">Select Sectors</Typography>
-          <SectorsTable getFunction={getSectorTemplates} sectorCookie="datasetId" checkboxSelection/>
+          <SectorsTable getFunction={getSectorTemplates} checkboxSelection/>
           <AddCancelButtonPanel addAction={addSectors} cancelAction={handleClose} />
         </Box>
       </Modal>
