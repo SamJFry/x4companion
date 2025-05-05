@@ -1,7 +1,7 @@
 import {DataGrid, DataGridProps, GridColDef, GridRowSelectionModel} from "@mui/x-data-grid";
 import {useEffect, useState, useContext} from "react";
-import getCookie from "../../functions/cookies.ts";
 import { SelectedSectorsContext } from "./SelectedSectorsProvider.tsx";
+import { ActiveSaveContext } from "../../providers/ActiveSaveProvider.tsx";
 import {Skeleton} from "@mui/material";
 import Box from "@mui/material/Box";
 
@@ -28,18 +28,18 @@ type SectorDataGridProps = Omit<DataGridProps<SectorRow>, 'columns'>;
 
 type SectorTableProps = {
   getFunction: (id: number) => Promise<Array<{}>>
-  sectorCookie: string
 } & SectorDataGridProps
 
 
-export default function SectorsTable({ getFunction, sectorCookie, ...dataGridProps }: SectorTableProps) {
+export default function SectorsTable({ getFunction, ...dataGridProps }: SectorTableProps) {
   const [sectors, setSectors] = useState<any>()
   const [loading, setLoading] = useState(true)
   const selectedSectorsContext = useContext(SelectedSectorsContext)
+  const activeSaveContext = useContext(ActiveSaveContext)
 
   useEffect(() => {
     setLoading(true)
-    getFunction(Number(getCookie(sectorCookie))).then((response: object) => {
+    getFunction(activeSaveContext.activeSave.dataset_id).then((response: object) => {
       setSectors(response)
       setLoading(false)
     })
@@ -48,7 +48,6 @@ export default function SectorsTable({ getFunction, sectorCookie, ...dataGridPro
   const handleSelectionChange = (rowSelectionModel: GridRowSelectionModel) => {
     selectedSectorsContext.setSelected(rowSelectionModel)
   }
-
   return (
     <>
       {loading ? (

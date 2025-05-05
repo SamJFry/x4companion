@@ -19,7 +19,7 @@ export default function OwnedSectorsTable({ ...dataGridProps }) {
   const [loading, setLoading] = useState(true)
   const ownedSectorsContext = useContext(OwnedSectorsContext)
   const activeSaveContext = useContext(ActiveSaveContext)
-  const saveId = Number(getCookie('saveId'));
+  const activeSave = useContext(ActiveSaveContext)
   const sectorColumns: GridColDef<SectorRow>[] = [
     {
       field: 'name',
@@ -50,12 +50,15 @@ export default function OwnedSectorsTable({ ...dataGridProps }) {
 
   useEffect(() => {
     setLoading(true)
-    getSaveGameSectors(saveId).then((response: object) => {
+    if (!activeSave.activeSave.id) {
+      return
+    }
+    getSaveGameSectors(activeSave.activeSave.id).then((response: object) => {
       setSectors(response)
       setLoading(false)
     })
     ownedSectorsContext.setChanged(false)
-  }, [ownedSectorsContext.sectorsChanged, activeSaveContext.activeSave])
+  }, [ownedSectorsContext.sectorsChanged, activeSaveContext.activeSave.id])
 
   return (
     <>

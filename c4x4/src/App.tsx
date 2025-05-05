@@ -68,7 +68,7 @@ const NAVIGATION: Navigation = [
 const BRANDING = {
   logo: <img src="/src/assets/X4.svg" alt="x4 logo"/>,
   title: 'Companion',
-  homeUrl: 'x4',
+  homeUrl: '',
 };
 
 export default function App() {

@@ -1,11 +1,6 @@
+import { SaveGame } from '../types.ts'
 import { createContext, useState } from "react";
 import {setCookie} from "../functions/cookies.ts";
-
-interface SaveGame {
-  id: number | null;
-  name: string | null
-  dataset_id: number
-}
 
 type ActiveSaveContextProps = {
   activeSave: SaveGame

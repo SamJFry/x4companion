@@ -32,7 +32,8 @@ export default function AddSectorModal() {
   const selectedSectors = useContext(SelectedSectorsContext)
 
   const addSectors = () => {
-    addOwnedSectors(Number(getCookie('saveId')), selectedSectors.selectedSectors).then(() => {
+    let sectors = Array(selectedSectors.selectedSectors.ids)
+    addOwnedSectors(Number(getCookie('saveId')), sectors).then(() => {
       ownedSectorsContext.setChanged(true)
       handleClose()
     })

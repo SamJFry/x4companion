@@ -1,4 +1,3 @@
-import * as React from 'react';
 import { useEffect } from "react";
 import { AppProvider } from '@toolpad/core/AppProvider';
 import { SignInPage, type AuthProvider } from '@toolpad/core/SignInPage';
@@ -57,9 +56,9 @@ function UsernNameOrEmailField() {
 export default function CredentialsSignInPage() {
   const theme = useTheme();
   const navigate = useNavigate()
-  useEffect(() =>{
+  useEffect(() => {
     if (document.cookie.includes('token=Bearer')) {
-      navigate('app');
+      navigate('/x4');
     }
   }, [])
   const handleSignIn: (provider: AuthProvider, formData: FormData) => void = async (

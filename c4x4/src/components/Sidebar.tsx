@@ -1,4 +1,4 @@
-import {DashboardLayout, ThemeSwitcher} from '@toolpad/core/DashboardLayout';
+import {ThemeSwitcher} from '@toolpad/core/DashboardLayout';
 import ListItemText from '@mui/material/ListItemText';
 import ListIcon from '@mui/icons-material/List';
 import Popover from '@mui/material/Popover';
@@ -15,14 +15,7 @@ import LogOut from "./Logout.tsx";
 import {SaveIndicator} from "./SaveIndicator.tsx";
 import {Divider, Box} from "@mui/material";
 import ListItemIcon from "@mui/material/ListItemIcon";
-
-
-
-interface SaveGame {
-  id: string
-  name: string
-  dataset_id: string
-}
+import { SaveGame } from '../types.ts'
 
 export default function TopBarActions() {
   const [saves, setSaves] = useState<Array<object>>([])
@@ -84,7 +77,7 @@ export default function TopBarActions() {
         <Divider />
         <NewSaveModal createAction={getSaves} />
       </Popover>
-      <SaveIndicator saves={saves}/>
+      <SaveIndicator />
       <ThemeSwitcher />
       <LogOut />
     </>
