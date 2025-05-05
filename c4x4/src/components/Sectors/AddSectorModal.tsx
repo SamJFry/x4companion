@@ -11,7 +11,6 @@ import {SelectedSectorsContext} from "./SelectedSectorsProvider.tsx";
 import { ActiveSaveContext } from "../../providers/ActiveSaveProvider.tsx";
 import {useContext, useState } from "react";
 
-
 const style = {
   mt: 5,
   position: 'absolute',
