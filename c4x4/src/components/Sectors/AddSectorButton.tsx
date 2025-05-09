@@ -1,28 +1,8 @@
-import Modal from "@mui/material/Modal"
 import Box from "@mui/material/Box"
 import Button from "@mui/material/Button"
-import SectorsTable from "./SectorTable.tsx"
-import {getSectorTemplates} from "../../functions/responses.ts"
-import AddCancelButtonPanel from "../Buttons/AddCancelButtonPanel.tsx"
-import { OwnedSectorsContext } from "./OwnedSectorsProvider.tsx"
-import { Typography } from "@mui/material"
-import { addOwnedSectors } from "../../functions/responses.ts"
-import {SelectedSectorsContext} from "./SelectedSectorsProvider.tsx";
 import { ActiveSaveContext } from "../../providers/ActiveSaveProvider.tsx";
 import {useContext, useState } from "react";
 import AddSectorModal from "./AddSectorModal.tsx";
-
-const style = {
-  mt: 5,
-  position: 'absolute',
-  top: '40%',
-  left: '50%',
-  transform: 'translate(-50%, -50%)',
-  width: '60%',
-  bgcolor: 'background.paper',
-  boxShadow: 24,
-  p: 4
-};
 
 export default function AddSectorButton() {
   const activeSave = useContext(ActiveSaveContext)

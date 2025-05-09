@@ -48,7 +48,6 @@ export default function SectorsAutoComplete() {
     <SelectedSectorsProvider>
       <Autocomplete
         options={sectors}
-        sx={{ width: 300 }}
         renderInput={(params) => <TextField {...params} label="Choose a sector" />}
         renderOption={(props, option) => {
           if (option?.key === 0) {
