@@ -10,6 +10,9 @@ import AddCancelButtonPanel from "../Buttons/AddCancelButtonPanel.tsx";
 const style = {
   mt: 5,
   position: 'absolute',
+  display: 'block',
+  maxHeight: '80%',
+  overflow: 'auto',
   top: '40%',
   left: '50%',
   transform: 'translate(-50%, -50%)',
