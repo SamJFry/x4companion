@@ -1,7 +1,7 @@
 import { SaveGame } from '../types.ts'
 import { createContext, useState, useEffect } from "react";
 import getCookie, {setCookie} from "../functions/cookies.ts";
-import {getSaveGames, deleteSaveGame} from "../functions/responses.ts";
+import {getSaveGames} from "../functions/responses.ts";
 
 
 type ActiveSaveContextProps = {
