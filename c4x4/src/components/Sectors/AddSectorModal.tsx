@@ -33,7 +33,7 @@ export default function AddSectorModal({ open, handleClose }) {
       return
     }
     addOwnedSectors(activeSave.activeSave.id, sectors).then(() => {
-      ownedSectorsContext.setChanged(true)
+      ownedSectorsContext.setChanged(sectors)
       handleClose()
     })
   }
