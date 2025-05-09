@@ -9,24 +9,19 @@ import AddIcon from "@mui/icons-material/Add";
 import ListItemText from "@mui/material/ListItemText";
 import AddSectorModal from "./AddSectorModal.tsx";
 import SelectedSectorsProvider from "./SelectedSectorsProvider.tsx";
-import OwnedSectorsProvider, {OwnedSectorsContext} from "./OwnedSectorsProvider.tsx";
+import {OwnedSectorsContext} from "./OwnedSectorsProvider.tsx";
 
-function AddNewOwnedSector() {
-  const [isOpen, setOpen] = useState(false)
-  const handleOpen = () => setOpen(true)
-  const handleClose = () => setOpen(false)
-
+function AddNewOwnedSector({ onClick }) {
   return (
-    <SelectedSectorsProvider>
+    <>
       <Divider sc={{mt: 1}}/>
-      <MenuItem onClick={handleOpen}>
+      <MenuItem onClick={onClick}>
         <ListItemIcon sx={{ml: 0.5}}>
           <AddIcon fontSize="small" />
         </ListItemIcon>
         Add Owned Sector
       </MenuItem>
-      <AddSectorModal open={isOpen} handleClose={handleClose} />
-    </SelectedSectorsProvider>
+    </>
   )
 }
 
@@ -35,6 +30,9 @@ export default function SectorsAutoComplete() {
   const ownedSectors = useContext(OwnedSectorsContext);
   const [loading, setLoading] = useState(true)
   const [sectors, setSectors] = useState<any>([])
+  const [isOpen, setOpen] = useState(false)
+  const handleOpen = () => setOpen(true)
+  const handleClose = () => setOpen(false)
 
   useEffect(() => {
     setLoading(true)
@@ -47,16 +45,19 @@ export default function SectorsAutoComplete() {
   }, [ownedSectors]);
 
   return (
-    <Autocomplete
-      options={sectors}
-      sx={{width: 300}}
-      renderInput={(params) => <TextField {...params} label="Choose a sector" />}
-      renderOption={(props, option) => {
-        if (option?.key === 0) {
-          return <AddNewOwnedSector />
-        }
-        return <MenuItem {...props}>{option.label}</MenuItem>
-      }}
-    />
+    <SelectedSectorsProvider>
+      <Autocomplete
+        options={sectors}
+        sx={{ width: 300 }}
+        renderInput={(params) => <TextField {...params} label="Choose a sector" />}
+        renderOption={(props, option) => {
+          if (option?.key === 0) {
+            return <AddNewOwnedSector {...props} onClick={handleOpen}>{option.label}</AddNewOwnedSector>;
+          }
+          return <MenuItem {...props}>{option.label}</MenuItem>;
+        }}
+      />
+    <AddSectorModal open={isOpen} handleClose={handleClose} />
+  </SelectedSectorsProvider>
   )
 }
