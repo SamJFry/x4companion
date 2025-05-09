@@ -1,24 +1,26 @@
-import Box from "@mui/material/Box";
 import Grid from "@mui/material/Grid";
 import TextField from "@mui/material/TextField";
 import SectorsAutoComplete from "../Sectors/SectorsAutoComplete.tsx";
 import OwnedSectorsProvider from "../Sectors/OwnedSectorsProvider.tsx";
+import {Typography} from "@mui/material";
+import FormFieldGrid from "../FormFields/AutoCompleteGrid.tsx";
 
 
 
 export default function AddStationForm() {
   return (
     <OwnedSectorsProvider>
-      <Box>
-        <Grid container spacing={2}>
-          <Grid size={{ lg: 4, xs: 12 }}>
-            <TextField id="outlined-basic" label="Name" variant="outlined" fullWidth />
-          </Grid>
-          <Grid size={{ lg: 4, xs: 12 }}>
-            <SectorsAutoComplete />
-          </Grid>
+      <Typography variant="h4" sx={{mb: 2}}>Create Station</Typography>
+      <Grid container spacing={2} sx={{mb: 2}}>
+        <Grid size={{ lg: 4, xs: 12 }}>
+          <TextField id="outlined-basic" label="Name" variant="outlined" fullWidth />
         </Grid>
-      </Box>
+        <Grid size={{ lg: 4, xs: 12 }}>
+          <SectorsAutoComplete />
+        </Grid>
+      </Grid>
+      <Typography fontWeight="bold">Factory Modules</Typography>
+      <FormFieldGrid field={SectorsAutoComplete} />
     </OwnedSectorsProvider>
   )
 }

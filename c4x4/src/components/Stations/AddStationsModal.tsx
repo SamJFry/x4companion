@@ -32,7 +32,6 @@ export default function AddStationsModal() {
       </Box>
       <Modal open={isOpen} onClose={handleClose}>
         <Box sx={style}>
-          <Typography variant="h6" sx={{mb: 2}}>Create Station</Typography>
           <AddStationForm />
           <AddCancelButtonPanel addAction={handleClose} cancelAction={handleClose} />
         </Box>

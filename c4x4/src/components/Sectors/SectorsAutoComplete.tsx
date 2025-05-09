@@ -2,11 +2,10 @@ import {useEffect, useState, useContext} from "react";
 import {ActiveSaveContext} from "../../providers/ActiveSaveProvider.tsx";
 import {getSaveGameSectors} from "../../functions/responses.ts";
 import TextField from "@mui/material/TextField";
-import {Autocomplete, Divider} from "@mui/material";
+import {Autocomplete, Divider, Skeleton} from "@mui/material";
 import MenuItem from "@mui/material/MenuItem";
 import ListItemIcon from "@mui/material/ListItemIcon";
 import AddIcon from "@mui/icons-material/Add";
-import ListItemText from "@mui/material/ListItemText";
 import AddSectorModal from "./AddSectorModal.tsx";
 import SelectedSectorsProvider from "./SelectedSectorsProvider.tsx";
 import {OwnedSectorsContext} from "./OwnedSectorsProvider.tsx";
@@ -46,6 +45,9 @@ export default function SectorsAutoComplete() {
 
   return (
     <SelectedSectorsProvider>
+      {loading ? (
+        <Skeleton variant="rectangular" />
+      ) : (<>
       <Autocomplete
         options={sectors}
         renderInput={(params) => <TextField {...params} label="Choose a sector" />}
@@ -57,6 +59,7 @@ export default function SectorsAutoComplete() {
         }}
       />
     <AddSectorModal open={isOpen} handleClose={handleClose} />
+    </>)}
   </SelectedSectorsProvider>
   )
 }
