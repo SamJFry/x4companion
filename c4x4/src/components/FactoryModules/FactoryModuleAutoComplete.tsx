@@ -1,0 +1,35 @@
+import { useContext, useState, useEffect } from 'react';
+import { ActiveSaveContext } from "../../providers/ActiveSaveProvider.tsx";
+import { getFactoryModules } from "../../functions/responses.ts";
+import {Autocomplete} from "@mui/material";
+import Skeleton from "@mui/material/Skeleton";
+import TextField from "@mui/material/TextField";
+
+export default function FactoryModuleAutoComplete() {
+  const activeSave = useContext(ActiveSaveContext);
+  const [loading, setLoading] = useState(true);
+  const [modules, setModules] = useState<Array<object>>([]);
+
+  useEffect(() => {
+    setLoading(true);
+    getFactoryModules(activeSave.activeSave.dataset_id).then((response: Array<object>) => {
+      const options = response.map(module => ({key: module.id, label: module.name}))
+      setModules(options)
+      setLoading(false)
+      console.log(options)
+    })
+  }, [activeSave.activeSave.id]);
+
+  return (
+    <>
+      {loading ? (
+        <Skeleton variant="rectangular" />
+      ) : (
+        <Autocomplete
+          options={modules}
+          renderInput={(params) => <TextField {...params} label="Choose a module" />}
+        />
+      )}
+    </>
+  )
+}

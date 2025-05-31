@@ -48,18 +48,18 @@ export default function SectorsAutoComplete() {
       {loading ? (
         <Skeleton variant="rectangular" />
       ) : (<>
-      <Autocomplete
-        options={sectors}
-        renderInput={(params) => <TextField {...params} label="Choose a sector" />}
-        renderOption={(props, option) => {
-          if (option?.key === 0) {
-            return <AddNewOwnedSector {...props} onClick={handleOpen}>{option.label}</AddNewOwnedSector>;
-          }
-          return <MenuItem {...props}>{option.label}</MenuItem>;
-        }}
-      />
-    <AddSectorModal open={isOpen} handleClose={handleClose} />
-    </>)}
-  </SelectedSectorsProvider>
+        <Autocomplete
+          options={sectors}
+          renderInput={(params) => <TextField {...params} label="Choose a sector" />}
+          renderOption={(props, option) => {
+            if (option?.key === 0) {
+              return <AddNewOwnedSector {...props} onClick={handleOpen}>{option.label}</AddNewOwnedSector>;
+            }
+            return <MenuItem {...props}>{option.label}</MenuItem>;
+          }}
+        />
+        <AddSectorModal open={isOpen} handleClose={handleClose} />
+      </>)}
+    </SelectedSectorsProvider>
   )
 }
