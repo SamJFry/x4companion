@@ -1,4 +1,4 @@
-import { ElementType, useState } from 'react'
+import { ReactElement, useState, cloneElement } from 'react'
 import Button from "@mui/material/Button";
 import AddIcon from "@mui/icons-material/Add";
 import Grid from "@mui/material/Grid";
@@ -7,13 +7,12 @@ import { SxProps, Theme } from "@mui/material/styles";
 
 type FormFieldGridProps = {
   title: string
-  field: ElementType
+  field: ReactElement
   sx?: SxProps<Theme>
 }
 
 export default function FormFieldGrid({ title, field, sx }: FormFieldGridProps) {
   const [fieldCount, setFieldCount] = useState<number>(0)
-  const FieldComponent = field;
 
   return <>
     <Grid container spacing={2} sx={sx}>
@@ -27,7 +26,7 @@ export default function FormFieldGrid({ title, field, sx }: FormFieldGridProps) 
       </Grid>
       {Array.from({ length: fieldCount }).map(() => (
         <Grid size={{ lg: 4, xs: 12 }}>
-          <FieldComponent />
+          {cloneElement(field)}
         </Grid>
       ))}
     </Grid>

@@ -5,6 +5,7 @@ import FactoryModuleAutoComplete from "../FactoryModules/FactoryModuleAutoComple
 import OwnedSectorsProvider from "../Sectors/OwnedSectorsProvider.tsx";
 import {Typography} from "@mui/material";
 import FormFieldGrid from "../FormFields/AutoCompleteGrid.tsx";
+import QuantityFieldAddon from "../FormFields/QuantityFieldAddon.tsx";
 
 
 
@@ -21,8 +22,15 @@ export default function AddStationForm() {
           <SectorsAutoComplete />
         </Grid>
       </Grid>
-      <FormFieldGrid title="Factory Modules" field={FactoryModuleAutoComplete} sx={{mb: 2}}/>
-      <FormFieldGrid title="Habitat Modules" field={SectorsAutoComplete} />
+      <FormFieldGrid
+        title="Factory Modules"
+        field={<QuantityFieldAddon field={FactoryModuleAutoComplete}/>}
+        sx={{mb: 2}}
+      />
+      <FormFieldGrid
+        title="Habitat Modules"
+        field={<QuantityFieldAddon field={FactoryModuleAutoComplete}/>}
+      />
     </OwnedSectorsProvider>
   )
 }
