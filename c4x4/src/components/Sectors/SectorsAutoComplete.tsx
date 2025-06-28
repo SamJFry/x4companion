@@ -35,13 +35,15 @@ export default function SectorsAutoComplete() {
 
   useEffect(() => {
     setLoading(true)
-    getSaveGameSectors(activeSave.activeSave.id).then((response: Array<object>) => {
-      const options = response.map(sector => ({key: sector.id, label: sector.name}))
-      const extendedOptions = [...options, {key: 0, label: 'add', isButton: true}]
-      setSectors(extendedOptions)
-      setLoading(false)
-    })
-  }, [ownedSectors]);
+    if (activeSave.activeSave.id) {
+      getSaveGameSectors(activeSave.activeSave.id).then((response: Array<object>) => {
+        const options = response.map(sector => ({key: sector.id, label: sector.name}))
+        const extendedOptions = [...options, {key: 0, label: 'add', isButton: true}]
+        setSectors(extendedOptions)
+      })
+    }
+    setLoading(false)
+  }, [ownedSectors, activeSave])
 
   return (
     <SelectedSectorsProvider>
@@ -51,11 +53,11 @@ export default function SectorsAutoComplete() {
         <Autocomplete
           options={sectors}
           renderInput={(params) => <TextField {...params} label="Choose a sector" />}
-          renderOption={(props, option) => {
+          renderOption={(_, option) => {
             if (option?.key === 0) {
-              return <AddNewOwnedSector {...props} onClick={handleOpen}>{option.label}</AddNewOwnedSector>;
+              return <AddNewOwnedSector onClick={handleOpen}>{option.label}</AddNewOwnedSector>;
             }
-            return <MenuItem {...props}>{option.label}</MenuItem>;
+            return <MenuItem>{option.label}</MenuItem>;
           }}
         />
         <AddSectorModal open={isOpen} handleClose={handleClose} />

@@ -6,20 +6,18 @@ import ActiveSaveProvider from '../contexts/ActiveSaveProvider.tsx'
 
 export default function Stations() {
   return (
-    <ActiveSaveProvider>
-      <Box sx={{flexGrow: 1, m: '5%'}}>
-        <Typography variant="h3">Stations</Typography>
-        <Grid container spacing={2} sx={{mb: 2}}>
-          <Grid size={{ lg: 8, xs: 12, sm: 8 }}>
-            <Typography variant="subtitle1">
-              Manage the stations in your Empire.
-            </Typography>
-          </Grid>
-          <Grid size={{ lg: 4, xs: 12, sm: 4 }}>
-            <AddStationsModal />
-          </Grid>
+    <Box sx={{flexGrow: 1, m: '5%'}}>
+      <Typography variant="h3">Stations</Typography>
+      <Grid container spacing={2} sx={{mb: 2}}>
+        <Grid size={{ lg: 8, xs: 12, sm: 8 }}>
+          <Typography variant="subtitle1">
+            Manage the stations in your Empire.
+          </Typography>
         </Grid>
-      </Box>
-    </ActiveSaveProvider>
+        <Grid size={{ lg: 4, xs: 12, sm: 4 }}>
+          <AddStationsModal />
+        </Grid>
+      </Grid>
+    </Box>
   )
 }
