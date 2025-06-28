@@ -1,6 +1,6 @@
 import Box from "@mui/material/Box"
 import Button from "@mui/material/Button"
-import { ActiveSaveContext } from "../../providers/ActiveSaveProvider.tsx";
+import { ActiveSaveContext } from "../../contexts/ActiveSaveProvider.tsx";
 import {useContext, useState } from "react";
 import AddSectorModal from "./AddSectorModal.tsx";
 

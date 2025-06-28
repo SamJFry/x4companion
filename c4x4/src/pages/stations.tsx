@@ -2,7 +2,7 @@ import Typography from '@mui/material/Typography'
 import Box from '@mui/material/Box'
 import AddStationsModal from "../components/Stations/AddStationsModal.tsx";
 import {Grid} from "@mui/material";
-import ActiveSaveProvider from '../providers/ActiveSaveProvider.tsx'
+import ActiveSaveProvider from '../contexts/ActiveSaveProvider.tsx'
 
 export default function Stations() {
   return (

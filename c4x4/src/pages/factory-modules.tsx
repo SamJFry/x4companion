@@ -1,7 +1,7 @@
 import Box from '@mui/material/Box'
 import {Skeleton, Typography} from '@mui/material'
 import {DataGrid, GridColDef} from '@mui/x-data-grid'
-import { ActiveSaveContext } from "../providers/ActiveSaveProvider.tsx"
+import { ActiveSaveContext } from "../contexts/ActiveSaveProvider.tsx"
 import {getFactoryModules} from "../functions/responses.ts";
 import {useState, useEffect, useContext} from "react";
 

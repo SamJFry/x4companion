@@ -5,16 +5,25 @@ import {Autocomplete} from "@mui/material";
 import Skeleton from "@mui/material/Skeleton";
 import TextField from "@mui/material/TextField";
 
-export default function FactoryModuleAutoComplete() {
+type DataSetItem = {
+  id: Number
+  name: string
+}
+
+type DatasetAutoCompleteProps = {
+  getDataFunction: (dataset: Number) => Promise<Array<DataSetItem>>
+}
+
+export default function DatasetAutoComplete({ getDataFunction }: DatasetAutoCompleteProps) {
   const activeSave = useContext(ActiveSaveContext);
   const [loading, setLoading] = useState(true);
-  const [modules, setModules] = useState<Array<object>>([]);
+  const [data, setData] = useState<Array<DataSetItem>>([]);
 
   useEffect(() => {
     setLoading(true);
-    getFactoryModules(activeSave.activeSave.dataset_id).then((response: Array<object>) => {
-      const options = response.map(module => ({key: module.id, label: module.name}))
-      setModules(options)
+    getDataFunction(activeSave.activeSave.dataset_id).then((response: Array<object>) => {
+      const options = response.map(item => ({key: item.id, label: item.name}))
+      setData(options)
       setLoading(false)
     })
   }, [activeSave.activeSave.id]);
@@ -25,7 +34,7 @@ export default function FactoryModuleAutoComplete() {
         <Skeleton variant="rectangular" />
       ) : (
         <Autocomplete
-          options={modules}
+          options={data}
           renderInput={(params) => <TextField {...params} label="Choose a module" />}
         />
       )}

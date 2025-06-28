@@ -5,7 +5,7 @@ import SectorsTable from "./SectorTable.tsx";
 import {addOwnedSectors, getSectorTemplates} from "../../functions/responses.ts";
 import AddCancelButtonPanel from "../Buttons/AddCancelButtonPanel.tsx";
 import {useContext, useState} from "react";
-import {ActiveSaveContext} from "../../providers/ActiveSaveProvider.tsx";
+import {ActiveSaveContext} from "../../contexts/ActiveSaveProvider.tsx";
 import {OwnedSectorsContext} from "./OwnedSectorsProvider.tsx";
 import {SelectedSectorsContext} from "./SelectedSectorsProvider.tsx";
 

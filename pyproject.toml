@@ -48,7 +48,7 @@ extra-dependencies = [
 ]
 
 [tool.hatch.envs.default.scripts]
-devserver = "python -m x4companion.manage runserver"
+dev = "python -m x4companion.manage runserver"
 makemigrations = "python -m x4companion.manage makemigrations"
 migrate = "python -m x4companion.manage migrate"
 create-su = "python -m x4companion.manage createsuperuser --username admin --email admin@example.com"

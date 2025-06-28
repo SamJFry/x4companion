@@ -1,5 +1,5 @@
 import {useEffect, useState, useContext} from "react";
-import {ActiveSaveContext} from "../../providers/ActiveSaveProvider.tsx";
+import {ActiveSaveContext} from "../../contexts/ActiveSaveProvider.tsx";
 import {getSaveGameSectors} from "../../functions/responses.ts";
 import TextField from "@mui/material/TextField";
 import {Autocomplete, Divider, Skeleton} from "@mui/material";

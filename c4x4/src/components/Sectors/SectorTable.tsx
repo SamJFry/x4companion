@@ -1,7 +1,7 @@
 import {DataGrid, DataGridProps, GridColDef, GridRowSelectionModel} from "@mui/x-data-grid";
 import {useEffect, useState, useContext} from "react";
 import { SelectedSectorsContext } from "./SelectedSectorsProvider.tsx";
-import { ActiveSaveContext } from "../../providers/ActiveSaveProvider.tsx";
+import { ActiveSaveContext } from "../../contexts/ActiveSaveProvider.tsx";
 import {Skeleton} from "@mui/material";
 import Box from "@mui/material/Box";
 

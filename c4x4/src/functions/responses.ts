@@ -97,7 +97,6 @@ export async function getSaveGameSectors(save: number) {
 
 
 export async function addOwnedSectors(save: number, sectors: Array<number>) {
-  console.log(sectors)
   const response = await fetch(`${backend}/game/${save}/sectors/`, {
     method: 'POST',
     headers: {

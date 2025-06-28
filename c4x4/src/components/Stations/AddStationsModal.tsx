@@ -2,9 +2,8 @@ import {useState, useContext} from "react";
 import Box from "@mui/material/Box";
 import Button from "@mui/material/Button";
 import Modal from "@mui/material/Modal";
-import {Typography} from "@mui/material";
 import AddStationForm from "./AddStationForm.tsx";
-import { ActiveSaveContext } from "../../providers/ActiveSaveProvider.tsx";
+import { ActiveSaveContext } from "../../contexts/ActiveSaveProvider.tsx";
 import AddCancelButtonPanel from "../Buttons/AddCancelButtonPanel.tsx";
 
 const style = {
@@ -23,10 +22,10 @@ const style = {
 };
 
 export default function AddStationsModal() {
+  const activeSave = useContext(ActiveSaveContext)
   const [isOpen, setOpen] = useState(false)
   const handleOpen = () => setOpen(true)
   const handleClose = () => setOpen(false)
-  const activeSave = useContext(ActiveSaveContext)
 
   return (
     <>

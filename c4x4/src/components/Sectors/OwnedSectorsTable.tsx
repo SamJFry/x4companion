@@ -1,6 +1,6 @@
 import {useContext, useEffect, useState} from "react";
 import { OwnedSectorsContext } from "./OwnedSectorsProvider.tsx";
-import { ActiveSaveContext } from "../../providers/ActiveSaveProvider.tsx"
+import { ActiveSaveContext } from "../../contexts/ActiveSaveProvider.tsx"
 import {getSaveGameSectors, deleteOwnedSectors} from "../../functions/responses.ts";
 import getCookie from "../../functions/cookies.ts";
 import {Skeleton} from "@mui/material";

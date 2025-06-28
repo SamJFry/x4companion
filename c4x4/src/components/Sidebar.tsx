@@ -8,8 +8,7 @@ import MenuItem from "@mui/material/MenuItem";
 import {OnHoverDelete} from "./DeleteButton.tsx";
 import {useEffect, useState, useContext} from "react";
 import {getSaveGames, deleteSaveGame} from "../functions/responses.ts";
-import getCookie, {deleteCookie} from "../functions/cookies.ts";
-import {ActiveSaveContext} from "../providers/ActiveSaveProvider.tsx";
+import {ActiveSaveContext} from "../contexts/ActiveSaveProvider.tsx";
 import {NewSaveModal} from "./SaveModal.tsx"
 import LogOut from "./Logout.tsx";
 import {SaveIndicator} from "./SaveIndicator.tsx";
@@ -18,8 +17,8 @@ import ListItemIcon from "@mui/material/ListItemIcon";
 import { SaveGame } from '../types.ts'
 
 export default function TopBarActions() {
-  const [saves, setSaves] = useState<Array<object>>([])
-  const activeSaveContext = useContext(ActiveSaveContext)
+  const [saves, setSaves] = useState<Array<SaveGame>>([])
+  const activeSave = useContext(ActiveSaveContext)
   const getSaves = async () => {
     const fetchedSaves = await getSaveGames()
     setSaves(fetchedSaves)
@@ -28,12 +27,11 @@ export default function TopBarActions() {
     getSaveGames().then((data) => setSaves(data))
   }, [])
   const handleClickDelete = async (id: Number) => {
-    const cookie = Number(getCookie('saveId'))
-    if (id === cookie) {
-      deleteCookie('saveId')
-    }
     await deleteSaveGame(id)
     await getSaves()
+    if (id === activeSave.activeSave.id) {
+      activeSave.setNewSave(saves[0])
+    }
   }
   const [anchorEl, setAnchorEl] = React.useState<HTMLButtonElement | null>(null);
 
@@ -46,7 +44,7 @@ export default function TopBarActions() {
   };
 
   const handleSwitchSave = (save: SaveGame) => {
-    activeSaveContext.setNewSave(save);
+    activeSave.setNewSave(save);
     handleClose()
   }
   const open = Boolean(anchorEl);

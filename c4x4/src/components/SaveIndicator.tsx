@@ -1,5 +1,5 @@
 import Typography from '@mui/material/Typography'
-import { ActiveSaveContext} from "../providers/ActiveSaveProvider.tsx";
+import { ActiveSaveContext } from "../contexts/ActiveSaveProvider.tsx";
 import { useContext } from "react";
 
 export function SaveIndicator() {
