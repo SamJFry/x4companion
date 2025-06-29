@@ -3,6 +3,7 @@ import Box from "@mui/material/Box";
 import Button from "@mui/material/Button";
 import Modal from "@mui/material/Modal";
 import AddStationForm from "./AddStationForm.tsx";
+import FormikAddStation from "./FormikAddStation";
 import { ActiveSaveContext } from "../../contexts/ActiveSaveProvider.tsx";
 import AddCancelButtonPanel from "../Buttons/AddCancelButtonPanel.tsx";
 
@@ -34,8 +35,7 @@ export default function AddStationsModal() {
       </Box>
       <Modal open={isOpen} onClose={handleClose}>
         <Box sx={style}>
-          <AddStationForm />
-          <AddCancelButtonPanel addAction={handleClose} cancelAction={handleClose} />
+          <FormikAddStation cancelAction={handleClose} submitAction={handleClose}/>
         </Box>
       </Modal>
     </>
