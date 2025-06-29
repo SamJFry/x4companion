@@ -10,8 +10,8 @@ export default function FormikTextField({name, ...props}: FormikTextFieldProps){
   return (
     <TextField
       {...formik.getFieldProps("name")}
-      error={formik.touched[name]}
-      helperText={formik.errors[name]}
+      error={formik.touched[name] && formik.errors[name]}
+      helperText={formik.touched[name] && formik.errors[name] ? formik.errors[name] : undefined}
       {...props}
     />
   )

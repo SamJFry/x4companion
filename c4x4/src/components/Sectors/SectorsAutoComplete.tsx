@@ -8,7 +8,9 @@ import ListItemIcon from "@mui/material/ListItemIcon";
 import AddIcon from "@mui/icons-material/Add";
 import AddSectorModal from "./AddSectorModal.tsx";
 import SelectedSectorsProvider from "./SelectedSectorsProvider.tsx";
-import {OwnedSectorsContext} from "./OwnedSectorsProvider.tsx";
+import { OwnedSectorsContext } from "./OwnedSectorsProvider.tsx";
+import { useFormikContext } from "formik";
+
 
 function AddNewOwnedSector({ onClick }) {
   return (
@@ -25,8 +27,9 @@ function AddNewOwnedSector({ onClick }) {
 }
 
 export default function SectorsAutoComplete() {
-  const activeSave = useContext(ActiveSaveContext);
-  const ownedSectors = useContext(OwnedSectorsContext);
+  const activeSave = useContext(ActiveSaveContext)
+  const ownedSectors = useContext(OwnedSectorsContext)
+  const formik = useFormikContext()
   const [loading, setLoading] = useState(true)
   const [sectors, setSectors] = useState<any>([])
   const [isOpen, setOpen] = useState(false)
@@ -52,12 +55,25 @@ export default function SectorsAutoComplete() {
       ) : (<>
         <Autocomplete
           options={sectors}
-          renderInput={(params) => <TextField {...params} label="Choose a sector" />}
-          renderOption={(_, option) => {
-            if (option?.key === 0) {
-              return <AddNewOwnedSector onClick={handleOpen}>{option.label}</AddNewOwnedSector>;
+          value={formik.values.sector}
+          onChange={(_, newValue) => {
+            if (newValue?.isButton) {
+              handleOpen()
+            } else {
+              formik.setFieldValue('sector', newValue)
             }
-            return <MenuItem>{option.label}</MenuItem>;
+          }}          renderInput={(params) => (
+            <TextField
+              {...params}
+              error={formik.touched.sector && formik.errors.sector}
+              helperText={formik.errors.sector}
+              label="Choose a sector" />
+          )}
+          renderOption={(props, option) => {
+            if (option?.key === 0) {
+              return <AddNewOwnedSector onClick={handleOpen} {...props}>{option.label}</AddNewOwnedSector>;
+            }
+            return <MenuItem {...props}>{option.label}</MenuItem>;
           }}
         />
         <AddSectorModal open={isOpen} handleClose={handleClose} />
