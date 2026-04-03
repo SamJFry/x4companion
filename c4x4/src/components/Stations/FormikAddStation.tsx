@@ -7,6 +7,7 @@ export default function FormikAddStation({ cancelAction, submitAction }) {
     name: '',
     sector: '',
     factories: [],
+    habitats: []
   }
   const validationSchema = yup.object().shape({
     name: yup.string().required("Name is a required field"),

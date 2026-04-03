@@ -1167,5 +1167,31 @@
       "ware": "Water",
       "quantity": 96
     }
+  ],
+  "habitat_modules": [
+    {"name":  "Argon L Habitat", "capacity":  1000, "species":  "Argon"},
+    {"name":  "Argon M Habitat", "capacity":  500, "species":  "Argon"},
+    {"name":  "Argon S Habitat", "capacity":  250, "species":  "Argon"},
+    {"name":  "Boron L Oasis", "capacity":  1000, "species":  "Boron"},
+    {"name":  "Boron M Oasis", "capacity":  500, "species":  "Boron"},
+    {"name":  "Boron S Oasis", "capacity":  250, "species":  "Boron"},
+    {"name":  "Paranid L Dome", "capacity":  1000, "species":  "Paranid"},
+    {"name":  "Paranid M Dome", "capacity":  500, "species":  "Paranid"},
+    {"name":  "Paranid S Dome", "capacity":  250, "species":  "Paranid"},
+    {"name":  "Split L Parlour", "capacity":  1000, "species":  "Split"},
+    {"name":  "Split M Parlour", "capacity":  500, "species":  "Split"},
+    {"name":  "Split S Parlour", "capacity":  250, "species":  "Split"},
+    {"name":  "Teladi L Biome", "capacity":  1000, "species":  "Teladi"},
+    {"name":  "Teladi M Biome", "capacity":  500, "species":  "Teladi"},
+    {"name":  "Teladi S Biome", "capacity":  250, "species":  "Teladi"},
+    {"name":  "Terran L Living Quarters", "capacity":  500, "species":  "Terran"},
+    {"name":  "Terran M Living Quarters", "capacity":  250, "species":  "Terran"},
+    {"name":  "Terran S Living Quarters", "capacity":  100, "species":  "Terran"},
+    {"name":  "Argon L Dormitory", "capacity":  1000, "species":  "Argon"},
+    {"name":  "Argon M Dormitory", "capacity":  500, "species":  "Argon"},
+    {"name":  "Argon S Dormitory", "capacity":  250, "species":  "Argon"},
+    {"name":  "Argon L Housing Spire", "capacity":  1000, "species":  "Argon"},
+    {"name":  "Argon XL Housing Spire", "capacity":  2000, "species":  "Argon"}
+
   ]
 }

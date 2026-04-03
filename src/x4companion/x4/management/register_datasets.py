@@ -19,6 +19,7 @@ from x4companion.x4.models import Dataset
 from x4companion.x4.serializers import (
     DatasetSerializer,
     FactoryModuleSerializer,
+    HabitatModuleSerializer,
     SectorTemplateSerializer,
     WareOrdersSerializer,
     WareSerializer,
@@ -34,6 +35,7 @@ class SerializerToTableMappings:
     sectors = SectorTemplateSerializer
     wares = WareSerializer
     ware_orders = WareOrdersSerializer
+    habitat_modules = HabitatModuleSerializer
 
 
 class DatasetPrimaryKeys:
@@ -42,6 +44,7 @@ class DatasetPrimaryKeys:
     factory_modules = "name"
     sectors = "name"
     wares = "name"
+    habitat_modules = "name"
 
 
 @dataclasses.dataclass

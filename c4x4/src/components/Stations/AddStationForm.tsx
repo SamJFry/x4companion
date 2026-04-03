@@ -1,6 +1,7 @@
 import Grid from "@mui/material/Grid";
 import SectorsAutoComplete from "../Sectors/SectorsAutoComplete.tsx";
 import FactoryModuleAutoComplete from "../FactoryModules/FactoryModuleAutoComplete.tsx";
+import HabitatModuleAutoComplete from "../HabitatModules/HabitatModuleAutoComplete.tsx";
 import OwnedSectorsProvider from "../Sectors/OwnedSectorsProvider.tsx";
 import {Typography} from "@mui/material";
 import FormFieldGrid from "../FormFields/AutoCompleteGrid.tsx";
@@ -11,7 +12,6 @@ import { useFormikContext } from "formik";
 
 export default function AddStationForm({ cancelAction, submitAction }) {
   const formik = useFormikContext()
-  console.log(formik.values)
   const submit = async () => {
     await formik.submitForm()
     console.log("submit")
@@ -33,6 +33,15 @@ export default function AddStationForm({ cancelAction, submitAction }) {
             fieldsParent="factories"
             field={QuantityFieldAddon}
             fieldProps={{field: FactoryModuleAutoComplete, size: 'small'}}
+            sx={{mb: 2}}
+          />
+        </Grid>
+        <Grid size={{ lg:6, xs: 12}}>
+          <FormFieldGrid
+            title="Habitat Modules"
+            fieldsParent="habitats"
+            field={QuantityFieldAddon}
+            fieldProps={{field: HabitatModuleAutoComplete, size: 'small'}}
             sx={{mb: 2}}
           />
         </Grid>
