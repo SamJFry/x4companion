@@ -21,7 +21,7 @@ export default function AddStationForm({ cancelAction, submitAction }) {
       <Typography fontWeight="bold">Location</Typography>
       <Grid container spacing={2} sx={{mb: 2}}>
         <Grid size={{ lg: 4, xs: 12 }}>
-          <FormikTextField name="name" id="outlined-basic" label="Name" variant="outlined" fullWidth />
+          <FormikTextField name="name" id="outlined-basic" label="Name" size="small" variant="outlined" fullWidth/>
         </Grid>
         <Grid size={{ lg: 4, xs: 12 }}>
           <SectorsAutoComplete />
@@ -30,7 +30,7 @@ export default function AddStationForm({ cancelAction, submitAction }) {
           <FormFieldGrid
             title="Factory Modules"
             field={QuantityFieldAddon}
-            fieldProps={{field: FactoryModuleAutoComplete}}
+            fieldProps={{field: FactoryModuleAutoComplete, size: 'small'}}
             sx={{mb: 2}}
           />
         </Grid>
@@ -38,7 +38,7 @@ export default function AddStationForm({ cancelAction, submitAction }) {
           <FormFieldGrid
             title="Habitat Modules"
             field={QuantityFieldAddon}
-            fieldProps={{field: FactoryModuleAutoComplete}}
+            fieldProps={{field: FactoryModuleAutoComplete, size: 'small'}}
           />
         </Grid>
       </Grid>

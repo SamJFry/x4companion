@@ -25,14 +25,13 @@ export default function FormFieldGrid({ title, field, fieldProps, sx }: FormFiel
         <Typography fontWeight="bold">{title}</Typography>
       </Grid>
       <Grid size={{lg: 2}}>
-
       </Grid>
       <Grid size={{lg: 2}}>
         <Box display="flex" justifyContent="flex-end">
-          <Button variant="outlined" onClick={() => setFieldCount(fieldCount - 1)}>
+          <Button variant="outlined" size="small" onClick={() => setFieldCount(fieldCount - 1)}>
             <RemoveIcon fontSize="small" />
           </Button>
-          <Button sx={{ml: 1}} variant="contained" onClick={() => setFieldCount(fieldCount + 1)}>
+          <Button sx={{ml: 1}} variant="contained" size="small" onClick={() => setFieldCount(fieldCount + 1)}>
             <AddIcon fontSize="small" />
           </Button>
         </Box>
@@ -44,7 +43,7 @@ export default function FormFieldGrid({ title, field, fieldProps, sx }: FormFiel
             <>
               {Array.from({ length: fieldCount }).map((_, index) => (
                 <Grid key={index} size={{ lg: 12, xs: 12 }} sx={{mb: 1}}>
-                  <FieldComponent {...fieldProps} />
+                  <FieldComponent {...fieldProps}/>
                 </Grid>
               ))}
             </>

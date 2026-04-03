@@ -26,7 +26,7 @@ export default function FactoryModuleAutoComplete() {
       ) : (
         <Autocomplete
           options={modules}
-          renderInput={(params) => <TextField {...params} label="Choose a module" />}
+          renderInput={(params) => <TextField {...params} label="Choose a module" size="small"/>}
         />
       )}
     </>

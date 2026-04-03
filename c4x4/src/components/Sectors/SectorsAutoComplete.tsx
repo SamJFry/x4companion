@@ -55,6 +55,7 @@ export default function SectorsAutoComplete() {
       ) : (<>
         <Autocomplete
           options={sectors}
+          size="small"
           value={formik.values.sector}
           onChange={(_, newValue) => {
             if (newValue?.isButton) {
