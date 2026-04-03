@@ -1,12 +1,12 @@
 import {ElementType} from "react";
-import TextField from "@mui/material/TextField";
+import TextField, { TextFieldProps } from "@mui/material/TextField";
 import {Grid} from "@mui/material";
 
-type QuantityFieldAddonProps = {
+type QuantityFieldAddonProps = TextFieldProps & {
   field: ElementType;
 }
 
-export default function QuantityFieldAddon ({field}: QuantityFieldAddonProps) {
+export default function QuantityFieldAddon ({field, ...props}: QuantityFieldAddonProps) {
   const FieldComponent = field
   return (
     <Grid container spacing={0.5}>
@@ -14,7 +14,7 @@ export default function QuantityFieldAddon ({field}: QuantityFieldAddonProps) {
         <FieldComponent />
       </Grid>
       <Grid size={3}>
-        <TextField type="number"/>
+        <TextField type="number" {...props} />
       </Grid>
     </Grid>
     )

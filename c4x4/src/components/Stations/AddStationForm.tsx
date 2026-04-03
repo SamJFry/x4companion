@@ -26,16 +26,22 @@ export default function AddStationForm({ cancelAction, submitAction }) {
         <Grid size={{ lg: 4, xs: 12 }}>
           <SectorsAutoComplete />
         </Grid>
+        <Grid size={{ lg:6, xs: 12}}>
+          <FormFieldGrid
+            title="Factory Modules"
+            field={QuantityFieldAddon}
+            fieldProps={{field: FactoryModuleAutoComplete}}
+            sx={{mb: 2}}
+          />
+        </Grid>
+        <Grid size={{ lg:6, xs: 12}}>
+          <FormFieldGrid
+            title="Habitat Modules"
+            field={QuantityFieldAddon}
+            fieldProps={{field: FactoryModuleAutoComplete}}
+          />
+        </Grid>
       </Grid>
-      <FormFieldGrid
-        title="Factory Modules"
-        field={<QuantityFieldAddon field={FactoryModuleAutoComplete}/>}
-        sx={{mb: 2}}
-      />
-      <FormFieldGrid
-        title="Habitat Modules"
-        field={<QuantityFieldAddon field={FactoryModuleAutoComplete}/>}
-      />
       <AddCancelButtonPanel addAction={submit} cancelAction={cancelAction} />
     </OwnedSectorsProvider>
   )
