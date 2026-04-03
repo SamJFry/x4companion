@@ -11,6 +11,7 @@ import { useFormikContext } from "formik";
 
 export default function AddStationForm({ cancelAction, submitAction }) {
   const formik = useFormikContext()
+  console.log(formik.values)
   const submit = async () => {
     await formik.submitForm()
     console.log("submit")
@@ -29,17 +30,13 @@ export default function AddStationForm({ cancelAction, submitAction }) {
         <Grid size={{ lg:6, xs: 12}}>
           <FormFieldGrid
             title="Factory Modules"
+            fieldsParent="factories"
             field={QuantityFieldAddon}
             fieldProps={{field: FactoryModuleAutoComplete, size: 'small'}}
             sx={{mb: 2}}
           />
         </Grid>
         <Grid size={{ lg:6, xs: 12}}>
-          <FormFieldGrid
-            title="Habitat Modules"
-            field={QuantityFieldAddon}
-            fieldProps={{field: FactoryModuleAutoComplete, size: 'small'}}
-          />
         </Grid>
       </Grid>
       <AddCancelButtonPanel addAction={submit} cancelAction={cancelAction} />

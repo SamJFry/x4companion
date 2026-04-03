@@ -5,7 +5,7 @@ import {Autocomplete} from "@mui/material";
 import Skeleton from "@mui/material/Skeleton";
 import TextField from "@mui/material/TextField";
 
-export default function FactoryModuleAutoComplete() {
+export default function FactoryModuleAutoComplete({...props}) {
   const activeSave = useContext(ActiveSaveContext);
   const [loading, setLoading] = useState(true);
   const [modules, setModules] = useState<Array<object>>([]);
@@ -25,8 +25,9 @@ export default function FactoryModuleAutoComplete() {
         <Skeleton variant="rectangular" />
       ) : (
         <Autocomplete
+          {...props}
           options={modules}
-          renderInput={(params) => <TextField {...params} label="Choose a module" size="small"/>}
+          renderInput={(params) => <TextField {...params} label="Choose a module" size="small" onChange={(e) => console.log(e)}/>}
         />
       )}
     </>
