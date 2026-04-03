@@ -61,9 +61,10 @@ export default function SectorsAutoComplete() {
             if (newValue?.isButton) {
               handleOpen()
             } else {
-              formik.setFieldValue('sector', newValue)
+              formik.setFieldValue('sector_id', newValue.key)
             }
-          }}          renderInput={(params) => (
+          }}
+          renderInput={(params) => (
             <TextField
               {...params}
               error={formik.touched.sector && formik.errors.sector}

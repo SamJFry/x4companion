@@ -36,11 +36,11 @@ export default function FormFieldGrid({ title, fieldsParent, field, fieldProps, 
 
   const handleOptionChange = (index: number, value: Record<string, any>, currentValue: KeyCountOption[]) => {
     if (currentValue[index] === undefined) {
-      currentValue[index] = {key: value.key}
+      currentValue[index] = {id: value.key}
     } else if (currentValue[index] && !value) {
-      delete currentValue[index].key
+      delete currentValue[index].id
     } else {
-      currentValue[index].key = value.key
+      currentValue[index].id = value.key
     }
   }
 

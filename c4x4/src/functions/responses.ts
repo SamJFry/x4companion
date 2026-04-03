@@ -125,6 +125,20 @@ export async function deleteOwnedSectors(save: number, sectorId: number) {
   return response.status
 }
 
+export async function addOwnedStation(save: number, station: Record<string, any>) {
+  const response = await fetch(`${backend}/game/${save}/stations/`, {
+    method: 'POST',
+    headers: {
+      "Authorization": `${getCookie('token')}`,
+      "Content-Type": "application/json",
+    },
+    body: JSON.stringify({data: [station]})
+  })
+  if (response.status !== 200) {
+    return "ERROR: Could not add sectors."
+  }
+}
+
 export async function getFactoryModules(dataset: number) {
   const params = new URLSearchParams({page_size: '1000'})
   const response = await fetch(`${backend}/dataset/${dataset}/factory-modules/?${params}`, {
