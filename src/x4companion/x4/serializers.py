@@ -218,6 +218,24 @@ class SectorSerializerWrite(serializers.Serializer):
         )
 
 
+class HabitatCountSerializer(serializers.Serializer):
+    """Serialize habitats attached to stations."""
+
+    count = serializers.IntegerField()
+    id = serializers.PrimaryKeyRelatedField(
+        queryset=HabitatModule.objects.all()
+    )
+
+
+class FactoryCountSerializesr(serializers.Serializer):
+    """Serialize habitats attached to stations."""
+
+    count = serializers.IntegerField()
+    id = serializers.PrimaryKeyRelatedField(
+        queryset=FactoryModule.objects.all()
+    )
+
+
 class StationSerializerWrite(serializers.Serializer):
     """The serializer used for stations when createing new ones."""
 
@@ -225,6 +243,8 @@ class StationSerializerWrite(serializers.Serializer):
     sector_id = serializers.PrimaryKeyRelatedField(
         queryset=Sector.objects.all()
     )
+    habitats = HabitatCountSerializer(required=False, many=True)
+    factories = FactoryCountSerializesr(required=False, many=True)
 
     def validate(self, data: dict) -> dict:
         """Performs additional validation.

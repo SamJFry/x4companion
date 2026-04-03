@@ -3,12 +3,14 @@ import json
 import pytest
 from rest_framework import status
 
-from x4companion.x4.models import Station
+from x4companion.x4.models import Habitat, Station, Factory
 
 
 @pytest.mark.django_db
 class TestStations:
     @pytest.mark.usefixtures("_create_multiple_sectors")
+    @pytest.mark.usefixtures("create_habitat_module")
+    @pytest.mark.usefixtures("create_factory_module")
     def test_post(self, authed_client):
         response = authed_client.post(
             "/game/1/stations/",
@@ -22,6 +24,8 @@ class TestStations:
                         {
                             "name": "Earl's Court",
                             "sector_id": 2,
+                            "factories": [{"id": 1, "count": 2}],
+                            "habitats": [{"id": 1, "count": 3}],
                         },
                     ]
                 }
@@ -44,6 +48,22 @@ class TestStations:
                 "sector_id": 2,
                 "population": 0,
             },
+        ]
+        assert list(Habitat.objects.all().values()) == [
+            {
+                "id": 1,
+                "count": 3,
+                "module_id": 1,
+                "station_id": 2,
+            }
+        ]
+        assert list(Factory.objects.all().values()) == [
+            {
+                "id": 1,
+                "count": 2,
+                "module_id": 1,
+                "station_id": 2,
+            }
         ]
 
     @pytest.mark.usefixtures("create_station")

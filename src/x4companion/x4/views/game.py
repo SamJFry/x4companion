@@ -24,6 +24,7 @@ from x4companion.x4.serializers import (
     StationSerializerRead,
     StationSerializerWrite,
 )
+from x4companion.x4.services.builders import StationBuilder
 
 
 class StationFactories(X4APIBulkView):
@@ -144,6 +145,21 @@ class Stations(X4APIBulkView):
     def get_queryset(self, **kwargs) -> QuerySet:
         """Return a QuerySet for getting bulk data."""
         return SaveGame.objects.get(id=kwargs["save_id"]).station_set.all()
+
+    def post(self, request: Request, **kwargs) -> Response:
+        """Create a new station."""
+        data = request.data.get("data")
+        serializer = self.get_serializer_class()(
+            data=data, many=True, context=kwargs
+        )
+        if not serializer.is_valid():
+            return Response(
+                status=status.HTTP_400_BAD_REQUEST, data=serializer.errors
+            )
+        builder = StationBuilder()
+        for station in serializer.data:
+            builder.create(station, save_id=kwargs["save_id"])
+        return Response(status=status.HTTP_201_CREATED, data=serializer.data)
 
 
 class StationView(X4SingleAPIViewUser):
