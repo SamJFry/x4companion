@@ -1,33 +1,31 @@
 import {useContext, useEffect, useState} from "react";
-import { OwnedSectorsContext } from "./OwnedSectorsProvider.tsx";
-import { ActiveSaveContext } from "../../contexts/ActiveSaveProvider.tsx"
-import {getSaveGameSectors, deleteOwnedSectors} from "../../functions/responses.ts";
-import {Skeleton} from "@mui/material";
-import Box from "@mui/material/Box";
+import {ActiveSaveContext} from "../../contexts/ActiveSaveProvider.tsx";
 import {DataGrid, GridColDef} from "@mui/x-data-grid";
 import {OnHoverDelete} from "../DeleteButton.tsx";
+import {deleteOwnedStation, getSaveGameStations} from "../../functions/responses.ts";
+import {Skeleton} from "@mui/material";
+import Box from "@mui/material/Box";
 
-type SectorRow = {
-  id: number
-  name: string
-  sunlight_percent: number
+type StationRow = {
+  id: number,
+  name: string,
+  population: number,
 }
 
-export default function OwnedSectorsTable({ ...dataGridProps }) {
-  const [sectors, setSectors] = useState<any>()
+export default function OwnedStationsTable({ ...props}) {
+  const [stations, setStations] = useState<any>()
   const [loading, setLoading] = useState(true)
-  const ownedSectorsContext = useContext(OwnedSectorsContext)
   const activeSaveContext = useContext(ActiveSaveContext)
   const activeSave = useContext(ActiveSaveContext)
-  const sectorColumns: GridColDef<SectorRow>[] = [
+  const sectorColumns: GridColDef<StationRow>[] = [
     {
       field: 'name',
       headerName: 'Sector Name',
       flex: 5,
     },
     {
-      field: 'sunlight_percent',
-      headerName: 'Sunlight Percent (%)',
+      field: 'population',
+      headerName: 'Population',
       flex: 2,
     },
     {
@@ -41,9 +39,7 @@ export default function OwnedSectorsTable({ ...dataGridProps }) {
           if (!activeSave.activeSave.id) {
             return
           }
-          deleteOwnedSectors(activeSave.activeSave.id, Number(params.id)).then(() => {
-            ownedSectorsContext.setChanged(true)
-          })
+          deleteOwnedStation(activeSave.activeSave.id, Number(params.id)).then()
         }}></OnHoverDelete>
       )
     }
@@ -55,12 +51,11 @@ export default function OwnedSectorsTable({ ...dataGridProps }) {
       setLoading(false)
       return
     }
-    getSaveGameSectors(activeSave.activeSave.id).then((response: object) => {
-      setSectors(response)
+    getSaveGameStations(activeSave.activeSave.id).then((response: object) => {
+      setStations(response)
       setLoading(false)
     })
-    ownedSectorsContext.setChanged(false)
-  }, [ownedSectorsContext.sectorsChanged, activeSaveContext.activeSave.id])
+  }, [activeSaveContext.activeSave.id])
 
   return (
     <>
@@ -69,9 +64,9 @@ export default function OwnedSectorsTable({ ...dataGridProps }) {
       ) : (
         <Box sx={{ height: 400, width: '100%' }}>
           <DataGrid
-            {...dataGridProps}
+            {...props}
             disableRowSelectionOnClick
-            rows={sectors}
+            rows={stations}
             columns={sectorColumns}
             initialState={{
               pagination: {

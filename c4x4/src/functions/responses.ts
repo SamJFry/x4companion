@@ -139,6 +139,34 @@ export async function addOwnedStation(save: number, station: Record<string, any>
   }
 }
 
+export async function deleteOwnedStation(save: number, sectorId: number) {
+  const response = await fetch(`${backend}/game/${save}/stations/${sectorId}/`, {
+    method: 'DELETE',
+    headers: {
+      "Authorization": `${getCookie('token')}`,
+    }
+  })
+  if (response.status !== 204) {
+    return "ERROR: Could not process delete."
+  }
+  return response.status
+}
+
+export async function getSaveGameStations(save: number) {
+  const params = new URLSearchParams({page_size: '1000'})
+  const response = await fetch(`${backend}/game/${save}/stations?${params}`, {
+    method: 'GET',
+    headers: {
+      "Authorization": `${getCookie('token')}`,
+    },
+  })
+  if (response.status !== 200) {
+    return "ERROR: Could not get sectors."
+  }
+  const data = await response.json()
+  return data.data
+}
+
 export async function getFactoryModules(dataset: number) {
   const params = new URLSearchParams({page_size: '1000'})
   const response = await fetch(`${backend}/dataset/${dataset}/factory-modules/?${params}`, {

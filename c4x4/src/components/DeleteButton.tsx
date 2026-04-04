@@ -28,6 +28,11 @@ export function OnHoverDelete(props: OnHoverDeleteProps): React.ReactElement {
   const handleOpen = () => setOpen(true)
   const handleClose = () => setOpen(false)
 
+  const handleDelete = () => {
+    props.onClick()
+    setOpen(false)
+  }
+
   return (
     <>
       <IconButton
@@ -42,7 +47,7 @@ export function OnHoverDelete(props: OnHoverDeleteProps): React.ReactElement {
       <Modal open={isOpen} onClose={handleClose}>
         <Box sx={style}>
           <Typography sx={{mb: 2}} variant="body1">Are you sure?</Typography>
-          <DeleteCancelButtonPanel deleteAction={props.onClick} cancelAction={handleClose} />
+          <DeleteCancelButtonPanel deleteAction={handleDelete} cancelAction={handleClose} />
         </Box>
       </Modal>
     </>
