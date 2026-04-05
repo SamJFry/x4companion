@@ -277,7 +277,7 @@ class WareOrder(models.Model):
     Attributes:
         ware: The ware being consumed.
         quantity: The quantity of the order
-        factory: The factory module the order is attached to.
+        factory_module: The factory module the order is attached to.
 
     """
 

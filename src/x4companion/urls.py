@@ -109,9 +109,19 @@ urlpatterns = [
         name="wares",
     ),
     path(
+        "game/<int:game_id>/wares/metrics/",
+        game.WareMetrics.as_view(),
+        name="wares_metrics",
+    ),
+    path(
         "dataset/<int:dataset_id>/wares/<int:id>/",
         dataset.WareView.as_view(),
         name="ware",
+    ),
+    path(
+        "game/<int:game_id>/wares/<int:id>/metrics/",
+        game.WareMetricView.as_view(),
+        name="ware_metrics",
     ),
     path(
         "dataset/<int:ware__dataset>/ware-orders/",

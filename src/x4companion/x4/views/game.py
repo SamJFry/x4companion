@@ -8,13 +8,14 @@ save game instances context.
 from http import HTTPMethod
 
 from django.contrib.auth.models import User
-from django.db.models import QuerySet
+from django.db.models import QuerySet, Sum
 from rest_framework import status
+from rest_framework.generics import GenericAPIView, ListAPIView
 from rest_framework.request import Request
 from rest_framework.response import Response
 
 from x4companion.x4.api_bases import X4APIBulkView, X4SingleAPIViewUser
-from x4companion.x4.models import Factory, Habitat, SaveGame, Sector, Station
+from x4companion.x4.models import Factory, Habitat, SaveGame, Sector, Station, Ware, WareOrder
 from x4companion.x4.serializers import (
     FactorySerializer,
     HabitatSerializer,
@@ -170,3 +171,41 @@ class StationView(X4SingleAPIViewUser):
     def get_queryset(self, user: User, **kwargs) -> QuerySet:
         """Return a QuerySet for getting a single item."""
         return Station.objects.filter(game__user=user, **kwargs)
+
+
+class WareMetrics(ListAPIView):
+    def get(self, request: Request, **kwargs):
+        pass
+        # ToDo:
+        #   1. Get all Factory instances owned by this save game.
+        #   2. Group each Factory instance by module_id.
+        #   3. For each group calculate the total ware production, and energy consumption.
+        #   4. Additionally, calculate current consumption of the ware across the save.
+
+class WareMetricView(GenericAPIView):
+    def get(self, request: Request, **kwargs) -> Response:
+        ware = Ware.objects.get(id=kwargs["id"])
+        factories = Factory.objects.filter(
+            module__ware=ware, station__game_id=kwargs["game_id"]
+        )
+        total_fs = factories.aggregate(count=Sum("count"))["count"]
+        factory_module = factories.first().module
+        hourly_products = total_fs * factory_module.hourly_production
+        hourly_energy = total_fs * factory_module.hourly_energy
+
+        consuming_factories = Factory.objects.filter(station__game_id=kwargs["game_id"], module__wareorder__ware=ware)
+        consumption = 0
+        for factory in consuming_factories:
+            ware_order = factory.module.wareorder_set.get(ware=ware).quantity
+            consumption =+ ware_order * factory.count
+
+        return Response(
+            status=status.HTTP_200_OK,
+            data={
+                "name": ware.name,
+                "hourly_products": hourly_products,
+                "hourly_consumption": consumption,
+                "hourly_energy": hourly_energy,
+                "net_products": hourly_products - consumption,
+            }
+        )

@@ -71,3 +71,26 @@ class TestWareView:
         response = authed_client.delete("/dataset/1/wares/1/")
         assert response.status_code == status.HTTP_204_NO_CONTENT
         assert list(Ware.objects.all().values()) == []
+
+    def test_get_ware_metrics(
+        self, authed_client, create_factory, create_factory_2, create_user_2_factory
+    ):
+        response = authed_client.get("/game/1/wares/1/metrics/")
+        assert response.status_code == status.HTTP_200_OK
+        assert response.json() == {
+            "name": "Stone",
+            "hourly_products": 7000,
+            "hourly_consumption": 0,
+            "hourly_energy": 25200,
+            "net_products": 0,
+        }
+
+    def test_get_ware_metrics_with_consumption(self, authed_client, create_factory, create_consuming_factory):
+        response = authed_client.get("/game/1/wares/1/metrics/")
+        assert response.json() == {
+            "name": "Stone",
+            "hourly_products": 5000,
+            "hourly_consumption": 1500,
+            "hourly_energy": 18000,
+            "net_products": 3500,
+        }

@@ -121,6 +121,14 @@ def create_station(create_basic_sector, create_save_game):
 
 
 @pytest.fixture
+def create_station_2(create_basic_sector, create_save_game):
+    station = Station.objects.create(
+        name="Earl's Court", game=create_save_game, sector=create_basic_sector
+    )
+    station.save()
+    return station
+
+@pytest.fixture
 def _create_multiple_stations(create_basic_sector, create_save_game):
     Station.objects.bulk_create(
         [
@@ -231,6 +239,16 @@ def create_ware(create_dataset):
     ware.save()
     return ware
 
+@pytest.fixture
+def create_consuming_ware(create_dataset):
+    ware = Ware(
+        name="Gravel",
+        storage="C",
+        volume=1,
+        dataset=create_dataset,
+    )
+    ware.save()
+    return ware
 
 @pytest.fixture
 def create_factory_module(create_dataset, create_ware):
@@ -245,6 +263,21 @@ def create_factory_module(create_dataset, create_ware):
     module.save()
     return module
 
+@pytest.fixture
+def create_consuming_fmodule(create_dataset, create_consuming_ware, create_ware):
+    module = FactoryModule.objects.create(
+        name="Gravel Factory",
+        ware=create_consuming_ware,
+        hourly_production=1500,
+        hourly_energy=1500,
+        dataset=create_dataset,
+        workforce=500
+    )
+    ware_order = WareOrder(
+        ware=create_ware, quantity=500, factory_module=module
+    )
+    ware_order.save()
+    return module
 
 @pytest.fixture
 def create_factory(create_factory_module, create_station):
@@ -256,6 +289,25 @@ def create_factory(create_factory_module, create_station):
     factory.save()
     return factory
 
+@pytest.fixture
+def create_factory_2(create_factory_module, create_station_2):
+    factory = Factory(
+        count=2,
+        module=create_factory_module,
+        station=create_station_2,
+    )
+    factory.save()
+    return factory
+
+@pytest.fixture
+def create_consuming_factory(create_consuming_fmodule, create_station):
+    factory = Factory(
+        count=3,
+        module=create_consuming_fmodule,
+        station=create_station,
+    )
+    factory.save()
+    return factory
 
 @pytest.fixture
 def create_ware_order(create_ware, create_factory_module):
